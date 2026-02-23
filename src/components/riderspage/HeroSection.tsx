@@ -10,7 +10,7 @@ export function HeroSection() {
         <div className="grid gap-20 lg:grid-cols-2 items-center">
           {/* Left Content */}
           <div className="flex flex-col gap-6">
-            {/* Badge */}
+      
             <div className="inline-flex items-center gap-2 self-start rounded-full bg-primary/10 px-5 py-2.5">
               <Dot className="text-sm text-primary" />
               <span className="text-xs font-bold uppercase tracking-[1.2px] text-primary">
