@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { MaterialIcon } from "@/components/ui/material-icon";
 import dispatch from "@/assets/riders/dispatch2.jpg";
 
 import { Bike, Dot, TrendingUp } from "lucide-react";
