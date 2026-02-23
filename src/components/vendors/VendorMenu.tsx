@@ -6,7 +6,7 @@ import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, Pagi
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import item1 from "@/assets/vendors/item1.png"
+import item1 from "@/assets/vendors/Item1.png"
 import item2 from "@/assets/vendors/item2.png"
 import item3 from "@/assets/vendors/item3.png"
 
