@@ -197,7 +197,7 @@ export default function VendorFormPage() {
                     </div>
 
                     {/* Sidebar: Merchant Perks */}
-                    <aside className="lg:w-[400px] shrink-0 space-y-8 animate-in fade-in slide-in-from-right-8 duration-1000">
+                    <aside className="md:block hidden lg:w-[400px] shrink-0 space-y-8 animate-in fade-in slide-in-from-right-8 duration-1000">
                         <div className="p-10 bg-[#0a0f1d] rounded-[3rem] text-white space-y-10 relative overflow-hidden shadow-2xl shadow-black/20 transform hover:-translate-y-2 transition-all duration-500">
                             <div className="absolute top-0 right-0 h-64 w-64 bg-[#EE8C2B]/10 rounded-full blur-[100px]"></div>
 
