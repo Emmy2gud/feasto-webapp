@@ -8,7 +8,6 @@ import {
     Clock,
 
     ShieldCheck,
-
     CheckCircle2,
     ArrowRight,
     Headset,
@@ -19,6 +18,12 @@ import { Badge } from "@/components/ui/badge";
 import fries from "../../assets/images/fries.png"
 import burger from "../../assets/images/cakeburger.png"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+
+} from "@/components/ui/carousel"
 
 export default function CheckoutPage() {
     return (
@@ -88,65 +93,70 @@ export default function CheckoutPage() {
 
                             <div className="space-y-6">
                                 <Tabs defaultValue="wallet" className="w-full space-y-8">
-                                    <TabsList className="grid w-full grid-cols-2 h-auto bg-transparent gap-4 p-0">
-                                        <TabsTrigger
-                                            value="wallet"
-                                            className="data-[state=active]:border-[#EE8C2B] data-[state=active]:shadow-xl border-4 border-transparent flex items-center gap-5 p-6 bg-white rounded-[2.5rem] text-left transition-all group"
-                                        >
-                                            <div className="h-14 w-14 rounded-2xl bg-[#EE8C2B] text-white flex items-center justify-center shadow-lg shadow-orange-500/20">
-                                                <Wallet className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex-1">
-                                                <div className="flex items-center gap-2">
-                                                    <p className="font-black text-neutral-900 text-lg leading-none">Campus Wallet</p>
-                                                </div>
-                                                <p className="text-xs text-neutral-400 mt-1 font-medium italic">Fast & Recommended</p>
-                                            </div>
-                                            <CheckCircle2 className="h-6 w-6 text-[#EE8C2B] opacity-0 group-data-[state=active]:opacity-100 transition-opacity" />
-                                        </TabsTrigger>
-
-                                        <TabsTrigger
-                                            value="card"
-                                            className="data-[state=active]:border-[#EE8C2B] data-[state=active]:shadow-xl border border-neutral-100 flex items-center gap-5 p-6 bg-white rounded-[2.5rem] text-left transition-all group"
-                                        >
-                                            <div className="h-14 w-14 rounded-2xl bg-neutral-100 text-neutral-400 group-data-[state=active]:bg-[#EE8C2B] group-data-[state=active]:text-white flex items-center justify-center transition-all">
-                                                <CreditCard className="h-6 w-6" />
-                                            </div>
-                                            <div className="flex-1">
-                                                <p className="font-black text-neutral-900 text-lg leading-none">Credit Card</p>
-                                                <p className="text-xs text-neutral-400 mt-1 font-medium italic">Visa, MC, or Amex</p>
-                                            </div>
-                                            <CheckCircle2 className="h-6 w-6 text-[#EE8C2B] opacity-0 group-data-[state=active]:opacity-100 transition-opacity" />
-                                        </TabsTrigger>
+                                    <TabsList className="bg-transparent p-0 w-full mt-10">
+                                        <Carousel className="w-full" opts={{ align: "start", loop: false }}>
+                                            <CarouselContent className="-ml-2">
+                                                <CarouselItem className="basis-[85%] sm:basis-1/2 pl-2">
+                                                    <TabsTrigger
+                                                        value="wallet"
+                                                        className="w-full data-[state=active]:border-[#EE8C2B] data-[state=active]:shadow-xl border-4 border-transparent flex items-center gap-4 sm:gap-5 p-4 sm:p-6 bg-white rounded-[2rem] sm:rounded-[2.5rem] text-left transition-all group"
+                                                    >
+                                                        <div className="h-10 w-10 sm:h-14 sm:w-14 shrink-0 rounded-xl sm:rounded-2xl bg-[#EE8C2B] text-white flex items-center justify-center shadow-lg shadow-orange-500/20">
+                                                            <Wallet className="h-5 w-5 sm:h-6 sm:w-6" />
+                                                        </div>
+                                                        <div className="flex-1 min-w-0">
+                                                            <p className="font-black text-neutral-900 text-base sm:text-lg leading-none truncate">Campus Wallet</p>
+                                                            <p className="text-[10px] sm:text-xs text-neutral-400 mt-1 font-medium italic truncate">Fast & Recommended</p>
+                                                        </div>
+                                                        <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6 text-[#EE8C2B] opacity-0 group-data-[state=active]:opacity-100 transition-opacity" />
+                                                    </TabsTrigger>
+                                                </CarouselItem>
+                                                <CarouselItem className="basis-[85%] sm:basis-1/2 pl-2">
+                                                    <TabsTrigger
+                                                        value="card"
+                                                        className="w-full data-[state=active]:border-[#EE8C2B] data-[state=active]:shadow-xl border border-neutral-100 flex items-center gap-4 sm:gap-5 p-4 sm:p-6 bg-white rounded-[2rem] sm:rounded-[2.5rem] text-left transition-all group"
+                                                    >
+                                                        <div className="h-10 w-10 sm:h-14 sm:w-14 shrink-0 rounded-xl sm:rounded-2xl bg-neutral-100 text-neutral-400 group-data-[state=active]:bg-[#EE8C2B] group-data-[state=active]:text-white flex items-center justify-center transition-all">
+                                                            <CreditCard className="h-5 w-5 sm:h-6 sm:w-6" />
+                                                        </div>
+                                                        <div className="flex-1 min-w-0">
+                                                            <p className="font-black text-neutral-900 text-base sm:text-lg leading-none truncate">Credit Card</p>
+                                                            <p className="text-[10px] sm:text-xs text-neutral-400 mt-1 font-medium italic truncate">Visa, MC, or Amex</p>
+                                                        </div>
+                                                        <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6 text-[#EE8C2B] opacity-0 group-data-[state=active]:opacity-100 transition-opacity" />
+                                                    </TabsTrigger>
+                                                </CarouselItem>
+                                            </CarouselContent>
+                                        </Carousel>
                                     </TabsList>
 
-                                    <TabsContent value="wallet" className="mt-0 animate-in fade-in slide-in-from-bottom-4 duration-500 mt-20">
-                                        <div className="p-10 bg-[#0a0f1d] rounded-[2.5rem] text-white space-y-8 relative overflow-hidden">
-                                            <div className="absolute -top-10 -right-10 h-64 w-64 bg-[#EE8C2B]/10 rounded-full blur-[100px]"></div>
-                                            <div className=" space-y-6">
-                                                <div className="flex justify-between items-center">
+                                    <TabsContent value="wallet" className="mt-8 sm:mt-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                        <div className="p-6 sm:p-10 bg-[#0a0f1d] rounded-[2rem] sm:rounded-[2.5rem] text-white space-y-6 sm:space-y-8 relative overflow-hidden">
+                                            <div className="absolute -top-10 -right-10 h-48 w-48 sm:h-64 sm:w-64 bg-[#EE8C2B]/10 rounded-full blur-[80px] sm:blur-[100px]"></div>
+                                            <div className="relative z-10 space-y-6">
+                                                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                                     <div>
                                                         <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#EE8C2B]">Current Balance</Label>
-                                                        <p className="text-5xl font-black mt-2">$42.50</p>
+                                                        <p className="text-3xl sm:text-5xl font-black mt-2">$42.50</p>
                                                     </div>
-                                                    <Badge className="bg-[#EE8C2B] text-white border-0 px-4 py-2 rounded-xl font-black">RECOMMENDED</Badge>
+                                                    <Badge className="bg-[#EE8C2B] text-white border-0 px-4 py-2 rounded-xl font-black text-[10px]">RECOMMENDED</Badge>
                                                 </div>
                                                 <div className="h-px bg-white/10"></div>
-                                                <p className="text-sm text-neutral-400 font-medium italic">Insufficient funds? Your linked backup method will be used.</p>
-                                                <Button variant="outline" className="w-full h-14 rounded-2xl border-white/10 bg-white/5 text-white hover:bg-white/10 font-black uppercase tracking-widest text-xs">
+                                                <p className="text-xs sm:text-sm text-neutral-400 font-medium italic">Insufficient funds? Your linked backup method will be used.</p>
+                                                <Button variant="outline" className="w-full h-12 sm:h-14 rounded-xl sm:rounded-2xl border-white/10 bg-white/5 text-white hover:bg-white/10 font-black uppercase tracking-widest text-[10px]">
                                                     Quick Top-up
                                                 </Button>
                                             </div>
                                         </div>
                                     </TabsContent>
 
-                                    <TabsContent value="card" className="mt-0 animate-in fade-in slide-in-from-bottom-4 duration-500 mt-20">
-                                        <div className="p-10 bg-[#0a0f1d] rounded-[2.5rem] text-white space-y-8  overflow-hidden">
-                                            <div className="bg-[#EE8C2B]/10 rounded-full blur-[100px]"></div>
-                                            <div className="space-y-6 ">
+                                    <TabsContent value="card" className="mt-8 sm:mt-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                        <div className="p-6 sm:p-10 bg-[#0a0f1d] rounded-[2rem] sm:rounded-[2.5rem] text-white space-y-6 sm:space-y-8 overflow-hidden relative">
+                                            <div className="absolute -top-10 -right-10 h-48 w-48 sm:h-64 sm:w-64 bg-[#EE8C2B]/10 rounded-full blur-[80px] sm:blur-[100px]"></div>
+                                            <div className="relative z-10 space-y-6">
                                                 <div className="space-y-3">
-                                                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#EE8C2B] ml-4">Card Number</Label>
-                                                    <Input placeholder="0000 0000 0000 0000" className="h-16 bg-white/5 border-white/10 text-white placeholder:text-white/20 rounded-3xl font-mono text-lg px-8 tracking-widest focus:bg-white/10 transition-all border-none ring-1 ring-white/10" />
+                                                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#EE8C2B] ml-2">Card Number</Label>
+                                                    <Input placeholder="0000 0000 0000 0000" className="h-14 sm:h-16 bg-white/5 border-white/10 text-white placeholder:text-white/20 rounded-2xl sm:rounded-3xl font-mono text-base sm:text-lg px-6 sm:px-8 tracking-widest focus:bg-white/10 transition-all border-none ring-1 ring-white/10" />
                                                 </div>
                                                 <div className="grid grid-cols-2 gap-8">
                                                     <div className="space-y-3">

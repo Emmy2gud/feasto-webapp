@@ -9,8 +9,7 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+
 } from "@/components/ui/carousel"
 import item1 from "@/assets/vendors/Item1.png"
 import item2 from "@/assets/vendors/item2.png"
