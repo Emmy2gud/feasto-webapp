@@ -102,7 +102,7 @@ export default function CheckoutPage() {
                                                         className="w-full data-[state=active]:border-[#EE8C2B] data-[state=active]:shadow-xl border-4 border-transparent flex items-center gap-4 sm:gap-5 p-4 sm:p-6 bg-white rounded-[2rem] sm:rounded-[2.5rem] text-left transition-all group"
                                                     >
                                                         <div className="h-10 w-10 sm:h-14 sm:w-14 shrink-0 rounded-xl sm:rounded-2xl bg-[#EE8C2B] text-white flex items-center justify-center shadow-lg shadow-orange-500/20">
-                                                            <Wallet className="h-5 w-5 sm:h-6 sm:w-6" />
+                                                        <Wallet className="h-5 w-5 sm:h-6 sm:w-6" />
                                                         </div>
                                                         <div className="flex-1 min-w-0">
                                                             <p className="font-black text-neutral-900 text-base sm:text-lg leading-none truncate">Campus Wallet</p>
