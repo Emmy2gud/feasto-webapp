@@ -10,7 +10,7 @@ export function HeroSection() {
         <div className="grid gap-20 lg:grid-cols-2 items-center">
           {/* Left Content */}
           <div className="flex flex-col gap-6">
-      
+
             <div className="inline-flex items-center gap-2 self-start rounded-full bg-primary/10 px-5 py-2.5">
               <Dot className="text-sm text-primary" />
               <span className="text-xs font-bold uppercase tracking-[1.2px] text-primary">
@@ -19,10 +19,10 @@ export function HeroSection() {
             </div>
 
             {/* Heading */}
-            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[90px] font-extrabold leading-[1.1] sm:leading-[1] tracking-[-0.05em]">
-              Earn as You
+            <h1 className="text-4xl sm:text-5xl lg:text-[68px] font-black leading-[1.1] text-foreground tracking-tighter">
+              Earn on Your
               <br />
-              <span className="text-primary">Move Around Campus</span>
+              <span className="text-primary italic">Own Schedule</span>
             </h1>
 
             {/* Description */}

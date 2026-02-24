@@ -116,7 +116,7 @@ export default function OrderTrackingPage() {
                                     <h1 className="text-5xl font-black text-neutral-900 tracking-tighter">Track Your Order</h1>
                                     <p className="text-lg text-neutral-500 font-medium ">Order #CE-88291 • From The Student Union Grill.</p>
                                 </div>
-                                <div className="text-center bg-[#EE8C2B]/10 text-[#EE8C2B] md:text-right flex justify-center items-center gap-2 border border-primary px-4 py-2 rounded-2xl">
+                                <div className="text-center bg-[#EE8C2B]/10 text-[#EE8C2B] md:text-right flex justify-center items-center gap-2 border border-primary px-4 py-2 rounded-2xl  mb-5">
                                     <div>
                                         <Clock className="text-[#EE8C2B]" />
                                     </div>

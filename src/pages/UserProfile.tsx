@@ -16,7 +16,7 @@ import {
     Mail,
     Phone,
     User,
-    
+
     Building2,
     BookOpen,
     CheckCircle2,
@@ -28,6 +28,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function UserProfile() {
     const [profileData, setProfileData] = useState({
@@ -42,9 +43,26 @@ export default function UserProfile() {
         details: ""
     });
 
+    const navigate = useNavigate();
+
     return (
         <div className="min-h-screen bg-neutral-50/50 py-10">
             <div className="container mx-auto px-4 max-w-6xl space-y-8">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+                    <div className="text-center md:text-left">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-900 tracking-tight">Your Profile</h1>
+                        <p className="text-neutral-500 text-sm sm:text-base mt-2">Manage your personal information and addresses</p>
+                    </div>
+                    <div className="flex items-center justify-center gap-3">
+                        <Button
+                            variant="outline"
+                            className="rounded-2xl border-neutral-200 text-neutral-600 hover:text-neutral-900 px-6"
+                            onClick={() => navigate("/settings")}
+                        >
+                            Settings
+                        </Button>
+                    </div>
+                </div>
 
                 {/* Profile Header Card */}
                 <div className="bg-white rounded-[2.5rem] p-8 md:p-12 border border-neutral-100 shadow-sm relative overflow-hidden animate-in fade-in slide-in-from-top-4 duration-700">

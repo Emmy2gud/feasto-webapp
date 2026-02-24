@@ -41,14 +41,14 @@ export function TopVendorsSection() {
             <span className="text-xs font-bold uppercase tracking-[1.2px] text-primary">
               The Elite List
             </span>
-            <h2 className="text-5xl font-extrabold tracking-[-0.025em] text-foreground">
-              Top Student Vendors
+            <h2 className="text-3xl sm:text-5xl font-extrabold leading-[1.1] text-foreground">
+              Ready to Start Selling?
             </h2>
           </div>
 
-          <button className="flex items-center gap-2 text-base font-bold text-foreground hover:gap-3 transition-all">
-            <span>View All Creators</span>
-            <MaterialIcon icon="trending_flat" className="text-2xl" />
+          <button className="flex items-center justify-center gap-2 text-base font-bold text-foreground hover:gap-3 transition-all">
+            <span>Learn About Commission</span>
+            <MaterialIcon icon="chevron_right" className="text-2xl" />
           </button>
         </div>
 
@@ -75,10 +75,10 @@ export function TopVendorsSection() {
               </div>
 
               {/* Card Content */}
-              <div className="flex flex-col gap-8 p-10">
-                <div className="flex flex-col gap-3">
-                  <h3 className="text-2xl font-extrabold text-foreground">{vendor.name}</h3>
-                  <p className="whitespace-pre-line text-base font-normal leading-[1.625] text-[hsl(var(--slate-500))]">
+              <div className="flex flex-col gap-6 p-6 sm:p-10">
+                <div className="flex flex-col gap-2">
+                  <h3 className="text-xl sm:text-2xl font-extrabold text-neutral-900">{vendor.name}</h3>
+                  <p className="whitespace-pre-line text-sm sm:text-base font-medium leading-[1.625] text-neutral-500">
                     {vendor.description}
                   </p>
                 </div>
@@ -86,7 +86,6 @@ export function TopVendorsSection() {
                 {/* Badge and Favorite */}
                 <div className="flex items-center justify-between">
                   <Badge
-                   
                     className={`text-xs font-bold uppercase tracking-[0.6px] ${vendor.badgeVariant === "default" ? "bg-primary" : vendor.badgeVariant === "success" ? "bg-green-500" : "bg-blue-500"}`}
                   >
                     {vendor.badge}

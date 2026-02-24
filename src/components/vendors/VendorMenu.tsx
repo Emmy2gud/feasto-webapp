@@ -1,11 +1,17 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent } from "@/components/ui/card"
-import { Plus, Info,  Flame } from "lucide-react";
+import { Plus, Info, Flame } from "lucide-react";
 import { useState } from "react";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 import item1 from "@/assets/vendors/Item1.png"
 import item2 from "@/assets/vendors/item2.png"
 import item3 from "@/assets/vendors/item3.png"
@@ -92,18 +98,24 @@ export default function VendorMenu() {
         </div>
       </header>
 
-      <Tabs defaultValue="Popular" onValueChange={setActiveTab}>
-        <TabsList className="bg-neutral-100/50 p-1.5 rounded-2xl h-auto flex-wrap justify-start gap-2 mb-8">
-          {menus.map((menu) => (
-            <TabsTrigger
-              key={menu.id}
-              value={menu.name}
-              className="bg-transparent data-[state=active]:bg-white data-[state=active]:text-[#EE8C2B] data-[state=active]:shadow-sm px-6 py-2.5 rounded-xl font-semibold transition-all flex items-center gap-2"
-            >
-              {menu.icon}
-              {menu.name}
-            </TabsTrigger>
-          ))}
+      <Tabs defaultValue="Popular" onValueChange={setActiveTab} className="w-full">
+
+        <TabsList className="bg-neutral-100/50 p-1 rounded-2xl h-auto mb-8 w-full border-none shadow-none">
+          <Carousel className="w-full" opts={{ align: "start", loop: false }}>
+            <CarouselContent className="-ml-2">
+              {menus.map((menu) => (
+                <CarouselItem key={menu.id} className="basis-1/2 md:basis-1/3 lg:basis-1/5 pl-2">
+                  <TabsTrigger
+                    value={menu.name}
+                    className="w-full bg-transparent data-[state=active]:bg-white data-[state=active]:text-[#EE8C2B] data-[state=active]:shadow-sm px-4 py-2.5 rounded-xl font-bold transition-all flex items-center justify-center gap-2 whitespace-nowrap"
+                  >
+                    {menu.icon}
+                    {menu.name}
+                  </TabsTrigger>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         </TabsList>
 
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 min-h-[400px]">
@@ -115,7 +127,7 @@ export default function VendorMenu() {
                 className="mt-0 animate-in fade-in slide-in-from-bottom-4 duration-300"
               >
                 <Card className="group overflow-hidden border-neutral-100 hover:border-[#EE8C2B]/30 hover:shadow-xl hover:shadow-[#EE8C2B]/5 transition-all duration-300 rounded-3xl p-0">
-                  <CardContent className="h-38 p-4 " >
+                  <CardContent className="p-4" >
                     <div className="flex gap-4">
                       <div className="relative w-30 h-30 shrink-0 overflow-hidden rounded-2xl bg-neutral-100">
                         <img

@@ -21,7 +21,7 @@ export function MobileAppSection() {
                 Innovation in Hand
               </span>
 
-              <h2 className="text-5xl font-extrabold leading-[1] tracking-[-0.025em] text-white lg:text-[60px]">
+              <h2 className="text-4xl sm:text-5xl font-extrabold leading-[1.1] tracking-[-0.025em] text-white lg:text-[60px]">
                 Coming to
                 <br />
                 Mobile <span className="text-primary">Very</span>
@@ -29,7 +29,7 @@ export function MobileAppSection() {
                 <span className="text-primary">Soon.</span>
               </h2>
 
-              <p className="text-xl font-normal leading-[1.625] text-[hsl(var(--slate-400))]">
+              <p className="text-base sm:text-xl font-normal leading-[1.625] text-[hsl(var(--slate-400))]">
                 Get ready for the smoothest campus experience.
                 <br />
                 Our native iOS and Android apps are in final beta
@@ -38,7 +38,7 @@ export function MobileAppSection() {
               </p>
 
               {/* App Store Buttons */}
-              <div className="flex gap-4 mt-2">
+              <div className="flex flex-col sm:flex-row gap-4 mt-2">
                 {/* iOS Button */}
                 <div className="flex items-center gap-4 rounded-[32px] border border-white/20 bg-white/[0.07] px-6 py-4 backdrop-blur-sm">
                   <MaterialIcon icon="ios" className="text-[30px] text-white" />
@@ -71,17 +71,17 @@ export function MobileAppSection() {
             <div className="relative flex items-center justify-center gap-[-8.99px] lg:justify-end">
               {/* iOS Beta Mockup */}
               <div className="relative z-10 overflow-hidden rounded-[48px] border-[10px] border-[#0f172a] bg-[#1e293b] shadow-[0px_25px_50px_rgba(0,0,0,0.25)]">
-                <div className="h-[498px] w-[265px] bg-white/50 p-8 flex items-center justify-center">
-                  <span className="text-[36px] font-bold uppercase leading-[1.111] text-white/20">
+                <div className="h-[350px] w-[180px] sm:h-[498px] sm:w-[265px] bg-white/50 p-8 flex items-center justify-center">
+                  <span className="text-lg sm:text-[36px] font-bold uppercase leading-[1.111] text-white/20">
                     iOS Beta
                   </span>
                 </div>
               </div>
 
               {/* Android Mockup - Overlapping */}
-              <div className="relative -ml-2 z-0 overflow-hidden rounded-[48px] border-[10px] border-[#0f172a] bg-[#1e293b] shadow-[0px_25px_50px_rgba(0,0,0,0.25)]">
-                <div className="h-[498px] w-[265px] bg-white/50 p-8 flex items-center justify-center">
-                  <span className="text-[36px] font-bold uppercase leading-[1.111] text-white/20">
+              <div className="relative -ml-8 sm:-ml-2 z-0 overflow-hidden rounded-[48px] border-[10px] border-[#0f172a] bg-[#1e293b] shadow-[0px_25px_50px_rgba(0,0,0,0.25)]">
+                <div className="h-[350px] w-[180px] sm:h-[498px] sm:w-[265px] bg-white/50 p-8 flex items-center justify-center">
+                  <span className="text-lg sm:text-[36px] font-bold uppercase leading-[1.111] text-white/20">
                     Android
                   </span>
                 </div>

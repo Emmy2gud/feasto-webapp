@@ -43,7 +43,7 @@ export function HowItWorksSection() {
           <span className="text-xs font-bold uppercase tracking-[2.4px] text-primary">
             The Process
           </span>
-          <h2 className="text-5xl font-bold tracking-[-0.025em] text-black">
+          <h2 className="text-3xl sm:text-5xl font-bold tracking-[-0.025em] text-black text-center">
             How feasto works
           </h2>
         </div>

@@ -12,7 +12,7 @@ export function SellerCTASection() {
           </div>
 
           {/* Heading */}
-          <h2 className="text-5xl font-extrabold leading-[1] text-foreground">
+          <h2 className="text-3xl sm:text-5xl font-extrabold leading-[1.1] text-foreground">
             Ready to Start Selling?
           </h2>
 
@@ -24,12 +24,12 @@ export function SellerCTASection() {
           </p>
 
           {/* Buttons */}
-          <div className="flex items-center gap-6">
-            <Button className="h-[68px] rounded-[32px] bg-primary px-10 text-base font-bold text-white shadow-[0px_8px_10px_rgba(238,140,43,0.2),0px_20px_25px_rgba(238,140,43,0.2)] hover:bg-primary/90">
+          <div className="md:flex block items-center gap-6">
+            <Button className="h-14 sm:h-[68px] w-full sm:w-auto rounded-[24px] sm:rounded-[32px] bg-primary px-8 sm:px-10 text-base font-bold text-white shadow-[0px_8px_10px_rgba(238,140,43,0.2)] hover:bg-primary/90">
               Become a Vendor
             </Button>
 
-            <button className="flex items-center gap-2 text-base font-bold text-foreground hover:gap-3 transition-all">
+            <button className="flex items-center justify-center gap-2 text-base font-bold text-foreground hover:gap-3 transition-all">
               <span>Learn About Commission</span>
               <MaterialIcon icon="chevron_right" className="text-2xl" />
             </button>

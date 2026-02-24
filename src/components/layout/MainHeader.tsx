@@ -1,4 +1,4 @@
-import { Menu, MapPin, X, User, LogIn, UserPlus, Store, Bike, Settings,  LogOut, ScrollText } from "lucide-react";
+import { Menu, MapPin, X, User, LogIn, UserPlus, Store, Bike, Settings, LogOut, ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";

@@ -24,22 +24,25 @@ export default function CheckoutPage() {
     return (
         <div className="min-h-screen bg-neutral-50/50 py-10">
             <div className="container mx-auto px-4 md:px-8 max-w-7xl">
-                <div className="flex flex-col lg:flex-row gap-12">
+                <div className="mb-8 md:mb-12">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-900 tracking-tight">Checkout</h1>
+                    <div className="flex items-center gap-3 text-sm text-neutral-500 font-medium mt-2">
+                        <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                        <span>Secure Checkout</span>
+                    </div>
+                </div>
 
+                <div className="flex flex-col lg:flex-row gap-12">
                     {/* Main Content: Delivery & Payment Details */}
                     <div className="flex-1 space-y-10 animate-in fade-in slide-in-from-left-6 duration-700">
-
-
                         {/* Section 1: Delivery Information */}
                         <div className="space-y-8">
-
-
-                            <div className="grid gap-8 p-10 bg-white rounded-[2.5rem] border border-neutral-100 shadow-sm transition-all duration-300">
+                            <div className="grid gap-8 p-6 md:p-10 bg-white rounded-[2.5rem] border border-neutral-100 shadow-sm transition-all duration-300">
                                 <div className="flex items-center gap-4">
-                                    <div className="h-12 w-12 rounded-2xl bg-[#FDF3EA]  text-[#EE8C2B] flex items-center justify-center text-xl font-black "><MapPin className="h-6 w-6" /></div>
+                                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-[#FDF3EA]  text-[#EE8C2B] flex items-center justify-center text-xl font-black "><MapPin className="h-5 w-5 sm:h-6 sm:w-6" /></div>
                                     <div>
-                                        <h2 className="text-3xl font-black text-neutral-900 tracking-tight">Delivery Details</h2>
-                                        <p className="text-lg text-neutral-500 font-medium ">Where should we meet you on campus?</p>
+                                        <h2 className="text-2xl sm:text-3xl font-black text-neutral-900 tracking-tight">Delivery Details</h2>
+                                        <p className="text-sm sm:text-lg text-neutral-500 font-medium ">Where should we meet you on campus?</p>
                                     </div>
                                 </div>
                                 <div className="space-y-3">
@@ -60,14 +63,12 @@ export default function CheckoutPage() {
                                     </div>
                                 </div>
 
-
-
                                 <div className="flex flex-wrap items-center gap-4 pt-4">
-                                    <Badge variant="outline" className="h-12 px-6 rounded-2xl border-neutral-100 bg-neutral-50/30 text-neutral-500 font-bold gap-3 text-xs uppercase tracking-widest">
+                                    <Badge variant="outline" className="h-10 sm:h-12 px-4 sm:px-6 rounded-2xl border-neutral-100 bg-neutral-50/30 text-neutral-500 font-bold gap-3 text-xs uppercase tracking-widest">
                                         <Clock className="h-4 w-4 text-[#EE8C2B]" />
                                         Delivery: 20-30 mins
                                     </Badge>
-                                    <Badge variant="outline" className="h-12 px-6 rounded-2xl border-neutral-100 bg-neutral-50/30 text-neutral-500 font-bold gap-3 text-xs uppercase tracking-widest">
+                                    <Badge variant="outline" className="h-10 sm:h-12 px-4 sm:px-6 rounded-2xl border-neutral-100 bg-neutral-50/30 text-neutral-500 font-bold gap-3 text-xs uppercase tracking-widest">
                                         <ShieldCheck className="h-4 w-4 text-emerald-500" />
                                         Contactless Delivery
                                     </Badge>
@@ -76,12 +77,12 @@ export default function CheckoutPage() {
                         </div>
 
                         {/* Section 2: Payment Method */}
-                        <div className="space-y-8 p-4 bg-white rounded-[2.5rem] border border-neutral-100 shadow-sm ">
+                        <div className="space-y-8 p-6 md:p-10 bg-white rounded-[2.5rem] border border-neutral-100 shadow-sm ">
                             <div className="flex items-center gap-4">
-                                <div className="h-12 w-12 rounded-2xl bg-[#FDF3EA]  text-[#EE8C2B] flex items-center justify-center text-xl font-black"><Wallet className="h-6 w-6" /></div>
+                                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-[#FDF3EA]  text-[#EE8C2B] flex items-center justify-center text-xl font-black"><Wallet className="h-5 w-5 sm:h-6 sm:w-6" /></div>
                                 <div>
-                                    <h2 className="text-3xl font-black text-neutral-900 tracking-tight">Payment Method</h2>
-                                    <p className="text-lg text-neutral-500 font-medium ">Fast and secure options for students</p>
+                                    <h2 className="text-2xl sm:text-3xl font-black text-neutral-900 tracking-tight">Payment Method</h2>
+                                    <p className="text-sm sm:text-lg text-neutral-500 font-medium ">Fast and secure options for students</p>
                                 </div>
                             </div>
 
@@ -168,8 +169,8 @@ export default function CheckoutPage() {
                     {/* Sidebar: Order Summary */}
                     <aside className="lg:w-[440px] shrink-0 animate-in fade-in slide-in-from-right-8 duration-1000">
                         <div className="sticky top-12 space-y-8">
-                            <Card className="rounded-[3rem] border-neutral-100 shadow-2xl shadow-black/5 overflow-hidden">
-                                <div className="p-4 text-black relative overflow-hidden">
+                            <Card className="rounded-[2rem] border-neutral-100 shadow-xl shadow-neutral-100/50 overflow-hidden">
+                                <div className="p-6 md:p-10 space-y-10">
                                     <div className="absolute -bottom-10 -left-10 h-32 w-32 bg-white/10 rounded-full blur-3xl"></div>
                                     <div className="relative z-10">
                                         <h3 className="text-2xl font-black tracking-tight">Order Summary</h3>

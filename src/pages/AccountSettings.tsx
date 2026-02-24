@@ -7,12 +7,12 @@ import {
     Bell,
     Lock,
     TriangleAlert,
-    
+
     ShieldCheck,
-    
+
     Smartphone,
-    
-    
+
+
     Mail
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
@@ -28,15 +28,15 @@ export default function AccountSettings() {
                 <div className="bg-white rounded-[2.5rem] p-8 md:p-12 border border-neutral-100 shadow-sm animate-in fade-in slide-in-from-top-4 duration-700">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                         <div className="space-y-1 text-center md:text-left">
-                            <h1 className="text-4xl font-black text-neutral-900 tracking-tight">Account Settings</h1>
-                            <p className="text-neutral-500 font-medium italic">Manage your profile, security, and preferences.</p>
+                            <h1 className="text-3xl sm:text-4xl font-black text-neutral-900 tracking-tight">Account Settings</h1>
+                            <p className="text-neutral-500 text-sm sm:text-base font-medium italic">Manage your profile, security, and preferences.</p>
                         </div>
-                        <div className="flex bg-neutral-50 p-2 rounded-2xl border border-neutral-100">
+                        <div className="flex bg-neutral-50 p-1.5 rounded-2xl border border-neutral-100 overflow-x-auto no-scrollbar max-w-full">
                             {["security", "notifications"].map((tab) => (
                                 <button
                                     key={tab}
                                     onClick={() => setActiveSection(tab)}
-                                    className={`px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${activeSection === tab ? "bg-white text-[#EE8C2B] shadow-sm" : "text-neutral-400 hover:text-neutral-900"
+                                    className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-[12px] sm:rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeSection === tab ? "bg-white text-[#EE8C2B] shadow-sm" : "text-neutral-400 hover:text-neutral-900"
                                         }`}
                                 >
                                     {tab}
@@ -103,24 +103,23 @@ export default function AccountSettings() {
                                 </div>
                                 <h2 className="text-2xl font-black text-neutral-900 tracking-tight">Notification Preferences</h2>
                             </div>
-
                             <div className="space-y-4">
                                 {[
                                     { title: "Push Notifications", desc: "Receive alerts on your mobile device for order updates.", default: true, icon: <Smartphone className="h-5 w-5" /> },
                                     { title: "Email Alerts", desc: "Get notifications about billing and account activity.", default: true, icon: <Mail className="h-5 w-5" /> },
                                     { title: "Marketing Updates", desc: "Be the first to know about campus deals and events.", default: false, icon: <Settings className="h-5 w-5" /> },
                                 ].map((item, idx) => (
-                                    <div key={idx} className="flex items-center justify-between p-8 bg-neutral-50/80 rounded-[2rem] border border-neutral-100 group hover:border-[#EE8C2B]/20 transition-all">
-                                        <div className="flex items-center gap-6">
-                                            <div className="h-12 w-12 rounded-2xl bg-white border border-neutral-100 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                                    <div key={idx} className="flex items-center justify-between p-6 sm:p-8 bg-neutral-50/80 rounded-[2rem] border border-neutral-100 group hover:border-[#EE8C2B]/20 transition-all">
+                                        <div className="flex items-center gap-4 sm:gap-6">
+                                            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-white border border-neutral-100 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform flex-shrink-0">
                                                 <div className="text-[#EE8C2B]">{item.icon}</div>
                                             </div>
                                             <div className="space-y-1">
-                                                <p className="text-lg font-black text-neutral-900 leading-none">{item.title}</p>
-                                                <p className="text-sm text-neutral-400 font-medium italic">{item.desc}</p>
+                                                <p className="text-base sm:text-lg font-black text-neutral-900 leading-none">{item.title}</p>
+                                                <p className="text-xs sm:text-sm text-neutral-400 font-medium italic">{item.desc}</p>
                                             </div>
                                         </div>
-                                        <Switch defaultChecked={item.default} />
+                                        <Switch defaultChecked={item.default} className="flex-shrink-0 ml-4" />
                                     </div>
                                 ))}
                             </div>
