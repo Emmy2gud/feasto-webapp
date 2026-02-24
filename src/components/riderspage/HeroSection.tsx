@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import dispatch from "@/assets/riders/dispatch2.jpg";
 
 import { Bike, Dot, TrendingUp } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function HeroSection() {
   return (
@@ -36,11 +37,14 @@ export function HeroSection() {
 
             {/* CTA and Info Area */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mt-4">
-              <Button
+              <Link to="/rider-form">
+                            <Button
                 className="h-14 sm:h-16 w-full sm:w-auto rounded-2xl sm:rounded-3xl bg-primary px-8 text-base font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-95"
               >
                 Start Riding
               </Button>
+              </Link>
+
               <div className="flex items-center gap-3 px-2 sm:px-0">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10">
                   <Bike className="h-5 w-5 text-primary" />

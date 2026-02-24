@@ -42,21 +42,21 @@ export default function VendorFormPage() {
                                         <TabsList className="grid w-full grid-cols-3 h-auto bg-neutral-50/50 p-2 rounded-3xl gap-2 !h-20">
                                             <TabsTrigger
                                                 value="store"
-                                                className="data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-[#EE8C2B] rounded-2xl py-4 font-black text-xs uppercase tracking-widest transition-all"
+                                                className="data-[state=active]:bg-white data-[state=active]:shadow-lg md:text-[10px] !text-[8px] data-[state=active]:text-[#EE8C2B] rounded-2xl py-4 font-black text-xs uppercase tracking-widest transition-all"
                                             >
-                                                1. Restaurant
+                                                Restaurant
                                             </TabsTrigger>
                                             <TabsTrigger
                                                 value="details"
-                                                className="data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-[#EE8C2B] rounded-2xl py-4 font-black text-xs uppercase tracking-widest transition-all"
+                                                className="data-[state=active]:bg-white data-[state=active]:shadow-lg md:text-[10px] !text-[8px] data-[state=active]:text-[#EE8C2B] rounded-2xl py-4 font-black text-xs uppercase tracking-widest transition-all"
                                             >
-                                                2. Business
+                                                Business
                                             </TabsTrigger>
                                             <TabsTrigger
                                                 value="menu"
-                                                className="data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-[#EE8C2B] rounded-2xl py-4 font-black text-xs uppercase tracking-widest transition-all"
+                                                className="data-[state=active]:bg-white data-[state=active]:shadow-lg md:text-[10px] !text-[8px] data-[state=active]:text-[#EE8C2B] rounded-2xl py-4 font-black text-xs uppercase tracking-widest transition-all"
                                             >
-                                                3. Menu Ready
+                                                Menu Ready
                                             </TabsTrigger>
                                         </TabsList>
                                     </div>
@@ -81,7 +81,7 @@ export default function VendorFormPage() {
                                                         <input
                                                             type="text"
                                                             placeholder="e.g. Spicy Cravings"
-                                                            className="w-full h-16 pl-16 pr-8 rounded-3xl border-2 border-neutral-100 bg-neutral-50/50 focus:bg-white focus:border-[#EE8C2B]/30 outline-none transition-all font-bold placeholder:text-neutral-300 shadow-inner"
+                                                            className="w-full h-16 pl-16 pr-8 rounded-3xl border-2 border-neutral-100 bg-neutral-50/50 focus:bg-white focus:border-[#EE8C2B]/30 outline-none transition-all font-bold placeholder:text-neutral-300 "
                                                         />
                                                     </div>
                                                 </div>
@@ -115,7 +115,7 @@ export default function VendorFormPage() {
                                                         <input
                                                             type="text"
                                                             placeholder="e.g. Cafeteria 2, CU"
-                                                            className="w-full h-16 pl-16 pr-8 rounded-3xl border-2 border-neutral-100 bg-neutral-50/50 focus:bg-white focus:border-[#EE8C2B]/30 outline-none transition-all font-bold placeholder:text-neutral-300 shadow-inner"
+                                                            className="w-full h-16 pl-16 pr-8 rounded-3xl border-2 border-neutral-100 bg-neutral-50/50 focus:bg-white focus:border-[#EE8C2B]/30 outline-none transition-all font-bold placeholder:text-neutral-300"
                                                         />
                                                     </div>
                                                 </div>
@@ -186,7 +186,7 @@ export default function VendorFormPage() {
                               
                                         <button className="w-full md:w-auto h-16 px-12 rounded-3xl bg-neutral-900 text-white font-black text-lg hover:bg-[#EE8C2B] hover:-translate-y-2 transition-all flex items-center justify-center gap-3 shadow-2xl shadow-black/10 group overflow-hidden relative">
                                             <span className="relative z-10 flex items-center gap-2">
-                                                Start Selling Now
+                                                Start Selling
                                                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                                             </span>
                                         </button>

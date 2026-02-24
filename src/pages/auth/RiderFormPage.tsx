@@ -38,24 +38,24 @@ export default function RiderFormPage() {
                             <CardContent className="p-0">
                                 <Tabs defaultValue="personal" className="w-full">
                                     <div className="bg-white p-6 border-b border-neutral-100 ">
-                                        <TabsList className="grid w-full grid-cols-3 h-auto bg-neutral-50/50 p-2 rounded-3xl gap-2 !h-20">
+                                        <TabsList className="grid w-full  grid-cols-3 h-auto bg-neutral-50/50 p-2 rounded-3xl gap-2 !h-20">
                                             <TabsTrigger
                                                 value="personal"
-                                                className="data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-[#EE8C2B] rounded-2xl py-4 font-black text-xs uppercase tracking-widest transition-all"
+                                                className="data-[state=active]:bg-white md:text-[10px] !text-[8px] data-[state=active]:shadow-lg data-[state=active]:text-[#EE8C2B] rounded-2xl md:py-4 py-2 font-black text-xs uppercase tracking-widest transition-all"
                                             >
-                                                1. Personal
+                                                Personal
                                             </TabsTrigger>
                                             <TabsTrigger
                                                 value="vehicle"
-                                                className="data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-[#EE8C2B] rounded-2xl py-4 font-black text-xs uppercase tracking-widest transition-all"
+                                                className="data-[state=active]:bg-white md:text-[10px] !text-[8px] data-[state=active]:shadow-lg data-[state=active]:text-[#EE8C2B] rounded-2xl md:py-4 py-2 font-black text-xs uppercase tracking-widest transition-all"
                                             >
-                                                2. Vehicle
+                                                Vehicle
                                             </TabsTrigger>
                                             <TabsTrigger
                                                 value="documents"
-                                                className="data-[state=active]:bg-white data-[state=active]:shadow-lg data-[state=active]:text-[#EE8C2B] rounded-2xl py-4 font-black text-xs uppercase tracking-widest transition-all"
+                                                className="data-[state=active]:bg-white md:text-[10px] !text-[8px] data-[state=active]:shadow-lg data-[state=active]:text-[#EE8C2B] rounded-2xl md:py-4 font-black text-xs uppercase tracking-widest transition-all"
                                             >
-                                                3. Verification
+                                                Verification
                                             </TabsTrigger>
                                         </TabsList>
                                     </div>
@@ -191,7 +191,7 @@ export default function RiderFormPage() {
                         
                                         <button className="w-full md:w-auto h-16 px-12 rounded-3xl bg-neutral-900 text-white font-black text-lg hover:bg-[#EE8C2B] hover:-translate-y-2 transition-all flex items-center justify-center gap-3 shadow-2xl shadow-black/10 group overflow-hidden relative">
                                             <span className="relative z-10 flex items-center gap-2">
-                                                Submit Application
+                                                Apply Now
                                                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                                             </span>
                                         </button>

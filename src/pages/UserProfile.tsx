@@ -66,7 +66,7 @@ export default function UserProfile() {
 
                 {/* Profile Header Card */}
                 <div className="bg-white rounded-[2.5rem] p-8 md:p-12 border border-neutral-100 shadow-sm relative overflow-hidden animate-in fade-in slide-in-from-top-4 duration-700">
-                    <Badge className="absolute top-8 right-8 bg-[#EE8C2B]/10 text-[#EE8C2B] border-none font-black text-[10px] tracking-widest uppercase px-4 py-2 rounded-full">
+                    <Badge className="absolute md:top-8 md:right-8 top-4 right-4 bg-[#EE8C2B]/10 text-[#EE8C2B] border-none font-black md:text-[10px] text-[8px] tracking-widest uppercase px-4 py-2 rounded-full">
                         Premium Member
                     </Badge>
 
@@ -195,7 +195,7 @@ export default function UserProfile() {
                         <div className="space-y-3">
                             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-4">Full Name</label>
                             <div className="h-16 px-6 rounded-3xl bg-neutral-50/80 border border-neutral-100 flex items-center">
-                                <p className="font-bold text-neutral-900">{profileData.fullName}</p>
+                                <p className="font-bold text-neutral-900 md:text-lg text-sm">{profileData.fullName}</p>
                             </div>
                         </div>
 
@@ -203,8 +203,8 @@ export default function UserProfile() {
                         <div className="space-y-3">
                             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-4">Email Address</label>
                             <div className="h-16 px-6 rounded-3xl bg-neutral-50/80 border border-neutral-100 flex items-center justify-between">
-                                <p className="font-bold text-neutral-900">{profileData.email}</p>
-                                <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+                                <p className="font-bold text-neutral-900 md:text-lg text-sm">{profileData.email}</p>
+                                <CheckCircle2 className="h-5 w-5 text-emerald-500 " />
                             </div>
                         </div>
 
@@ -212,7 +212,7 @@ export default function UserProfile() {
                         <div className="space-y-3">
                             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-4">Phone Number</label>
                             <div className="h-16 px-6 rounded-3xl bg-neutral-50/80 border border-neutral-100 flex items-center">
-                                <p className="font-bold text-neutral-900">{profileData.phone}</p>
+                                <p className="font-bold text-neutral-900 md:text-lg text-sm">{profileData.phone}</p>
                             </div>
                         </div>
 
@@ -220,7 +220,7 @@ export default function UserProfile() {
                         <div className="space-y-3">
                             <label className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-4">Birthday</label>
                             <div className="h-16 px-6 rounded-3xl bg-neutral-50/80 border border-neutral-100 flex items-center">
-                                <p className="font-bold text-neutral-900">{profileData.birthday}</p>
+                                <p className="font-bold text-neutral-900 md:text-lg text-sm">{profileData.birthday}</p>
                             </div>
                         </div>
                     </div>

@@ -25,11 +25,11 @@ export function SellerCTASection() {
 
           {/* Buttons */}
           <div className="md:flex block items-center gap-6">
-            <Button className="h-14 sm:h-[68px] w-full sm:w-auto rounded-[24px] sm:rounded-[32px] bg-primary px-8 sm:px-10 text-base font-bold text-white shadow-[0px_8px_10px_rgba(238,140,43,0.2)] hover:bg-primary/90">
+            <Button className="h-14 sm:h-[68px] w-full sm:w-auto rounded-[24px] sm:rounded-[32px] bg-primary px-8 sm:px-10 text-base font-bold text-white shadow-[0px_8px_10px_rgba(238,140,43,0.2)] hover:bg-primary/90 md:mb-0 mb-5">
               Become a Vendor
             </Button>
 
-            <button className="flex items-center justify-center gap-2 text-base font-bold text-foreground hover:gap-3 transition-all">
+            <button className="flex items-center justify-center gap-2 text-base font-bold text-foreground hover:gap-3 transition-all ">
               <span>Learn About Commission</span>
               <MaterialIcon icon="chevron_right" className="text-2xl" />
             </button>
