@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import {
   LayoutDashboard,
   ListOrdered,
@@ -11,15 +11,15 @@ import {
   Bell,
   HelpCircle,
   Search,
-  ChevronDown
+
 } from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
-  { to: "/rider", icon: LayoutDashboard, label: "Dashboard", end: true },
+  { to: "/rider/dashboard", icon: LayoutDashboard, label: "Dashboard", end: true },
   { to: "/rider/orders", icon: ListOrdered, label: "Available Orders" },
   { to: "/rider/active-delivery", icon: Truck, label: "Active Deliveries" },
-  { to: "/rider/history", icon: History, label: "Delivery History" },
+  { to: "/rider/delivery-history", icon: History, label: "Delivery History" },
   { to: "/rider/earnings", icon: DollarSign, label: "Earnings" },
   { to: "/rider/wallet", icon: Wallet, label: "Wallet" },
 ];

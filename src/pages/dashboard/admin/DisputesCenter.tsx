@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
-  Scale,
-  Search,
+
   Filter,
   Download,
   AlertTriangle,
@@ -11,9 +10,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Info,
-  MoreVertical,
-  MessageSquare,
-  Users
+
 } from "lucide-react";
 
 interface Dispute {
@@ -98,8 +95,8 @@ export default function DisputesCenter() {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Disputes Center</h2>
-          <p className="text-slate-500 mt-1">Resolution workflow for reported order issues and complaints.</p>
+          <h2 className="text-2xl font-bold text-gray-900">Disputes Center</h2>
+          <p className="text-sm text-gray-500 mt-0.5">Resolution workflow for reported order issues and complaints.</p>
         </div>
         <div className="flex gap-3">
           <button className="px-4 py-2 bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-semibold rounded-xl transition-colors flex items-center gap-2 shadow-sm cursor-pointer">
@@ -312,7 +309,7 @@ export default function DisputesCenter() {
             <div className="flex gap-4">
               <div className="mt-1.5 w-2 h-2 rounded-full bg-[#ee8c2b] shrink-0"></div>
               <div>
-                <p className="text-sm font-medium text-slate-700">New escalation reported for <span class="font-bold">#DS-90241</span></p>
+                <p className="text-sm font-medium text-slate-700">New escalation reported for <span className="font-bold">#DS-90241</span></p>
                 <p className="text-[10px] text-slate-400 font-semibold">45 minutes ago</p>
               </div>
             </div>

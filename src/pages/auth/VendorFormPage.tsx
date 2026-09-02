@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import {
     Store,
@@ -16,7 +17,16 @@ import {
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
 export default function VendorFormPage() {
+    const [selectedDays, setSelectedDays] = useState<string[]>(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
+
+    const toggleDay = (day: string) => {
+        setSelectedDays(prev =>
+            prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
+        );
+    };
     return (
         <div className="min-h-screen bg-neutral-50/50 py-10">
             <div className="container mx-auto px-4 md:px-8 max-w-7xl">
@@ -56,7 +66,7 @@ export default function VendorFormPage() {
                                                 value="menu"
                                                 className="data-[state=active]:bg-white data-[state=active]:shadow-lg md:text-[10px] !text-[8px] data-[state=active]:text-[#EE8C2B] rounded-2xl py-4 font-black text-xs uppercase tracking-widest transition-all"
                                             >
-                                                Menu Ready
+                                               Profile Upload
                                             </TabsTrigger>
                                         </TabsList>
                                     </div>
@@ -133,7 +143,7 @@ export default function VendorFormPage() {
                                                 </div>
                                             </div>
 
-                                            <div className="grid md:grid-cols-2 gap-8">
+                                            <div className="grid md:grid-cols-1 gap-8">
                                                 <div className="space-y-3">
                                                     <label className="text-[10px] font-black uppercase tracking-[0.2em] ml-4 text-neutral-500 font-black">CAC / Registration No.</label>
                                                     <input
@@ -142,15 +152,63 @@ export default function VendorFormPage() {
                                                         className="w-full h-16 px-8 rounded-3xl border-1 border-neutral-100 bg-neutral-50/50 focus:bg-white focus:border-[#EE8C2B]/30 outline-none transition-all font-bold placeholder:text-neutral-300 "
                                                     />
                                                 </div>
-                                                <div className="space-y-3">
-                                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] ml-4 text-neutral-500 font-black">Operating Hours</label>
-                                                    <div className="relative">
-                                                        <Clock className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-400" />
-                                                        <input
-                                                            type="text"
-                                                            placeholder="e.g. 8:00 AM - 10:00 PM"
-                                                            className="w-full h-16 pl-16 pr-8 rounded-3xl border-1 border-neutral-100 bg-neutral-50/50 focus:bg-white focus:border-[#EE8C2B]/30 outline-none transition-all font-bold placeholder:text-neutral-300 "
-                                                        />
+                                                <div className="space-y-4">
+                                                    <div className="flex items-center justify-between">
+                                                        <label className="text-[10px] font-black uppercase tracking-[0.2em] ml-4 text-neutral-500 font-black">
+                                                            Operating Days & Hours
+                                                        </label>
+                                                        <span className="text-[11px] font-bold text-neutral-400">
+                                                            {selectedDays.length} day{selectedDays.length !== 1 ? 's' : ''} active
+                                                        </span>
+                                                    </div>
+
+                                                    {/* Days of Week Selector */}
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {DAYS.map((day) => {
+                                                            const isSelected = selectedDays.includes(day);
+                                                            return (
+                                                                <button
+                                                                    key={day}
+                                                                    type="button"
+                                                                    onClick={() => toggleDay(day)}
+                                                                    className={`flex-1 min-w-[48px] py-3 rounded-2xl text-xs font-black transition-all cursor-pointer ${
+                                                                        isSelected
+                                                                            ? 'bg-[#EE8C2B] text-white shadow-md shadow-[#EE8C2B]/20 scale-105'
+                                                                            : 'bg-neutral-100 text-neutral-400 hover:bg-neutral-200'
+                                                                    }`}
+                                                                >
+                                                                    {day}
+                                                                </button>
+                                                            );
+                                                        })}
+                                                    </div>
+
+                                                    {/* Time Range Pickers */}
+                                                    <div className="grid grid-cols-2 gap-3 pt-2">
+                                                        <div className="space-y-1.5">
+                                                            <span className="text-[10px] font-bold text-neutral-400 ml-3 uppercase tracking-wider">Opening Time</span>
+                                                            <div className="relative">
+                                                                <Clock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400 pointer-events-none" />
+                                                                <input
+                                                                    type="time"
+                                                                    defaultValue="08:00"
+                                                                    aria-label="Opening Time"
+                                                                    className="w-full h-14 pl-11 pr-4 rounded-3xl border border-neutral-100 bg-neutral-50/50 focus:bg-white focus:border-[#EE8C2B]/30 outline-none transition-all font-bold text-sm text-neutral-800 cursor-pointer"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div className="space-y-1.5">
+                                                            <span className="text-[10px] font-bold text-neutral-400 ml-3 uppercase tracking-wider">Closing Time</span>
+                                                            <div className="relative">
+                                                                <Clock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400 pointer-events-none" />
+                                                                <input
+                                                                    type="time"
+                                                                    defaultValue="22:00"
+                                                                    aria-label="Closing Time"
+                                                                    className="w-full h-14 pl-11 pr-4 rounded-3xl border border-neutral-100 bg-neutral-50/50 focus:bg-white focus:border-[#EE8C2B]/30 outline-none transition-all font-bold text-sm text-neutral-800 cursor-pointer"
+                                                                />
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -162,8 +220,8 @@ export default function VendorFormPage() {
                                                     <UtensilsCrossed className="h-6 w-6" />
                                                 </div>
                                                 <div>
-                                                    <h2 className="text-2xl font-black text-neutral-900 tracking-tight">Menu Setup</h2>
-                                                    <p className="text-neutral-400 font-medium ">Upload your menu or catalog</p>
+                                                    <h2 className="text-2xl font-black text-neutral-900 tracking-tight">Profile Upload</h2>
+                                                    <p className="text-neutral-400 font-medium ">Upload your store profile</p>
                                                 </div>
                                             </div>
 

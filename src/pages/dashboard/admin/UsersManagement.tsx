@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   Users as UsersIcon,
   Search,
-  Filter,
+ 
   UserPlus,
   MoreVertical,
   CheckCircle,
@@ -119,8 +119,8 @@ export default function UsersManagement() {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Users Management</h2>
-          <p className="text-slate-500 font-medium mt-1">
+          <h2 className="text-2xl font-bold text-gray-900">Users Management</h2>
+          <p className="text-sm text-gray-500 mt-0.5">
             Manage account verification, status, and permissions across all user roles.
           </p>
         </div>
@@ -134,7 +134,7 @@ export default function UsersManagement() {
 
       {/* Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-5 rounded-xl border border-slate-100 shadow-sm flex items-center justify-between">
           <div>
             <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total Users</p>
             <h3 className="text-3xl font-extrabold text-slate-900">{stats.total}</h3>
@@ -144,7 +144,7 @@ export default function UsersManagement() {
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-5 rounded-xl border border-slate-100 shadow-sm flex items-center justify-between">
           <div>
             <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Active Accounts</p>
             <h3 className="text-3xl font-extrabold text-slate-900">{stats.active}</h3>
@@ -154,7 +154,7 @@ export default function UsersManagement() {
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-5 rounded-xl border border-slate-100 shadow-sm flex items-center justify-between">
           <div>
             <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Suspended</p>
             <h3 className="text-3xl font-extrabold text-slate-900">{stats.suspended}</h3>
@@ -164,7 +164,7 @@ export default function UsersManagement() {
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-5 rounded-xl border border-slate-100 shadow-sm flex items-center justify-between">
           <div>
             <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Pending Approval</p>
             <h3 className="text-3xl font-extrabold text-slate-900">{stats.pending}</h3>

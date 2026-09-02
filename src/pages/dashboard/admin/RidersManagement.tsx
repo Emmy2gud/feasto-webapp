@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   Bike,
   Search,
@@ -9,11 +9,11 @@ import {
   CheckCircle2,
   Hourglass,
   Clock,
-  MapPin,
+
   TrendingUp,
-  Download,
+
   AlertOctagon,
-  Percent
+
 } from "lucide-react";
 
 interface Rider {
@@ -87,8 +87,8 @@ export default function RidersManagement() {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">Fleet Management</h2>
-          <p className="text-slate-500 font-medium mt-1">Oversee logistics operations and rider performance.</p>
+          <h2 className="text-2xl font-bold text-gray-900">Fleet Management</h2>
+          <p className="text-sm text-gray-500 mt-0.5">Oversee logistics operations and rider performance.</p>
         </div>
         <div className="flex items-center gap-3 w-full md:w-auto">
           <div className="relative flex-grow md:flex-grow-0">

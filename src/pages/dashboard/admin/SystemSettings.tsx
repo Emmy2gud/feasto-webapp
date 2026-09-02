@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
-  Settings,
+ 
   DollarSign,
-  ShieldAlert,
+
   Wallet,
-  Globe,
+
   Plus,
   Shield,
   FileText,
@@ -67,8 +67,8 @@ export default function SystemSettings() {
             <span>&gt;</span>
             <span className="text-slate-800">System Settings</span>
           </nav>
-          <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">System Settings</h2>
-          <p className="text-slate-500 mt-1">Configure global platform parameters, financial rates, and security protocols.</p>
+          <h2 className="text-2xl font-bold text-gray-900">System Settings</h2>
+          <p className="text-sm text-gray-500 mt-0.5">Configure global platform parameters, financial rates, and security protocols.</p>
         </div>
         <div className="flex gap-3">
           <button

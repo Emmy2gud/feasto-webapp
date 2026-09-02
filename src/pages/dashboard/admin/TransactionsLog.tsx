@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
-  CreditCard,
+
   Search,
-  Filter,
+ 
   Download,
   DollarSign,
   CheckCircle,
@@ -114,8 +114,8 @@ export default function TransactionsLog() {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Transactions Log</h2>
-          <p className="text-slate-500 font-medium mt-1">Audit, monitor, and search platform transaction logs.</p>
+          <h2 className="text-2xl font-bold text-gray-900">Transactions Log</h2>
+          <p className="text-sm text-gray-500 mt-0.5">Audit, monitor, and search platform transaction logs.</p>
         </div>
         <button className="flex items-center gap-2 px-4 py-2.5 bg-white text-slate-600 border border-slate-200 rounded-xl text-sm font-bold shadow-sm hover:bg-slate-50 transition-all cursor-pointer">
           <Download className="w-4 h-4" />

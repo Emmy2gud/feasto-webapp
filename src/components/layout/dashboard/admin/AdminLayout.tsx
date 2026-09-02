@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import FeastoLogo from "@/assets/logo/feasto-logo.svg?react";
 import {
   LayoutDashboard,
   Users,
@@ -48,16 +49,11 @@ export default function AdminLayout() {
   return (
     <div className="flex min-h-screen bg-[#f8f7f6] text-[#0f172a] font-sans antialiased">
       {/* SideNavBar */}
-      <aside className="w-64 fixed left-0 top-0 h-screen bg-white border-r border-slate-200/60 p-4 flex flex-col gap-1 z-40">
-        <div className="mb-6 px-4 pt-4">
-          <h2 className="text-2xl font-extrabold text-[#ee8c2b] mb-1 leading-tight tracking-tight">
-            Feasto
-          </h2>
-          <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
-            Campus Hub Control
-          </p>
-        </div>
-
+      <aside className="w-64 fixed left-0 top-0 h-screen bg-white border-r border-slate-200/60 px-2  flex flex-col gap-1 z-40">
+           {/* Logo Header */}
+      <div className="flex items-center h-20 px-4 border-b border-slate-100 shrink-0">
+        <FeastoLogo width={300} height={300} />
+      </div>
         <nav className="flex-1 flex flex-col gap-1 overflow-y-auto pr-1">
           <SidebarLink to="/admin" icon={LayoutDashboard} label="Dashboard" />
           <SidebarLink to="/admin/users" icon={Users} label="Users" />

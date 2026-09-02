@@ -1,4 +1,4 @@
-import React from "react";
+
 import {
   Users as UsersIcon,
   Store,
@@ -10,8 +10,7 @@ import {
   TrendingUp,
   TrendingDown,
   CheckCircle,
-  Clock,
-  ChevronRight,
+
   AlertTriangle,
   FileText
 } from "lucide-react";
@@ -95,8 +94,8 @@ export default function SystemOverview() {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">System Overview</h2>
-          <p className="text-slate-500 font-medium">Monitoring harvest performance across the campus ecosystem.</p>
+          <h2 className="text-2xl font-bold text-gray-900">System Overview</h2>
+          <p className="text-sm text-gray-500 mt-0.5">Monitoring harvest performance across the campus ecosystem.</p>
         </div>
         <div className="flex gap-3">
           <button className="flex items-center gap-2 px-4 py-2 bg-white text-slate-600 border border-slate-200 rounded-xl hover:bg-slate-50 transition-all text-sm font-bold shadow-sm cursor-pointer">
@@ -113,7 +112,7 @@ export default function SystemOverview() {
       {/* Bento Grid Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {/* Total Users */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-[#ee8c2b]">
+        <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-[#ee8c2b]">
           <div className="flex justify-between items-start mb-4">
             <div className="w-10 h-10 bg-[#ee8c2b]/10 rounded-lg flex items-center justify-center text-[#ee8c2b]">
               <UsersIcon className="w-5 h-5" />
@@ -123,11 +122,11 @@ export default function SystemOverview() {
             </span>
           </div>
           <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Users</p>
-          <h3 class="text-2xl font-extrabold text-slate-900 mt-1">12,482</h3>
+          <h3 className="text-2xl font-extrabold text-slate-900 mt-1">12,482</h3>
         </div>
 
         {/* Total Vendors */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm">
+        <div className="bg-white p-6 rounded-xl shadow-sm">
           <div className="flex justify-between items-start mb-4">
             <div className="w-10 h-10 bg-sky-100 rounded-lg flex items-center justify-center text-sky-600">
               <Store className="w-5 h-5" />
@@ -141,7 +140,7 @@ export default function SystemOverview() {
         </div>
 
         {/* Total Riders */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm">
+        <div className="bg-white p-6 rounded-xl shadow-sm">
           <div className="flex justify-between items-start mb-4">
             <div className="w-10 h-10 bg-[#7c2d12]/10 rounded-lg flex items-center justify-center text-[#7c2d12]">
               <Bike className="w-5 h-5" />
@@ -155,7 +154,7 @@ export default function SystemOverview() {
         </div>
 
         {/* Total Orders */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm">
+        <div className="bg-white p-6 rounded-xl shadow-sm">
           <div className="flex justify-between items-start mb-4">
             <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
               <Receipt className="w-5 h-5" />
@@ -286,7 +285,7 @@ export default function SystemOverview() {
             <thead>
               <tr className="text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50">
                 <th className="px-8 py-4">Event</th>
-                <th class="px-8 py-4">Entity</th>
+                <th className="px-8 py-4">Entity</th>
                 <th className="px-8 py-4">Status</th>
                 <th className="px-8 py-4">Timestamp</th>
                 <th className="px-8 py-4 text-right">Action</th>

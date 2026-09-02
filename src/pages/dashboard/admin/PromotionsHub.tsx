@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
-  Megaphone,
+
   PlusCircle,
   TrendingUp,
   Ticket,
@@ -10,7 +10,7 @@ import {
   Clock,
   Utensils,
   Search,
-  Download,
+
   MoreVertical,
   ChevronLeft,
   ChevronRight,
@@ -134,8 +134,9 @@ export default function PromotionsHub() {
       {/* Header */}
       <div className="flex justify-between items-end mb-10">
         <div>
-          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Promotions Hub</h2>
-          <p className="text-slate-500 mt-1">Manage marketing campaigns, seasonal discounts, and customer incentives.</p>
+          <h2 className="text-2xl font-bold text-gray-900">Promotions Hub</h2>
+          <p className="text-sm text-gray-500 mt-0.5">Manage marketing campaigns, seasonal discounts, and customer incentives.</p>
+          
         </div>
         <button
           onClick={() => setIsModalOpen(true)}

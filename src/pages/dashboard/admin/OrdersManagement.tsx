@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   ShoppingBag,
   Search,
@@ -7,14 +7,13 @@ import {
   Clock,
   CheckCircle,
   XCircle,
-  MoreVertical,
   ChevronRight,
   User,
   MapPin,
   Phone,
   FileText,
-  DollarSign
 } from "lucide-react";
+
 
 interface Order {
   id: string;
@@ -137,8 +136,9 @@ export default function OrdersManagement() {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Orders Management</h2>
-          <p className="text-slate-500 font-medium mt-1">Manage, monitor, and resolve customer orders in real-time.</p>
+          <h2 className="text-2xl font-bold text-gray-900">Orders Management</h2>
+          <p className="text-sm text-gray-500 mt-0.5">Manage, monitor, and resolve customer orders in real-time.</p>
+          
         </div>
         <div className="flex gap-3">
           <button className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 text-slate-600 border border-slate-200 rounded-xl text-sm font-bold shadow-sm hover:bg-slate-200 transition-all cursor-pointer">

@@ -1,16 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Store,
   Search,
-  Filter,
   PlusCircle,
   MoreVertical,
   Star,
   CheckCircle2,
   AlertTriangle,
-  MapPin,
   TrendingUp,
-  TrendingDown
+  
 } from "lucide-react";
 
 interface Vendor {
@@ -102,8 +100,9 @@ export default function VendorsManagement() {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Vendors Directory</h2>
-          <p className="text-slate-500 font-medium mt-1">Approve kitchen registrations and monitor vendor performance.</p>
+          <h2 className="text-2xl font-bold text-gray-900">Vendors Directory</h2>
+          <p className="text-sm text-gray-500 mt-0.5">Approve kitchen registrations and monitor vendor performance.</p>
+          
         </div>
         <button className="bg-[#ee8c2b] text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-sm hover:scale-[1.02] active:scale-95 transition-transform cursor-pointer">
           <PlusCircle className="w-5 h-5" />

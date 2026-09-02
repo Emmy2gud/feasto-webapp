@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   Wallet,
   ArrowUpRight,
   TrendingUp,
   Clock,
   CheckCircle,
-  XCircle,
-  FileText,
+
   Filter,
   Download,
   MoreVertical,
   Building,
   User,
-  Coffee,
+ 
   Check,
   X
 } from "lucide-react";
@@ -157,8 +156,8 @@ export default function PayoutsWalletHub() {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Payouts & Wallet Hub</h2>
-          <p className="text-slate-500 font-medium mt-1">Manage liquidity and facilitate distribution across your network.</p>
+          <h2 className="text-2xl font-bold text-gray-900">Payouts & Wallet Hub</h2>
+          <p className="text-sm text-gray-500 mt-0.5">Manage liquidity and facilitate distribution across your network.</p>
         </div>
         <button className="px-6 py-2.5 bg-[#ee8c2b] hover:bg-[#d6761f] text-white rounded-xl font-bold text-sm shadow-sm hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 cursor-pointer">
           <Wallet className="w-4 h-4" />

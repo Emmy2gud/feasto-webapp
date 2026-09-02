@@ -4,7 +4,7 @@ import {
   Package,
   Star,
   Timer,
-  TrendingUp,
+
   Map,
   HeadphonesIcon,
   PlusCircle

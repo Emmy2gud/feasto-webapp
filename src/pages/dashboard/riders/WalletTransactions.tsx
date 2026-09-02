@@ -4,8 +4,7 @@ import {
   ArrowUpRight,
   ArrowDownLeft,
   DollarSign,
-  CreditCard,
-  Plus,
+
   TrendingUp,
   RefreshCw,
   Shield

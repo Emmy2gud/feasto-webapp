@@ -2,7 +2,7 @@ import { useState } from "react";
 import {
   DollarSign,
   TrendingUp,
-  Package,
+
   Star,
   Calendar,
   ChevronLeft,

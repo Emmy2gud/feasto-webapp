@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   Search,
-  Filter,
+
   Star,
   ChevronLeft,
   ChevronRight,
@@ -87,7 +87,7 @@ export default function DeliveryHistory() {
 
       {/* Deliveries Table */}
       <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto w-255">
           <table className="w-full text-left">
             <thead className="bg-slate-50 border-b border-slate-100">
               <tr className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
