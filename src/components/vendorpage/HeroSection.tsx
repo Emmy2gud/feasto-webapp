@@ -48,7 +48,9 @@ export function HeroSection() {
                 variant="outline"
                 className="h-16 w-full sm:w-auto rounded-[2rem] border-2 border-neutral-200 bg-white px-10 text-base font-black text-neutral-900 hover:bg-neutral-50 transition-all active:scale-95"
               >
-                View Pricing
+                <Link to="/dashboard">
+                Dashboard
+                </Link>
               </Button>
             </div>
 

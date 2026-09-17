@@ -75,7 +75,7 @@ export default function TransactionsLog() {
       date: "Jun 25, 2026, 07:44 PM"
     }
   ]);
-
+console.log(setTransactions)
   const filteredTxns = transactions.filter(txn => {
     const matchesSearch =
       txn.entityName.toLowerCase().includes(searchTerm.toLowerCase()) ||

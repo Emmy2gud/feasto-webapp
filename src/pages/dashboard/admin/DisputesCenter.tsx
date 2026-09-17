@@ -27,7 +27,7 @@ interface Dispute {
 export default function DisputesCenter() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusTab, setStatusTab] = useState<"All" | "Awaiting Vendor" | "Escalated" | "Refund Pending">("All");
-
+console.log( statusTab,setSearchTerm); // Debugging line to check the current status tab
   const [disputes, setDisputes] = useState<Dispute[]>([
     {
       id: "DS-90241",

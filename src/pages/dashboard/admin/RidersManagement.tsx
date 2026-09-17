@@ -30,7 +30,7 @@ interface Rider {
 export default function RidersManagement() {
   const [searchTerm, setSearchTerm] = useState("");
   const [vehicleFilter, setVehicleFilter] = useState("All");
-
+console.log("filter:", setVehicleFilter); // Debugging line to check the current search term
   const [riders, setRiders] = useState<Rider[]>([
     {
       id: "SF-7729",
@@ -73,7 +73,7 @@ export default function RidersManagement() {
       avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop"
     }
   ]);
-
+console.log("Riders:", setRiders);
   const filteredRiders = riders.filter(rider => {
     const matchesSearch =
       rider.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

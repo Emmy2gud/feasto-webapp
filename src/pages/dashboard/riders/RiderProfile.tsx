@@ -17,7 +17,7 @@ export default function RiderProfile() {
   const [name, setName] = useState("Julian Thorne");
   const [vehicle, setVehicle] = useState("Electric Bicycle");
   const [plate, setPlate] = useState("SF-290-HARVEST");
-
+console.log(setName, setVehicle, setPlate); // Debugging line to check the current state values
   return (
     <div className="max-w-6xl mx-auto space-y-5 animate-fade-in pb-4">
       {/* Top Row: Profile + Earnings */}

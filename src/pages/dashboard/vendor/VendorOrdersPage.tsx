@@ -2,7 +2,6 @@ import { ChevronDown, DollarSign, Eye, Filter, Search, ShoppingBag, Soup } from 
 import React, { useMemo, useState } from "react";
 import {
     Tabs,
-    TabsContent,
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs"
@@ -42,7 +41,7 @@ const StatCard: React.FC<{
     vs: string;
     icon: React.ReactNode;
     iconBg: string;
-}> = ({ label, value, pct, up, vs, icon, iconBg }) => (
+}> = ({ label, value, icon, iconBg }) => (
     <div className="bg-white rounded-2xl p-5 border border-gray-100 flex items-start justify-between">
         <div>
             <p className="text-sm text-gray-500 mb-1">{label}</p>

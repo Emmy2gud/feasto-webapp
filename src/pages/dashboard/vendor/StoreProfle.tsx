@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ImagePlus, Star, CircleCheck, ArrowRight, Info, Clock } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
+import { ImagePlus, CircleCheck, ArrowRight, Info, Clock } from "lucide-react";
+
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -14,7 +14,7 @@ const StoreProfile: React.FC = () => {
     const [featured, setFeatured] = useState(false);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [dragging, setDragging] = useState(false);
-
+ console.log(featured, setFeatured);
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) setImagePreview(URL.createObjectURL(file));

@@ -53,6 +53,7 @@ export function Header() {
           <div className="flex justify-between gap-10">
             <Link to="/about-vendors">Vendors</Link>
             <Link to="/about-rider">Riders</Link>
+            <Link to="/admin">Admin</Link>
           </div>
           <Link to="/vendors">
           <Button variant="default" className="hidden md:inline-flex bg-black rounded-full">
