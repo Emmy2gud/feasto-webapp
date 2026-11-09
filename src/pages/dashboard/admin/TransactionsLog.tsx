@@ -1,17 +1,13 @@
-import  { useState } from "react";
+import { useState } from "react";
 import {
-
   Search,
- 
   Download,
   DollarSign,
   CheckCircle,
   XCircle,
   Clock,
-  MoreVertical,
-  ArrowUpRight,
-  ArrowDownLeft
 } from "lucide-react";
+import StatusBadge from "@/components/layout/dashboard/StatusBadge";
 
 interface Transaction {
   id: string;
@@ -23,60 +19,61 @@ interface Transaction {
   date: string;
 }
 
+const initialTransactions: Transaction[] = [
+  {
+    id: "TXN-882194",
+    entityName: "Jane Cooper (Customer)",
+    type: "Payment",
+    method: "Card",
+    amount: 24.50,
+    status: "Success",
+    date: "Jun 27, 2026, 12:45 PM",
+  },
+  {
+    id: "TXN-102931",
+    entityName: "Campus Grill (Vendor)",
+    type: "Payout",
+    method: "Bank Transfer",
+    amount: 1420.00,
+    status: "Success",
+    date: "Jun 26, 2026, 04:12 PM",
+  },
+  {
+    id: "TXN-492010",
+    entityName: "Robert Fox (Customer)",
+    type: "Refund",
+    method: "Card",
+    amount: 12.80,
+    status: "Success",
+    date: "Jun 26, 2026, 10:30 AM",
+  },
+  {
+    id: "TXN-301293",
+    entityName: "Albert Flores (Customer)",
+    type: "Payment",
+    method: "Mobile Money",
+    amount: 32.20,
+    status: "Pending",
+    date: "Jun 26, 2026, 09:15 AM",
+  },
+  {
+    id: "TXN-772911",
+    entityName: "Kathryn Murphy (Customer)",
+    type: "Payment",
+    method: "Card",
+    amount: 14.10,
+    status: "Failed",
+    date: "Jun 25, 2026, 07:44 PM",
+  },
+];
+
 export default function TransactionsLog() {
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
+  const [transactions] = useState<Transaction[]>(initialTransactions);
 
-  const [transactions, setTransactions] = useState<Transaction[]>([
-    {
-      id: "TXN-882194",
-      entityName: "Jane Cooper",
-      type: "Payment",
-      method: "Card",
-      amount: 24.50,
-      status: "Success",
-      date: "Jun 27, 2026, 12:45 PM"
-    },
-    {
-      id: "TXN-102931",
-      entityName: "Campus Grill",
-      type: "Payout",
-      method: "Bank Transfer",
-      amount: 1420.00,
-      status: "Success",
-      date: "Jun 26, 2026, 04:12 PM"
-    },
-    {
-      id: "TXN-492010",
-      entityName: "Robert Fox",
-      type: "Refund",
-      method: "Card",
-      amount: 12.80,
-      status: "Success",
-      date: "Jun 26, 2026, 10:30 AM"
-    },
-    {
-      id: "TXN-301293",
-      entityName: "Albert Flores",
-      type: "Payment",
-      method: "Mobile Money",
-      amount: 32.20,
-      status: "Pending",
-      date: "Jun 26, 2026, 09:15 AM"
-    },
-    {
-      id: "TXN-772911",
-      entityName: "Kathryn Murphy",
-      type: "Payment",
-      method: "Card",
-      amount: 14.10,
-      status: "Failed",
-      date: "Jun 25, 2026, 07:44 PM"
-    }
-  ]);
-console.log(setTransactions)
-  const filteredTxns = transactions.filter(txn => {
+  const filteredTxns = transactions.filter((txn) => {
     const matchesSearch =
       txn.entityName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       txn.id.toLowerCase().includes(searchTerm.toLowerCase());
@@ -85,215 +82,139 @@ console.log(setTransactions)
     return matchesSearch && matchesType && matchesStatus;
   });
 
-  const getStatusBadge = (status: Transaction["status"]) => {
-    switch (status) {
-      case "Success":
-        return "bg-green-100 text-green-700";
-      case "Failed":
-        return "bg-red-100 text-red-700";
-      case "Pending":
-        return "bg-amber-100 text-amber-700";
-      default:
-        return "bg-slate-100 text-slate-700";
-    }
-  };
-
-  const getTypeIcon = (type: Transaction["type"]) => {
-    switch (type) {
-      case "Payment":
-        return <ArrowDownLeft className="w-4 h-4 text-green-600" />;
-      case "Refund":
-        return <ArrowUpRight className="w-4 h-4 text-amber-600" />;
-      case "Payout":
-        return <ArrowUpRight className="w-4 h-4 text-sky-600" />;
-    }
-  };
-
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-6 pb-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Transactions Log</h2>
-          <p className="text-sm text-gray-500 mt-0.5">Audit, monitor, and search platform transaction logs.</p>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Transactions & Ledger Log</h1>
+          <p className="text-sm text-slate-500 font-normal mt-0.5">
+            Audit payment gateways, order charges, customer refunds, and partner payouts.
+          </p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2.5 bg-white text-slate-600 border border-slate-200 rounded-xl text-sm font-bold shadow-sm hover:bg-slate-50 transition-all cursor-pointer">
-          <Download className="w-4 h-4" />
-          Export CSV
+        <button className="flex items-center gap-1.5 px-3.5 py-2 bg-white text-slate-700 border border-slate-200 rounded-lg text-xs font-semibold shadow-xs hover:bg-slate-50 transition-colors cursor-pointer self-start sm:self-center">
+          <Download className="w-3.5 h-3.5" />
+          <span>Export CSV</span>
         </button>
       </div>
 
-      {/* Stats row */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+      {/* Stats KPI */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white p-5 rounded-xl border border-slate-200/80 shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Volume (MTD)</p>
-            <h3 className="text-2xl font-extrabold text-slate-900">$48,250.00</h3>
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Processed Volume</p>
+            <h3 className="text-2xl font-bold text-slate-900 mt-1">$48,250.00</h3>
           </div>
-          <div className="w-11 h-11 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">
+          <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center">
             <DollarSign className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-5 rounded-xl border border-slate-200/80 shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Successful</p>
-            <h3 className="text-2xl font-extrabold text-slate-900">3,124</h3>
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Successful</p>
+            <h3 className="text-2xl font-bold text-emerald-600 mt-1">3,124</h3>
           </div>
-          <div className="w-11 h-11 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">
+          <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center">
             <CheckCircle className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-5 rounded-xl border border-slate-200/80 shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Failed</p>
-            <h3 className="text-2xl font-extrabold text-slate-900">42</h3>
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Declined / Failed</p>
+            <h3 className="text-2xl font-bold text-rose-600 mt-1">42</h3>
           </div>
-          <div className="w-11 h-11 bg-red-50 text-red-600 rounded-xl flex items-center justify-center">
+          <div className="w-10 h-10 bg-rose-50 text-rose-600 rounded-lg flex items-center justify-center">
             <XCircle className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-5 rounded-xl border border-slate-200/80 shadow-xs flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Pending</p>
-            <h3 className="text-2xl font-extrabold text-slate-900">38</h3>
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Pending Clearance</p>
+            <h3 className="text-2xl font-bold text-amber-600 mt-1">38</h3>
           </div>
-          <div className="w-11 h-11 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center">
+          <div className="w-10 h-10 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center">
             <Clock className="w-5 h-5" />
           </div>
         </div>
       </div>
 
       {/* Table & Filtering */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-xl shadow-xs border border-slate-200/80 overflow-hidden">
         {/* Filters Header */}
-        <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="relative w-full md:max-w-md group">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-[#ee8c2b]" />
+        <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row gap-3 items-center justify-between">
+          <div className="relative w-full sm:max-w-sm">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#ee8c2b]/30 text-sm font-medium transition-all"
-              placeholder="Search ID, sender, or receiver..."
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium focus:outline-none focus:border-[#ee8c2b] focus:ring-2 focus:ring-[#ee8c2b]/20 transition-all placeholder:text-slate-400"
+              placeholder="Search reference ID, sender, or recipient..."
               type="text"
             />
           </div>
 
-          <div className="flex gap-3 w-full md:w-auto">
-            <div className="flex items-center gap-2 bg-white px-3 py-1.5 border border-slate-200 rounded-xl">
-              <span className="text-xs font-bold text-slate-400 uppercase">Type:</span>
-              <select
-                value={typeFilter}
-                onChange={e => setTypeFilter(e.target.value)}
-                className="text-sm font-semibold text-slate-700 bg-transparent border-none outline-none focus:ring-0 cursor-pointer p-0"
-              >
-                <option value="All">All Types</option>
-                <option value="Payment">Payments</option>
-                <option value="Refund">Refunds</option>
-                <option value="Payout">Payouts</option>
-              </select>
-            </div>
+          <div className="flex gap-2 w-full sm:w-auto">
+            <select
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value)}
+              className="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 outline-none cursor-pointer"
+            >
+              <option value="All">All Types</option>
+              <option value="Payment">Payments</option>
+              <option value="Refund">Refunds</option>
+              <option value="Payout">Payouts</option>
+            </select>
 
-            <div className="flex items-center gap-2 bg-white px-3 py-1.5 border border-slate-200 rounded-xl">
-              <span className="text-xs font-bold text-slate-400 uppercase">Status:</span>
-              <select
-                value={statusFilter}
-                onChange={e => setStatusFilter(e.target.value)}
-                className="text-sm font-semibold text-slate-700 bg-transparent border-none outline-none focus:ring-0 cursor-pointer p-0"
-              >
-                <option value="All">All Statuses</option>
-                <option value="Success">Success</option>
-                <option value="Failed">Failed</option>
-                <option value="Pending">Pending</option>
-              </select>
-            </div>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="px-3 py-1.5 rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 outline-none cursor-pointer"
+            >
+              <option value="All">All Statuses</option>
+              <option value="Success">Success</option>
+              <option value="Pending">Pending</option>
+              <option value="Failed">Failed</option>
+            </select>
           </div>
         </div>
 
-        {/* Roster Table */}
+        {/* Table Content */}
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
-            <thead className="bg-slate-50 text-slate-400 uppercase text-[10px] font-extrabold tracking-widest border-b border-slate-100">
-              <tr>
-                <th className="px-6 py-4">Transaction ID</th>
-                <th className="px-6 py-4">Entity</th>
-                <th className="px-6 py-4">Type</th>
-                <th className="px-6 py-4">Method</th>
-                <th className="px-6 py-4">Amount</th>
-                <th className="px-6 py-4">Status</th>
-                <th className="px-6 py-4">Timestamp</th>
-                <th className="px-6 py-4 text-right">Action</th>
+            <thead>
+              <tr className="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                <th className="py-3 px-5">Transaction Ref</th>
+                <th className="py-3 px-4">Entity</th>
+                <th className="py-3 px-4">Type</th>
+                <th className="py-3 px-4">Channel</th>
+                <th className="py-3 px-4">Date / Time</th>
+                <th className="py-3 px-4">Status</th>
+                <th className="py-3 px-5 text-right">Amount</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
-              {filteredTxns.length > 0 ? (
-                filteredTxns.map(txn => (
-                  <tr key={txn.id} className="hover:bg-slate-50/50 transition-colors group">
-                    <td className="px-6 py-4">
-                      <span className="font-bold text-slate-800 text-sm">{txn.id}</span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="font-medium text-slate-700 text-sm">{txn.entityName}</span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-1.5">
-                        {getTypeIcon(txn.type)}
-                        <span className="text-sm font-medium text-slate-500">{txn.type}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="text-sm font-medium text-slate-500">{txn.method}</span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span
-                        className={`text-sm font-extrabold ${
-                          txn.type === "Refund" || txn.type === "Payout" ? "text-slate-800" : "text-green-600"
-                        }`}
-                      >
-                        {txn.type === "Refund" || txn.type === "Payout" ? "-" : "+"}
-                        {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(txn.amount)}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${getStatusBadge(txn.status)}`}>
-                        {txn.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-xs text-slate-400 font-medium">{txn.date}</td>
-                    <td className="px-6 py-4 text-right">
-                      <button className="p-2 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 cursor-pointer">
-                        <MoreVertical className="w-5 h-5" />
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={8} className="px-6 py-12 text-center text-slate-400 font-medium">
-                    No transactions found.
+            <tbody className="divide-y divide-slate-100 text-sm">
+              {filteredTxns.map((txn) => (
+                <tr key={txn.id} className="hover:bg-slate-50/60 transition-colors">
+                  <td className="py-3.5 px-5 font-mono text-xs font-semibold text-slate-900">#{txn.id}</td>
+                  <td className="py-3.5 px-4 text-xs font-medium text-slate-800">{txn.entityName}</td>
+                  <td className="py-3.5 px-4">
+                    <span className="text-xs font-semibold text-slate-700">{txn.type}</span>
+                  </td>
+                  <td className="py-3.5 px-4 text-xs text-slate-500">{txn.method}</td>
+                  <td className="py-3.5 px-4 text-xs text-slate-500 whitespace-nowrap">{txn.date}</td>
+                  <td className="py-3.5 px-4">
+                    <StatusBadge status={txn.status} />
+                  </td>
+                  <td className="py-3.5 px-5 text-right font-bold text-xs sm:text-sm text-slate-900">
+                    ${txn.amount.toFixed(2)}
                   </td>
                 </tr>
-              )}
+              ))}
             </tbody>
           </table>
-        </div>
-
-        {/* Footer */}
-        <div className="p-6 border-t border-slate-100 flex items-center justify-between bg-slate-50/20">
-          <span className="text-xs font-semibold text-slate-400">
-            Showing {filteredTxns.length} of {transactions.length} entries
-          </span>
-          <div className="flex gap-1">
-            <button className="h-8 px-3 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-bold disabled:opacity-50">
-              Previous
-            </button>
-            <button className="h-8 w-8 rounded-lg bg-[#ee8c2b] text-white text-xs font-bold">1</button>
-            <button className="h-8 px-3 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-bold">
-              Next
-            </button>
-          </div>
         </div>
       </div>
     </div>

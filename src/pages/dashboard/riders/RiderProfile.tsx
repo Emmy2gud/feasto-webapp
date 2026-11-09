@@ -1,226 +1,171 @@
 import { useState } from "react";
 import {
   Star,
-  Bike,
   Camera,
   ToggleLeft,
   ToggleRight,
-  Eye,
   ShieldCheck,
-  CreditCard,
-  Zap,
-  LogOut
+  Mail,
+  Phone,
+  CheckCircle,
 } from "lucide-react";
 
 export default function RiderProfile() {
   const [isOnline, setIsOnline] = useState(true);
-  const [name, setName] = useState("Julian Thorne");
+  const [name, setName] = useState("Alex Rivera");
   const [vehicle, setVehicle] = useState("Electric Bicycle");
   const [plate, setPlate] = useState("SF-290-HARVEST");
-console.log(setName, setVehicle, setPlate); // Debugging line to check the current state values
+  const [phone, setPhone] = useState("+1 (555) 012-3456");
+  const [email, setEmail] = useState("alex.rivera@feasto.app");
+  const [savedSuccess, setSavedSuccess] = useState(false);
+
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSavedSuccess(true);
+    setTimeout(() => setSavedSuccess(false), 3000);
+  };
+
   return (
-    <div className="max-w-6xl mx-auto space-y-5 animate-fade-in pb-4">
-      {/* Top Row: Profile + Earnings */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* Profile Card */}
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex items-start gap-5">
-          <div className="relative shrink-0">
-            <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-white shadow-md bg-gradient-to-br from-orange-200 to-amber-400">
-              <img
-                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=200&h=200&fit=crop"
-                alt="Julian Thorne"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <button className="absolute -bottom-1 -right-1 w-7 h-7 bg-[#ee8c2b] text-white rounded-full flex items-center justify-center shadow-md hover:bg-[#d6761f] cursor-pointer transition-colors">
-              <Camera className="w-3.5 h-3.5" />
-            </button>
-          </div>
+    <div className="space-y-6 max-w-4xl mx-auto pb-8">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Rider Profile & Fleet Settings</h1>
+        <p className="text-sm text-slate-500 font-normal mt-0.5">
+          Manage your personal verification, campus vehicle credentials, and contact info.
+        </p>
+      </div>
 
-          <div className="flex-1">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-extrabold text-slate-900">{name}</h2>
-                <p className="text-slate-400 font-medium text-sm mt-0.5">Elite Campus Rider · Gold Tier</p>
-              </div>
+      {savedSuccess && (
+        <div className="p-3.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2">
+          <CheckCircle className="w-4 h-4 text-emerald-600" />
+          Profile changes updated successfully!
+        </div>
+      )}
+
+      {/* Top Profile Summary Card */}
+      <div className="bg-white rounded-xl border border-slate-200/80 shadow-xs p-6 flex flex-col sm:flex-row items-start gap-5">
+        <div className="relative shrink-0">
+          <div className="w-20 h-20 rounded-xl overflow-hidden border border-slate-200 bg-orange-100 flex items-center justify-center font-bold text-2xl text-[#ee8c2b]">
+            AR
+          </div>
+          <button
+            type="button"
+            className="absolute -bottom-1 -right-1 w-7 h-7 bg-[#ee8c2b] text-white rounded-full flex items-center justify-center shadow-xs hover:bg-[#d6761f] cursor-pointer transition-colors"
+          >
+            <Camera className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
+        <div className="flex-1 space-y-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-bold text-slate-700">Online</span>
-                <button onClick={() => setIsOnline(!isOnline)} className="cursor-pointer">
-                  {isOnline
-                    ? <ToggleRight className="w-9 h-9 text-[#ee8c2b]" />
-                    : <ToggleLeft className="w-9 h-9 text-slate-300" />
-                  }
-                </button>
+                <h2 className="text-lg font-bold text-slate-900">{name}</h2>
+                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Verified Rider
+                </span>
               </div>
+              <p className="text-xs text-slate-500 font-medium">Gold Tier Campus Courier • Active since Oct 2025</p>
             </div>
 
-            <div className="flex items-center gap-4 mt-4 text-sm">
-              <div className="flex items-center gap-1.5 text-slate-500">
-                <span className="w-4 h-4 inline-flex items-center justify-center text-slate-400">@</span>
-                j.thorne@harvest.edu
-              </div>
-              <div className="flex items-center gap-1.5 text-slate-500">
-                <span className="text-slate-400">☎</span>
-                +1 (555) 012-3456
-              </div>
+            <div className="flex items-center gap-2 self-start sm:self-center">
+              <span className="text-xs font-semibold text-slate-700">Online Queue:</span>
+              <button
+                onClick={() => setIsOnline(!isOnline)}
+                className="cursor-pointer text-[#ee8c2b]"
+                aria-label="Toggle online"
+              >
+                {isOnline ? (
+                  <ToggleRight className="w-8 h-8 text-[#ee8c2b]" />
+                ) : (
+                  <ToggleLeft className="w-8 h-8 text-slate-400" />
+                )}
+              </button>
             </div>
           </div>
-        </div>
 
-        {/* Earnings Card */}
-        <div className="bg-gradient-to-br from-[#ee8c2b] to-amber-500 rounded-2xl shadow-sm p-6 text-white relative overflow-hidden">
-          <p className="text-xs font-bold uppercase tracking-wider text-white/80">Total Earnings</p>
-          <h3 className="text-3xl font-extrabold mt-1">$1,284</h3>
-          <div className="flex items-center gap-1 mt-2 text-sm font-semibold">
-            <Star className="w-4 h-4 fill-white text-white" />
-            Rating 4.9
-            <span className="text-white/70 font-medium ml-1">Sept 2023</span>
-          </div>
-          <svg className="absolute bottom-0 right-0 w-32 h-16 opacity-60" viewBox="0 0 120 60" fill="none">
-            <path d="M0 50 L20 40 L40 45 L60 25 L80 30 L100 10 L120 15" stroke="white" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
-      </div>
-
-      {/* Middle Row: Vehicle + Service Health */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* Vehicle Details */}
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <Bike className="w-4 h-4 text-[#ee8c2b]" />
-              <h4 className="font-extrabold text-slate-800">Vehicle Details</h4>
-            </div>
-            <button className="text-sm font-bold text-[#ee8c2b] hover:text-[#d6761f] cursor-pointer">Update</button>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-orange-50 border border-orange-100 rounded-xl p-4 flex items-center gap-3">
-              <Bike className="w-7 h-7 text-[#ee8c2b]" />
-              <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Type</p>
-                <p className="font-bold text-slate-700 text-sm">{vehicle}</p>
-              </div>
-            </div>
-            <div className="bg-slate-50 border border-slate-100 rounded-xl p-4 flex items-center gap-3">
-              <div className="w-7 h-7 rounded-md bg-slate-200 flex items-center justify-center text-[10px] font-extrabold text-slate-500">SF</div>
-              <div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Registration</p>
-                <p className="font-bold text-slate-700 text-sm">{plate}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Service Health */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Zap className="w-4 h-4 text-[#ee8c2b]" />
-            <h4 className="font-extrabold text-slate-800">Service Health</h4>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <div className="flex justify-between text-xs mb-1.5">
-                <span className="font-bold text-slate-500">On-Time Delivery</span>
-                <span className="font-extrabold text-slate-800">96%</span>
-              </div>
-              <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
-                <div className="h-full bg-[#ee8c2b] rounded-full" style={{ width: "96%" }} />
-              </div>
-            </div>
-            <div>
-              <div className="flex justify-between text-xs mb-1.5">
-                <span className="font-bold text-slate-500">Acceptance Rate</span>
-                <span className="font-extrabold text-slate-800">92%</span>
-              </div>
-              <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
-                <div className="h-full bg-[#ee8c2b] rounded-full" style={{ width: "92%" }} />
-              </div>
-            </div>
-            <button className="w-full mt-2 py-2.5 border border-orange-200 text-[#ee8c2b] rounded-xl text-sm font-bold hover:bg-orange-50 transition-colors cursor-pointer">
-              View Detailed Report
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Row: Credentials + Payout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* Credentials & ID */}
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#ee8c2b]" />
-              <h4 className="font-extrabold text-slate-800">Credentials & ID</h4>
-            </div>
-            <span className="flex items-center gap-1 text-xs font-bold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-              Fully Verified
+          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 pt-1">
+            <span className="flex items-center gap-1.5">
+              <Mail className="w-3.5 h-3.5 text-slate-400" /> {email}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Phone className="w-3.5 h-3.5 text-slate-400" /> {phone}
+            </span>
+            <span className="flex items-center gap-1.5 font-semibold text-amber-600">
+              <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" /> 4.95 Rating (240+ trips)
             </span>
           </div>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between bg-slate-50 border border-slate-100 rounded-xl px-4 py-3">
-              <div>
-                <p className="font-bold text-slate-700 text-sm">Rider License ID</p>
-                <p className="text-xs text-slate-400">Expires: Oct 2025</p>
-              </div>
-              <Eye className="w-4 h-4 text-slate-400 cursor-pointer hover:text-slate-600" />
-            </div>
-            <div className="flex items-center justify-between bg-slate-50 border border-slate-100 rounded-xl px-4 py-3">
-              <div>
-                <p className="font-bold text-slate-700 text-sm">Insurance Policy #4492</p>
-                <p className="text-xs text-slate-400">Comprehensive Coverage</p>
-              </div>
-              <Eye className="w-4 h-4 text-slate-400 cursor-pointer hover:text-slate-600" />
-            </div>
-          </div>
         </div>
+      </div>
 
-        {/* Payout Method */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <CreditCard className="w-4 h-4 text-[#ee8c2b]" />
-            <h4 className="font-extrabold text-slate-800">Payout Method</h4>
-          </div>
-          <div className="flex items-center gap-3 bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 mb-4">
-            <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white font-extrabold text-xs">
-              B
-            </div>
+      {/* Edit Form */}
+      <form onSubmit={handleSave} className="bg-white rounded-xl border border-slate-200/80 shadow-xs p-6 space-y-6">
+        <div>
+          <h3 className="text-base font-semibold text-slate-900 border-b border-slate-100 pb-3">
+            Vehicle & Contact Details
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             <div>
-              <p className="font-bold text-slate-700 text-sm">Chase •••• 8812</p>
-              <p className="text-xs text-slate-400">Default Payment Method</p>
+              <label className="text-xs font-semibold text-slate-700 mb-1.5 block">Full Name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-3.5 py-2 rounded-lg border border-slate-200 bg-slate-50/50 text-xs font-medium focus:bg-white focus:border-[#ee8c2b] focus:ring-2 focus:ring-[#ee8c2b]/20 outline-none transition-all"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs font-semibold text-slate-700 mb-1.5 block">Vehicle Type</label>
+              <input
+                type="text"
+                value={vehicle}
+                onChange={(e) => setVehicle(e.target.value)}
+                className="w-full px-3.5 py-2 rounded-lg border border-slate-200 bg-slate-50/50 text-xs font-medium focus:bg-white focus:border-[#ee8c2b] focus:ring-2 focus:ring-[#ee8c2b]/20 outline-none transition-all"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs font-semibold text-slate-700 mb-1.5 block">Campus Permit / Plate #</label>
+              <input
+                type="text"
+                value={plate}
+                onChange={(e) => setPlate(e.target.value)}
+                className="w-full px-3.5 py-2 rounded-lg border border-slate-200 bg-slate-50/50 text-xs font-medium focus:bg-white focus:border-[#ee8c2b] focus:ring-2 focus:ring-[#ee8c2b]/20 outline-none transition-all"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs font-semibold text-slate-700 mb-1.5 block">Phone Number</label>
+              <input
+                type="text"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full px-3.5 py-2 rounded-lg border border-slate-200 bg-slate-50/50 text-xs font-medium focus:bg-white focus:border-[#ee8c2b] focus:ring-2 focus:ring-[#ee8c2b]/20 outline-none transition-all"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs font-semibold text-slate-700 mb-1.5 block">Email Address</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3.5 py-2 rounded-lg border border-slate-200 bg-slate-50/50 text-xs font-medium focus:bg-white focus:border-[#ee8c2b] focus:ring-2 focus:ring-[#ee8c2b]/20 outline-none transition-all"
+              />
             </div>
           </div>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Available to Withdraw</p>
-          <p className="text-2xl font-extrabold text-[#ee8c2b] mb-3">$412.50</p>
-          <button className="w-full py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-slate-800 transition-colors cursor-pointer">
-            Withdraw Now
+        </div>
+
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+          <button
+            type="submit"
+            className="px-5 py-2.5 bg-[#ee8c2b] hover:bg-[#d6761f] text-white text-xs font-semibold rounded-lg shadow-xs transition-colors cursor-pointer"
+          >
+            Save Profile
           </button>
         </div>
-      </div>
-
-      {/* Bottom Action Bar */}
-      <div className="flex items-center justify-between pt-2">
-        <button
-          onClick={() => setIsOnline(true)}
-          className="flex items-center gap-2 px-5 py-3 bg-[#ee8c2b] hover:bg-[#d6761f] text-white rounded-xl font-bold text-sm transition-colors cursor-pointer"
-        >
-          <Zap className="w-4 h-4" />
-          Go Online
-        </button>
-
-        <div className="flex items-center gap-5">
-          <button className="flex items-center gap-1.5 text-sm font-bold text-rose-500 hover:text-rose-600 cursor-pointer">
-            <LogOut className="w-4 h-4" />
-            Sign Out Account
-          </button>
-          <button className="text-sm font-bold text-slate-500 hover:text-slate-700 cursor-pointer">
-            Cancel
-          </button>
-          <button className="px-5 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-slate-800 transition-colors cursor-pointer">
-            Save Changes
-          </button>
-        </div>
-      </div>
+      </form>
     </div>
   );
 }

@@ -1,282 +1,380 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  ArrowRight,
+  Banknote,
+  Check,
+  CreditCard,
+  MapPin,
+  ShieldCheck,
+  Wallet,
+} from "lucide-react";
+
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-    CreditCard,
-    MapPin,
-    Clock,
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { useCart } from "@/context/cart-store";
+import { savedAddresses } from "@/data/appShell";
+import { vendors } from "@/data/vendorData";
+import { formatEta, formatNaira } from "@/utils/vendorUtils";
+import emptyBasket from "@/assets/illustrations/empty-basket.svg";
+import { cn } from "@/lib/utils";
 
-    ShieldCheck,
-    CheckCircle2,
-    ArrowRight,
-    Headset,
-    Wallet
-} from "lucide-react";
-import { Link } from "react-router-dom";
-import { Badge } from "@/components/ui/badge";
-import fries from "../../assets/images/fries.png"
-import burger from "../../assets/images/cakeburger.png"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
+type PaymentMethod = "wallet" | "card" | "transfer";
 
-} from "@/components/ui/carousel"
+const walletBalance = 12500;
+
+const paymentOptions: { id: PaymentMethod; label: string; hint: string; icon: typeof Wallet }[] = [
+  { id: "wallet", label: "Feasto wallet", hint: "Balance shown below", icon: Wallet },
+  { id: "card", label: "Card", hint: "Verve, Mastercard or Visa", icon: CreditCard },
+  { id: "transfer", label: "Bank transfer", hint: "Pay from your bank app", icon: Banknote },
+];
 
 export default function CheckoutPage() {
+  const navigate = useNavigate();
+  const { lines, count, subtotal } = useCart();
+
+  const vendor = vendors.find((entry) => entry.id === lines[0]?.vendorId);
+  const deliveryFee = vendor?.deliveryFee ?? 0;
+  const total = subtotal + (count > 0 ? deliveryFee : 0);
+
+  const [addressId, setAddressId] = useState(savedAddresses[0].id);
+  const [landmark, setLandmark] = useState("");
+  const [phone, setPhone] = useState("0803 000 0000");
+  const [note, setNote] = useState("");
+  const [contactless, setContactless] = useState(true);
+  const [payment, setPayment] = useState<PaymentMethod>("wallet");
+
+  if (count === 0) {
     return (
-        <div className="min-h-screen bg-neutral-50/50 py-10">
-            <div className="container mx-auto px-4 md:px-8 max-w-7xl">
-                <div className="mb-8 md:mb-12">
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-neutral-900 tracking-tight">Checkout</h1>
-                    <div className="flex items-center gap-3 text-sm text-neutral-500 font-medium mt-2">
-                        <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                        <span>Secure Checkout</span>
-                    </div>
-                </div>
-
-                <div className="flex flex-col lg:flex-row gap-12">
-                    {/* Main Content: Delivery & Payment Details */}
-                    <div className="flex-1 space-y-10 animate-in fade-in slide-in-from-left-6 duration-700">
-                        {/* Section 1: Delivery Information */}
-                        <div className="space-y-8">
-                            <div className="grid gap-8 p-6 md:p-10 bg-white rounded-[2.5rem] border border-neutral-100 shadow-sm transition-all duration-300">
-                                <div className="flex items-center gap-4">
-                                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-[#FDF3EA]  text-[#EE8C2B] flex items-center justify-center text-xl font-black "><MapPin className="h-5 w-5 sm:h-6 sm:w-6" /></div>
-                                    <div>
-                                        <h2 className="text-2xl sm:text-3xl font-black text-neutral-900 tracking-tight">Delivery Details</h2>
-                                        <p className="text-sm sm:text-lg text-neutral-500 font-medium ">Where should we meet you on campus?</p>
-                                    </div>
-                                </div>
-                                <div className="space-y-3">
-                                    <Label className="text-[10px] font-black uppercase tracking-[0.2em]  ml-4">Location</Label>
-                                    <Input placeholder="convenant university,otta" className="h-16 px-8 rounded-3xl border-neutral-100 bg-neutral-50/50 focus:bg-white transition-all font-bold placeholder:text-neutral-300" />
-                                </div>
-                                <div className="grid md:grid-cols-2 gap-8">
-                                    <div className="space-y-3">
-                                        <Label className="text-[10px] font-black uppercase tracking-[0.2em]  ml-4">Room / Flat Number</Label>
-                                        <div className="relative">
-                                            <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-400" />
-                                            <Input placeholder="e.g. 402B" className="h-16 pl-16 rounded-3xl border-neutral-100 bg-neutral-50/50 focus:bg-white transition-all font-bold placeholder:text-neutral-300" />
-                                        </div>
-                                    </div>
-                                    <div className="space-y-3">
-                                        <Label className="text-[10px] font-black uppercase tracking-[0.2em]  ml-4">Phone Number</Label>
-                                        <Input placeholder="e.g. 08000000000" className="h-16 px-8 rounded-3xl border-neutral-100 bg-neutral-50/50 focus:bg-white transition-all font-bold placeholder:text-neutral-300" />
-                                    </div>
-                                </div>
-
-                                <div className="flex flex-wrap items-center gap-4 pt-4">
-                                    <Badge variant="outline" className="h-10 sm:h-12 px-4 sm:px-6 rounded-2xl border-neutral-100 bg-neutral-50/30 text-neutral-500 font-bold gap-3 text-xs uppercase tracking-widest">
-                                        <Clock className="h-4 w-4 text-[#EE8C2B]" />
-                                        Delivery: 20-30 mins
-                                    </Badge>
-                                    <Badge variant="outline" className="h-10 sm:h-12 px-4 sm:px-6 rounded-2xl border-neutral-100 bg-neutral-50/30 text-neutral-500 font-bold gap-3 text-xs uppercase tracking-widest">
-                                        <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                                        Contactless Delivery
-                                    </Badge>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Section 2: Payment Method */}
-                        <div className="space-y-8 p-6 md:p-10 bg-white rounded-[2.5rem] border border-neutral-100 shadow-sm ">
-                            <div className="flex items-center gap-4">
-                                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-[#FDF3EA]  text-[#EE8C2B] flex items-center justify-center text-xl font-black"><Wallet className="h-5 w-5 sm:h-6 sm:w-6" /></div>
-                                <div>
-                                    <h2 className="text-2xl sm:text-3xl font-black text-neutral-900 tracking-tight">Payment Method</h2>
-                                    <p className="text-sm sm:text-lg text-neutral-500 font-medium ">Fast and secure options for students</p>
-                                </div>
-                            </div>
-
-                            <div className="space-y-6">
-                                <Tabs defaultValue="wallet" className="w-full space-y-8">
-                                    <TabsList className="bg-transparent p-0 w-full mt-10">
-                                        <Carousel className="w-full" opts={{ align: "start", loop: false }}>
-                                            <CarouselContent className="-ml-2">
-                                                <CarouselItem className="basis-[85%] sm:basis-1/2 pl-2">
-                                                    <TabsTrigger
-                                                        value="wallet"
-                                                        className="w-full data-[state=active]:border-[#EE8C2B] data-[state=active]:shadow-xl border-4 border-transparent flex items-center gap-4 sm:gap-5 p-4 sm:p-6 bg-white rounded-[2rem] sm:rounded-[2.5rem] text-left transition-all group"
-                                                    >
-                                                        <div className="h-10 w-10 sm:h-14 sm:w-14 shrink-0 rounded-xl sm:rounded-2xl bg-[#EE8C2B] text-white flex items-center justify-center shadow-lg shadow-orange-500/20">
-                                                        <Wallet className="h-5 w-5 sm:h-6 sm:w-6" />
-                                                        </div>
-                                                        <div className="flex-1 min-w-0">
-                                                            <p className="font-black text-neutral-900 text-base sm:text-lg leading-none truncate">Campus Wallet</p>
-                                                            <p className="text-[10px] sm:text-xs text-neutral-400 mt-1 font-medium italic truncate">Fast & Recommended</p>
-                                                        </div>
-                                                        <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6 text-[#EE8C2B] opacity-0 group-data-[state=active]:opacity-100 transition-opacity" />
-                                                    </TabsTrigger>
-                                                </CarouselItem>
-                                                <CarouselItem className="basis-[85%] sm:basis-1/2 pl-2">
-                                                    <TabsTrigger
-                                                        value="card"
-                                                        className="w-full data-[state=active]:border-[#EE8C2B] data-[state=active]:shadow-xl border border-neutral-100 flex items-center gap-4 sm:gap-5 p-4 sm:p-6 bg-white rounded-[2rem] sm:rounded-[2.5rem] text-left transition-all group"
-                                                    >
-                                                        <div className="h-10 w-10 sm:h-14 sm:w-14 shrink-0 rounded-xl sm:rounded-2xl bg-neutral-100 text-neutral-400 group-data-[state=active]:bg-[#EE8C2B] group-data-[state=active]:text-white flex items-center justify-center transition-all">
-                                                            <CreditCard className="h-5 w-5 sm:h-6 sm:w-6" />
-                                                        </div>
-                                                        <div className="flex-1 min-w-0">
-                                                            <p className="font-black text-neutral-900 text-base sm:text-lg leading-none truncate">Credit Card</p>
-                                                            <p className="text-[10px] sm:text-xs text-neutral-400 mt-1 font-medium italic truncate">Visa, MC, or Amex</p>
-                                                        </div>
-                                                        <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6 text-[#EE8C2B] opacity-0 group-data-[state=active]:opacity-100 transition-opacity" />
-                                                    </TabsTrigger>
-                                                </CarouselItem>
-                                            </CarouselContent>
-                                        </Carousel>
-                                    </TabsList>
-
-                                    <TabsContent value="wallet" className="mt-8 sm:mt-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                                        <div className="p-6 sm:p-10 bg-[#0a0f1d] rounded-[2rem] sm:rounded-[2.5rem] text-white space-y-6 sm:space-y-8 relative overflow-hidden">
-                                            <div className="absolute -top-10 -right-10 h-48 w-48 sm:h-64 sm:w-64 bg-[#EE8C2B]/10 rounded-full blur-[80px] sm:blur-[100px]"></div>
-                                            <div className="relative z-10 space-y-6">
-                                                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                                                    <div>
-                                                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#EE8C2B]">Current Balance</Label>
-                                                        <p className="text-3xl sm:text-5xl font-black mt-2">$42.50</p>
-                                                    </div>
-                                                    <Badge className="bg-[#EE8C2B] text-white border-0 px-4 py-2 rounded-xl font-black text-[10px]">RECOMMENDED</Badge>
-                                                </div>
-                                                <div className="h-px bg-white/10"></div>
-                                                <p className="text-xs sm:text-sm text-neutral-400 font-medium italic">Insufficient funds? Your linked backup method will be used.</p>
-                                                <Button variant="outline" className="w-full h-12 sm:h-14 rounded-xl sm:rounded-2xl border-white/10 bg-white/5 text-white hover:bg-white/10 font-black uppercase tracking-widest text-[10px]">
-                                                    Quick Top-up
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </TabsContent>
-
-                                    <TabsContent value="card" className="mt-8 sm:mt-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                                        <div className="p-6 sm:p-10 bg-[#0a0f1d] rounded-[2rem] sm:rounded-[2.5rem] text-white space-y-6 sm:space-y-8 overflow-hidden relative">
-                                            <div className="absolute -top-10 -right-10 h-48 w-48 sm:h-64 sm:w-64 bg-[#EE8C2B]/10 rounded-full blur-[80px] sm:blur-[100px]"></div>
-                                            <div className="relative z-10 space-y-6">
-                                                <div className="space-y-3">
-                                                    <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-[#EE8C2B] ml-2">Card Number</Label>
-                                                    <Input placeholder="0000 0000 0000 0000" className="h-14 sm:h-16 bg-white/5 border-white/10 text-white placeholder:text-white/20 rounded-2xl sm:rounded-3xl font-mono text-base sm:text-lg px-6 sm:px-8 tracking-widest focus:bg-white/10 transition-all border-none ring-1 ring-white/10" />
-                                                </div>
-                                                <div className="grid grid-cols-2 gap-8">
-                                                    <div className="space-y-3">
-                                                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-4">Expiry Date</Label>
-                                                        <Input placeholder="MM / YY" className="h-16 bg-white/5 border-white/10 text-white placeholder:text-white/20 rounded-3xl font-mono text-center focus:bg-white/10 transition-all border-none ring-1 ring-white/10" />
-                                                    </div>
-                                                    <div className="space-y-3">
-                                                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-4">Secret CVV</Label>
-                                                        <Input placeholder="123" className="h-16 bg-white/5 border-white/10 text-white placeholder:text-white/20 rounded-3xl font-mono text-center focus:bg-white/10 transition-all border-none ring-1 ring-white/10" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </TabsContent>
-                                </Tabs>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Sidebar: Order Summary */}
-                    <aside className="lg:w-[440px] shrink-0 animate-in fade-in slide-in-from-right-8 duration-1000">
-                        <div className="sticky top-12 space-y-8">
-                            <Card className="rounded-[2rem] border-neutral-100 shadow-xl shadow-neutral-100/50 overflow-hidden">
-                                <div className="p-6 md:p-10 space-y-10">
-                                    <div className="absolute -bottom-10 -left-10 h-32 w-32 bg-white/10 rounded-full blur-3xl"></div>
-                                    <div className="relative z-10">
-                                        <h3 className="text-2xl font-black tracking-tight">Order Summary</h3>
-                                    </div>
-                                </div>
-                                <CardContent className="p-5  space-y-8 bg-white">
-                                    {/* Items */}
-                                    <div className="space-y-6">
-                                        {[
-                                            { name: "Signature Burger", price: 12.99, qty: 1, img: burger },
-                                            { name: "Truffle Fries", price: 6.50, qty: 1, img: fries }
-                                        ].map((item, idx) => (
-                                            <div key={idx} className="flex items-center justify-between group">
-                                                <div className="flex gap-4 items-center">
-                                                    <img src={item.img} alt="" className="h-8 w-8 rounded-xl bg-neutral-100 flex items-center justify-center text-[10px] font-black text-neutral-900 shadow-inner" />
-
-                                                    <div>
-                                                        <p className="font-black text-neutral-900 uppercase tracking-tight text-sm">{item.name}</p>
-                                                        <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-widest mt-0.5">Classic Preparation</p>
-                                                    </div>
-                                                </div>
-                                                <p className="text-sm font-black text-neutral-900 tracking-tight">${item.price.toFixed(2)}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-
-                                    <div className="h-px bg-neutral-100"></div>
-
-                                    {/* Charges */}
-                                    <div className="space-y-4">
-                                        <div className="flex justify-between text-sm">
-                                            <span className="text-neutral-400 font-bold uppercase tracking-widest text-[10px]">Subtotal</span>
-                                            <span className="text-neutral-900 font-black tracking-tight">$24.49</span>
-                                        </div>
-                                        <div className="flex justify-between text-sm">
-                                            <span className="text-neutral-400 font-bold uppercase tracking-widest text-[10px]">Delivery fee</span>
-                                            <span className="text-emerald-500 font-black tracking-tight">-$2.45</span>
-                                        </div>
-                                        <div className="flex justify-between text-sm">
-                                            <span className="text-neutral-400 font-bold uppercase tracking-widest text-[10px] italic">Taxes</span>
-                                            <span className="text-emerald-500 font-black tracking-tight uppercase">Free</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="h-px bg-neutral-900/10 shadow-sm"></div>
-
-                                    {/* Total */}
-                                    <div className="  bg-neutral-50 p-6 rounded-[2rem] border border-neutral-100">
-                                        <div className="flex justify-between items-center">
-                                            <p className="text-2xl font-black uppercase tracking-[0.3em]  mb-1">Total</p>
-                                            <p className="text-2xl text-[#EE8C2B] font-black tracking-tighter">$22.04</p>
-                                        </div>
-                                    </div>
-                                    {/* form for promo code */}
-                                    <form action="" className="flex gap-2">
-                                        <input type="text" placeholder="Promo Code" className="w-full h-12 rounded-2xl border border-neutral-100 px-4 text-sm font-black uppercase tracking-widest" />
-                                        <button type="submit" className="w-30 h-12 rounded-2xl bg-neutral-900 text-white font-black text-xl hover:bg-black hover:-translate-y-2 transition-all group relative overflow-hidden shadow-2xl shadow-black/20">Apply</button>
-                                    </form>
-
-                                    <Button
-                                        asChild
-                                        className="w-full h-20 rounded-[2rem] bg-neutral-900 text-white font-black text-xl hover:bg-black hover:-translate-y-2 transition-all group relative overflow-hidden shadow-2xl shadow-black/20"
-                                    >
-                                        <Link to="/tracking">
-                                            <span className="relative z-10 flex items-center justify-center gap-3">
-                                                Place Order
-                                                <ArrowRight className="h-6 w-6 group-hover:translate-x-2 transition-transform" />
-                                            </span>
-                                            <div className="absolute inset-0 bg-gradient-to-r from-[#EE8C2B] to-[#D67B22] opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                        </Link>
-                                    </Button>
-
-                                    <div className="flex items-center justify-center gap-3 pt-2">
-                                        <ShieldCheck className="h-5 w-5 text-emerald-500" />
-                                        <span className="text-[10px] font-black text-neutral-400 uppercase tracking-widest italic">By placing your order, you agree to FEASTO' Terms of Service and
-                                            Privacy Policy.</span>
-                                    </div>
-                                </CardContent>
-                            </Card>
-
-                            {/* Promo Code Card */}
-                            <div className="p-8 bg-transparent rounded-[2.5rem] border-2 border-dashed border-neutral-400 shadow-xl shadow-black/5 flex items-center justify-between group hover:border-[#EE8C2B]/30 transition-all">
-                                <div className="flex items-center gap-4">
-                                    <div className="h-12 w-12 rounded-2xl bg-neutral-50 flex items-center justify-center text-[#EE8C2B] group-hover:scale-110 transition-transform">
-                                        <Headset className="h-6 w-6" />
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-black text-neutral-900 uppercase tracking-tight">Need Help?</p>
-                                        <p className="text-xs text-neutral-400 font-medium italic">Contact our support team</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </aside>
-                </div>
-            </div>
-        </div>
+      <div className="mx-auto flex w-full max-w-[520px] flex-col items-center px-4 py-14 text-center">
+        <img
+          src={emptyBasket}
+          alt=""
+          aria-hidden="true"
+          width={320}
+          height={240}
+          className="h-40 w-auto"
+        />
+        <h1 className="mt-4 font-display text-2xl font-bold text-ink">Your basket is empty</h1>
+        <p className="mt-2 max-w-[34ch] text-[14px] leading-relaxed text-ink-muted">
+          Pick a kitchen near you and the basket, delivery fee and total appear here.
+        </p>
+        <Button asChild className="mt-5 h-11 rounded-md px-5 text-[14px] font-semibold">
+          <Link to="/vendors">Browse vendors</Link>
+        </Button>
+      </div>
     );
-}   
+  }
+
+  return (
+    <div className="mx-auto w-full max-w-[1100px] px-4 pt-4 pb-40 sm:px-8 lg:pt-6 lg:pb-12">
+      <h1 className="font-display text-2xl font-bold text-ink sm:text-3xl">Checkout</h1>
+      <p className="mt-1 flex items-center gap-1.5 text-[13px] text-ink-muted">
+        <ShieldCheck aria-hidden="true" className="size-4 text-primary" />
+        Payment is confirmed before the vendor starts cooking.
+      </p>
+
+      <div className="mt-5 grid gap-5 lg:grid-cols-[1fr_360px] lg:items-start lg:gap-8">
+        <div className="flex flex-col gap-4">
+          {/* Delivery address */}
+          <section
+            aria-labelledby="delivery-heading"
+            className="rounded-xl border border-hairline bg-background p-4 sm:p-5"
+          >
+            <h2 id="delivery-heading" className="flex items-center gap-2 text-[15px] font-semibold text-ink">
+              <MapPin aria-hidden="true" className="size-4 text-primary" />
+              Delivery address
+            </h2>
+
+            <div className="mt-3 grid gap-2 sm:grid-cols-3">
+              {savedAddresses.map((address) => {
+                const isActive = address.id === addressId;
+                return (
+                  <label
+                    key={address.id}
+                    className={cn(
+                      "flex cursor-pointer items-start gap-2.5 rounded-md border p-3 transition-colors",
+                      isActive
+                        ? "border-primary bg-primary/5"
+                        : "border-hairline hover:border-primary/35",
+                    )}
+                  >
+                    <input
+                      type="radio"
+                      name="address"
+                      className="sr-only"
+                      checked={isActive}
+                      onChange={() => setAddressId(address.id)}
+                    />
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "mt-0.5 grid size-4 shrink-0 place-items-center rounded-full border",
+                        isActive ? "border-primary bg-primary text-primary-foreground" : "border-hairline",
+                      )}
+                    >
+                      {isActive ? <Check className="size-2.5" strokeWidth={3} /> : null}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-[13px] font-semibold text-ink">
+                        {address.label}
+                      </span>
+                      <span className="mt-0.5 block text-[12px] leading-snug text-ink-muted">
+                        {address.line}, {address.area}
+                      </span>
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="landmark" className="text-[12px] font-medium text-ink">
+                  Landmark or flat number
+                </Label>
+                <Input
+                  id="landmark"
+                  value={landmark}
+                  onChange={(event) => setLandmark(event.target.value)}
+                  placeholder="e.g. Blue gate beside the pharmacy"
+                  className="h-11 rounded-md border-hairline text-[14px]"
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="phone" className="text-[12px] font-medium text-ink">
+                  Phone number for the rider
+                </Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  value={phone}
+                  onChange={(event) => setPhone(event.target.value)}
+                  className="h-11 rounded-md border-hairline text-[14px]"
+                />
+              </div>
+            </div>
+
+            <div className="mt-3 flex flex-col gap-1.5">
+              <Label htmlFor="note" className="text-[12px] font-medium text-ink">
+                Note for the kitchen <span className="font-normal text-ink-muted">(optional)</span>
+              </Label>
+              <Textarea
+                id="note"
+                value={note}
+                onChange={(event) => setNote(event.target.value)}
+                rows={2}
+                placeholder="No onions, extra pepper, call when you arrive"
+                className="min-h-[64px] resize-none rounded-md border-hairline text-[14px]"
+              />
+            </div>
+
+            <div className="mt-4 flex items-center justify-between gap-3 border-t border-hairline pt-3">
+              <div>
+                <Label htmlFor="contactless" className="text-[13px] font-medium text-ink">
+                  Leave at the door
+                </Label>
+                <p className="text-[12px] text-ink-muted">The rider calls to confirm drop-off.</p>
+              </div>
+              <Switch id="contactless" checked={contactless} onCheckedChange={setContactless} />
+            </div>
+          </section>
+
+          {/* Payment */}
+          <section
+            aria-labelledby="payment-heading"
+            className="rounded-xl border border-hairline bg-background p-4 sm:p-5"
+          >
+            <h2 id="payment-heading" className="flex items-center gap-2 text-[15px] font-semibold text-ink">
+              <Wallet aria-hidden="true" className="size-4 text-primary" />
+              Payment
+            </h2>
+
+            <div className="mt-3 flex flex-col gap-1.5">
+              {paymentOptions.map((option) => {
+                const isActive = payment === option.id;
+                return (
+                  <label
+                    key={option.id}
+                    className={cn(
+                      "flex cursor-pointer items-center gap-3 rounded-md border px-3 py-2.5 transition-colors",
+                      isActive ? "border-primary bg-primary/5" : "border-hairline hover:border-primary/35",
+                    )}
+                  >
+                    <input
+                      type="radio"
+                      name="payment"
+                      className="sr-only"
+                      checked={isActive}
+                      onChange={() => setPayment(option.id)}
+                    />
+                    <option.icon
+                      aria-hidden="true"
+                      className={cn("size-4 shrink-0", isActive ? "text-primary" : "text-ink-muted")}
+                    />
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[13px] font-semibold text-ink">{option.label}</span>
+                      <span className="block text-[12px] text-ink-muted">{option.hint}</span>
+                    </span>
+                    {option.id === "wallet" ? (
+                      <span className="text-[13px] font-semibold text-ink">
+                        {formatNaira(walletBalance)}
+                      </span>
+                    ) : null}
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "grid size-4 place-items-center rounded-full border",
+                        isActive ? "border-primary bg-primary text-primary-foreground" : "border-hairline",
+                      )}
+                    >
+                      {isActive ? <Check className="size-2.5" strokeWidth={3} /> : null}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+
+            {payment === "wallet" && total > walletBalance ? (
+              <p className="mt-3 rounded-sm bg-surface px-3 py-2 text-[12px] text-ink-muted">
+                The wallet is short by {formatNaira(total - walletBalance)}. Top up or switch to card.
+              </p>
+            ) : null}
+
+            {payment === "card" ? (
+              <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_88px]">
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="card" className="text-[12px] font-medium text-ink">
+                    Card number
+                  </Label>
+                  <Input
+                    id="card"
+                    inputMode="numeric"
+                    placeholder="0000 0000 0000 0000"
+                    className="h-11 rounded-md border-hairline font-mono text-[14px] tracking-wider"
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="cvv" className="text-[12px] font-medium text-ink">
+                    CVV
+                  </Label>
+                  <Input
+                    id="cvv"
+                    inputMode="numeric"
+                    placeholder="123"
+                    className="h-11 rounded-md border-hairline font-mono text-[14px]"
+                  />
+                </div>
+              </div>
+            ) : null}
+
+            {payment === "transfer" ? (
+              <div className="mt-3 rounded-md bg-surface p-3 text-[12px] leading-relaxed text-ink-muted">
+                Transfer to the Feasto collection account shown on the next screen. The vendor
+                starts cooking once payment lands.
+              </div>
+            ) : null}
+          </section>
+        </div>
+
+        {/* Summary */}
+        <aside className="lg:sticky lg:top-[88px]">
+          <section
+            aria-labelledby="summary-heading"
+            className="rounded-xl border border-hairline bg-background"
+          >
+            <div className="border-b border-hairline px-4 py-3">
+              <h2 id="summary-heading" className="text-[15px] font-semibold text-ink">
+                Order summary
+              </h2>
+              {vendor ? (
+                <p className="mt-0.5 text-[12px] text-ink-muted">
+                  {vendor.name} · {formatEta(vendor.etaMin, vendor.etaMax)}
+                </p>
+              ) : null}
+            </div>
+
+            <ul className="px-4">
+              {lines.map((line) => (
+                <li key={line.key} className="flex gap-3 border-b border-hairline py-3 last:border-b-0">
+                  <div className="relative size-12 shrink-0 overflow-hidden rounded-md bg-surface-strong">
+                    {line.image ? (
+                      <img
+                        src={line.image}
+                        alt=""
+                        width={96}
+                        height={96}
+                        loading="lazy"
+                        className="absolute inset-0 size-full object-cover"
+                      />
+                    ) : null}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="line-clamp-2 text-[13px] leading-snug font-semibold text-ink">
+                      {line.name}
+                    </p>
+                    <p className="mt-0.5 text-[12px] text-ink-muted">
+                      {line.qty} × {formatNaira(line.unitPrice)}
+                    </p>
+                  </div>
+                  <p className="text-[13px] font-semibold text-ink">
+                    {formatNaira(line.unitPrice * line.qty)}
+                  </p>
+                </li>
+              ))}
+            </ul>
+
+            <dl className="flex flex-col gap-1.5 border-t border-hairline px-4 py-3 text-[13px]">
+              <div className="flex items-center justify-between">
+                <dt className="text-ink-muted">Subtotal</dt>
+                <dd className="font-medium text-ink">{formatNaira(subtotal)}</dd>
+              </div>
+              <div className="flex items-center justify-between">
+                <dt className="text-ink-muted">Delivery</dt>
+                <dd className="font-medium text-ink">{formatNaira(deliveryFee)}</dd>
+              </div>
+              <div className="flex items-center justify-between border-t border-hairline pt-2 text-[15px]">
+                <dt className="font-semibold text-ink">Total</dt>
+                <dd className="font-semibold text-ink">{formatNaira(total)}</dd>
+              </div>
+            </dl>
+
+            <div className="hidden px-4 pb-4 lg:block">
+              <Button
+                type="button"
+                onClick={() => navigate("/tracking")}
+                className="h-11 w-full justify-between rounded-md px-4 text-[14px] font-semibold"
+              >
+                <span>Place order</span>
+                <ArrowRight aria-hidden="true" className="size-4" />
+              </Button>
+              <p className="mt-2 text-center text-[11px] text-ink-muted">
+                You can cancel free of charge until the vendor starts cooking.
+              </p>
+            </div>
+          </section>
+        </aside>
+      </div>
+
+      {/* Phone action bar */}
+      <div className="fixed inset-x-0 bottom-[calc(3.5rem+env(safe-area-inset-bottom))] z-30 border-t border-hairline bg-background/97 px-3 py-2.5 backdrop-blur-md lg:hidden">
+        <div className="flex items-center gap-3">
+          <div className="min-w-0">
+            <p className="text-[11px] text-ink-muted">Total incl. delivery</p>
+            <p className="text-[15px] font-semibold text-ink">{formatNaira(total)}</p>
+          </div>
+          <Button
+            type="button"
+            onClick={() => navigate("/tracking")}
+            className="h-11 flex-1 rounded-md text-[14px] font-semibold"
+          >
+            Place order
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}

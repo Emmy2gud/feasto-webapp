@@ -1,246 +1,246 @@
-import { Menu, MapPin, X, User, LogIn, UserPlus, Store, Bike, Settings, LogOut, ScrollText } from "lucide-react";
+import { useState } from "react";
+import type { FormEvent } from "react";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  ChevronDown,
+  LogOut,
+  Search,
+  Settings,
+  ShoppingBag,
+  User,
+} from "lucide-react";
+
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import logo from "@/assets/logo/logo.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
-
   DropdownMenuItem,
-
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Logo } from "@/components/marketing/Logo";
+import { DeliveryAddressMenu } from "./DeliveryAddressMenu";
+import { useCart } from "@/context/cart-store";
+import { accountEmail, accountName, savedAddresses } from "@/data/appShell";
+import type { SavedAddress } from "@/data/appShell";
+import { useScrolled } from "@/hooks/useScrolled";
+import { cn } from "@/lib/utils";
+import avatar from "@/assets/images/profile.png";
 
+/**
+ * Shell header for the ordering area. It carries the two things a delivery app
+ * must always show — where the food is going and what is in the basket — plus
+ * search on listing routes.
+ */
 export function MainHeader() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation();
+  const scrolled = useScrolled(4);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [address, setAddress] = useState<SavedAddress>(savedAddresses[0]);
+  const { count } = useCart();
 
-  // Close menu when route changes
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [location]);
+  const query = searchParams.get("q") ?? "";
+  const showSearch = pathname.startsWith("/vendors") || pathname.startsWith("/vendor/");
 
-  // Prevent scroll when menu is open
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-  }, [isMenuOpen]);
+  function handleSearch(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const value = String(new FormData(event.currentTarget).get("q") ?? "").trim();
+    const params = new URLSearchParams();
+    if (value) params.set("q", value);
+    navigate({ pathname: "/vendors", search: params.toString() });
+  }
+
+  const cartLink = (
+    <Link
+      to="/checkout"
+      aria-label={`Checkout, ${count} ${count === 1 ? "item" : "items"} in the basket`}
+      className="relative grid size-10 shrink-0 place-items-center rounded-md border border-hairline text-ink transition-colors hover:border-primary/40 hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+    >
+      <ShoppingBag aria-hidden="true" className="size-[18px]" />
+      {count > 0 ? (
+        <span
+          aria-hidden="true"
+          className="absolute -top-1.5 -right-1.5 grid size-[18px] place-items-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground"
+        >
+          {count}
+        </span>
+      ) : null}
+    </Link>
+  );
 
   return (
-    <header className="sticky top-0 z-10 w-full border-b bg-white/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60 transition-all duration-300">
-      <div className="container flex h-16 items-center justify-between px-4 md:px-8 max-w-7xl mx-auto">
-        {/* Logo & Mobile Menu Toggle */}
-        <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden h-12 w-12 rounded-2xl bg-neutral-50 hover:bg-neutral-100 transition-all"
-            onClick={() => setIsMenuOpen(true)}
-          >
-            <Menu className="h-6 w-6 text-neutral-900" />
-          </Button>
+    <header
+      className={cn(
+        "sticky top-0 z-40 w-full border-b bg-background transition-colors",
+        scrolled ? "border-hairline shadow-soft" : "border-hairline/80",
+      )}
+    >
+      {/* Compact app bar: mark, destination, basket, account. */
+      }
+      <div className="flex h-14 items-center gap-2 pl-3 pr-2.5 lg:hidden">
+        <Link
+          to="/"
+          aria-label="Feasto home"
+          className="shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+        >
+          <Logo showWordmark={false} />
+        </Link>
 
-          <Link to="/" className="flex items-center gap-3 group transition-transform active:scale-95">
-            <div className="h-10 w-10 rounded-xl overflow-hidden shadow-sm group-hover:shadow-md transition-all">
-              <img src={logo} alt="Feasto Logo" className="w-full h-full object-cover" />
-            </div>
-            <span className="font-black text-2xl tracking-tighter text-neutral-900 group-hover:text-[#EE8C2B] transition-colors">
-              FEASTO
-            </span>
-          </Link>
-        </div>
+        <DeliveryAddressMenu
+          address={address}
+          onSelect={setAddress}
+          triggerClassName="flex-1"
+        />
 
+        {cartLink}
 
+        <Link
+          to="/profile"
+          aria-label="Your account"
+          className="size-9 shrink-0 overflow-hidden rounded-md border border-hairline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+        >
+          <img
+            src={avatar}
+            alt=""
+            width={36}
+            height={36}
+            className="size-full object-cover"
+          />
+        </Link>
+      </div>
 
-        {/* Desktop Navigation / Search */}
-        <div className="hidden md:flex items-center flex-1 max-w-xl mx-8 gap-4">
-          <div className="relative flex-1">
-            <MapPin className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+      {showSearch ? (
+        <form onSubmit={handleSearch} className="border-t border-hairline px-3 py-2 lg:hidden">
+          <div className="relative">
+            <Search
+              aria-hidden="true"
+              className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-muted"
+            />
             <Input
+              key={query}
+              name="q"
               type="search"
-              placeholder="Enter delivery address..."
-              className="w-90 bg-background pl-8 rounded-full"
+              defaultValue={query}
+              placeholder="Search vendors, dishes or areas"
+              aria-label="Search vendors"
+              className="h-11 rounded-lg border-transparent bg-surface pr-3 pl-9 text-[15px] text-ink placeholder:text-ink-muted focus-visible:border-primary/50 focus-visible:bg-background"
             />
           </div>
-        </div>
-        {/* Desktop Navigation */}
-        {/* <nav className="hidden md:flex items-center gap-8 ml-20">
+        </form>
+      ) : null}
 
-   
-        </nav> */}
+      {/* Desktop bar. */}
+      <div className="mx-auto hidden h-[72px] w-full max-w-[1280px] items-center gap-3 px-8 lg:flex lg:px-12">
+        <Link
+          to="/"
+          aria-label="Feasto home"
+          className="mr-1 shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+        >
+          <Logo />
+        </Link>
 
+        <DeliveryAddressMenu
+          address={address}
+          onSelect={setAddress}
+          triggerClassName="max-w-[300px]"
+        />
 
-        <div className="flex items-center gap-3">
+        <form onSubmit={handleSearch} className="relative w-full max-w-[380px]">
+          <Search
+            aria-hidden="true"
+            className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-muted"
+          />
+          <Input
+            key={query}
+            name="q"
+            type="search"
+            defaultValue={query}
+            placeholder="Search vendors, dishes or areas"
+            aria-label="Search vendors"
+            className="h-10 rounded-lg border-transparent bg-surface pr-3 pl-9 text-sm text-ink placeholder:text-ink-muted focus-visible:border-primary/50 focus-visible:bg-background"
+          />
+        </form>
 
-          {/* creating dropdown menu and bringing the menu untop of the navbar*/}
+        <div className="ml-auto flex items-center gap-2">
+          <Button
+            asChild
+            variant="outline"
+            className="h-10 gap-2 rounded-lg border-hairline px-3 font-semibold text-ink hover:border-primary/40 hover:bg-surface"
+          >
+            <Link to="/checkout">
+              <ShoppingBag aria-hidden="true" className="size-4" />
+              Basket
+              {count > 0 ? (
+                <span className="grid size-5 place-items-center rounded-sm bg-primary text-[11px] font-bold text-primary-foreground">
+                  {count}
+                </span>
+              ) : null}
+            </Link>
+          </Button>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className=" p-2 rounded-2xl bg-neutral-900 text-white flex items-center justify-center hover:bg-black transition-all shadow-lg active:scale-90">
-
-                <User className="h-5 w-5" />
-              </div>
+              <button
+                type="button"
+                className="flex h-10 items-center gap-2 rounded-lg border border-hairline pr-2 pl-1.5 text-ink transition-colors hover:border-primary/40 hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+              >
+                <img
+                  src={avatar}
+                  alt=""
+                  width={28}
+                  height={28}
+                  className="size-7 rounded-sm object-cover"
+                />
+                <span className="max-w-[104px] truncate text-[13px] font-semibold">
+                  {accountName}
+                </span>
+                <ChevronDown aria-hidden="true" className="size-3.5 text-ink-muted" />
+              </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className=" z-50">
-              <DropdownMenuItem>
-                <Link to="/profile" className="flex items-center gap-2">
-                  <User className="h-4 w-4" />
-                  Profile
 
+            <DropdownMenuContent align="end" className="w-60 rounded-xl p-1.5">
+              <DropdownMenuLabel className="px-2 py-1.5 font-normal">
+                <span className="block text-[13px] font-semibold text-ink">
+                  {accountName}
+                </span>
+                <span className="block truncate text-[12px] text-ink-muted">
+                  {accountEmail}
+                </span>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem asChild className="gap-2.5 rounded-md py-2 text-[13px]">
+                <Link to="/profile">
+                  <User aria-hidden="true" className="size-4 text-ink-muted" />
+                  Your profile
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/settings" className="flex items-center gap-2">
-                  <Settings className="h-4 w-4" />
-                  Settings
-
+              <DropdownMenuItem asChild className="gap-2.5 rounded-md py-2 text-[13px]">
+                <Link to="/settings">
+                  <Settings aria-hidden="true" className="size-4 text-ink-muted" />
+                  Account settings
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/login" className="flex items-center gap-2">
-                  <LogIn className="h-4 w-4" />
-                  Login
-
+              <DropdownMenuItem asChild className="gap-2.5 rounded-md py-2 text-[13px]">
+                <Link to="/tracking">
+                  <ShoppingBag aria-hidden="true" className="size-4 text-ink-muted" />
+                  Current order
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Link to="/signup" className="flex items-center gap-2">
-                  <UserPlus className="h-4 w-4" />
-                  Signup
 
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-
-              </DropdownMenuItem>
-              <DropdownMenuItem className="bg-red-200">
-                <Link to="/logout" className="flex items-center gap-2 text-red-500">
-                  <LogOut className="h-4 w-4 text-red-500" />
-                  Logout
-
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild className="gap-2.5 rounded-md py-2 text-[13px]">
+                <Link to="/login">
+                  <LogOut aria-hidden="true" className="size-4 text-ink-muted" />
+                  Sign out
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <Link to="/checkout" className="relative h-12 w-12 rounded-2xl bg-[#EE8C2B] text-white flex items-center justify-center hover:bg-[#D67B22] transition-all shadow-lg shadow-[#EE8C2B]/20 active:scale-90 md:ml-2">
-            < ScrollText className="h-5 w-5" />
-            <span className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full bg-white text-[#EE8C2B] text-[10px] font-black border-2 border-[#EE8C2B] flex items-center justify-center shadow-sm">
-              2
-            </span>
-          </Link>
         </div>
-      </div>
-
-      {/* Modern Mobile Menu Slider */}
-      <div
-        className={`fixed bg-white h-screen inset-0 z-[110] md:hidden transition-all duration-500 ${isMenuOpen ? 'visible opacity-100' : 'invisible opacity-0'}`}
-      >
-        {/* Backdrop */}
-        <div
-          className="absolute inset-0 bg-neutral-900/60 backdrop-blur-sm transition-all duration-500"
-          onClick={() => setIsMenuOpen(false)}
-        ></div>
-
-        {/* Menu Content */}
-        <aside
-          className={`absolute top-0 left-0 bottom-0 w-[85%] max-w-[360px] bg-white shadow-2xl transition-transform duration-500 ease-out flex flex-col ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
-        >
-          {/* Menu Header */}
-          <div className="p-6 flex items-center justify-between border-b border-neutral-50">
-            <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-lg overflow-hidden">
-                <img src={logo} alt="Logo" className="w-full h-full object-cover" />
-              </div>
-              <span className="font-black text-xl tracking-tighter">FEASTO</span>
-            </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMenuOpen(false)}
-              className="h-10 w-10 rounded-xl bg-neutral-50"
-            >
-              <X className="h-5 w-5 text-neutral-900" />
-            </Button>
-          </div>
-
-          {/* Menu Body */}
-          <div className="flex-1 overflow-y-auto py-8 px-6 space-y-10">
-            {/* Main Navigation */}
-            <div className="space-y-6">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-4">Explore Campus</p>
-              <nav className="space-y-2">
-                {[
-                  { icon: <Store className="h-5 w-5" />, label: "Food Vendors", path: "/vendors" },
-                  { icon: <Bike className="h-5 w-5" />, label: "Rider Network", path: "/about-rider" },
-                  { icon: <MapPin className="h-5 w-5" />, label: "Join Campus", path: "/about-vendors" },
-                ].map((item, idx) => (
-                  <Link
-                    key={idx}
-                    to={item.path}
-                    className="flex items-center gap-4 p-4 rounded-2xl hover:bg-neutral-50 transition-all group"
-                  >
-                    <div className="h-10 w-10 rounded-xl bg-[#FDF3EA] text-[#EE8C2B] flex items-center justify-center group-hover:scale-110 transition-transform">
-                      {item.icon}
-                    </div>
-                    <span className="font-bold text-neutral-900">{item.label}</span>
-                  </Link>
-                ))}
-              </nav>
-            </div>
-
-            {/* Account Actions */}
-            <div className="space-y-6">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-4">Your Account</p>
-              <div className="grid gap-3">
-                <Link to="/login" className="flex items-center gap-4 p-4 rounded-2xl bg-neutral-50 hover:bg-neutral-100 transition-all">
-                  <div className="h-10 w-10 rounded-xl bg-white text-neutral-900 flex items-center justify-center border border-neutral-100 shadow-sm">
-                    <LogIn className="h-5 w-5" />
-                  </div>
-                  <span className="font-bold text-neutral-900">Login</span>
-                </Link>
-                <Link to="/signup" className="flex items-center gap-4 p-4 rounded-2xl bg-[#EE8C2B] hover:bg-[#D67B22] transition-all text-white shadow-lg shadow-[#EE8C2B]/20">
-                  <div className="h-10 w-10 rounded-xl bg-white/20 text-white flex items-center justify-center backdrop-blur-sm">
-                    <UserPlus className="h-5 w-5" />
-                  </div>
-                  <span className="font-bold">Sign Up</span>
-                </Link>
-
-                <Link to="/settings" className="flex items-center gap-4 p-4 rounded-2xl border border-neutral-100 hover:bg-neutral-50 transition-all">
-                  <div className="h-10 w-10 rounded-xl bg-neutral-900 text-white flex items-center justify-center shadow-md">
-                    <Settings className="h-5 w-5" />
-                  </div>
-                  <span className="font-bold text-neutral-900">Settings</span>
-                </Link>
-                <Link to="/profile" className="flex items-center gap-4 p-4 rounded-2xl border border-neutral-100 hover:bg-neutral-50 transition-all">
-                  <div className="h-10 w-10 rounded-xl bg-neutral-900 text-white flex items-center justify-center shadow-md">
-                    <User className="h-5 w-5" />
-                  </div>
-                  <span className="font-bold text-neutral-900">My Profile</span>
-                </Link>
-                {/* logout */}
-                <Link to="/logout" className="flex items-center gap-4 p-4 rounded-2xl border border-neutral-100 hover:bg-neutral-50 transition-all">
-                  <div className="h-10 w-10 rounded-xl bg-neutral-900 text-white flex items-center justify-center shadow-md">
-                    <LogOut className="h-5 w-5" />
-                  </div>
-                  <span className="font-bold text-neutral-900">Logout</span>
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Menu Footer */}
-          <div className="p-8 border-t border-neutral-50">
-            <Link to="/settings" className="flex items-center gap-3 text-sm font-black text-neutral-400 uppercase tracking-widest hover:text-[#EE8C2B] transition-colors">
-              <Settings className="h-4 w-4" />
-              Settings
-            </Link>
-          </div>
-        </aside>
       </div>
     </header>
   );

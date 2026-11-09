@@ -1,309 +1,241 @@
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import {
-    Store,
+import { Link } from "react-router-dom";
+import { Clock, FileText, Mail, MapPin, MoveRight, Store, UtensilsCrossed } from "lucide-react";
 
-    Mail,
-
-    MapPin,
-    CheckCircle2,
-    ArrowRight,
-    ShieldCheck,
-    UtensilsCrossed,
-    Clock,
-    DollarSign,
-    FileText
-} from "lucide-react";
-
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FormIntro } from "@/components/forms/FormIntro";
+import { SelectField } from "@/components/forms/SelectField";
+import { StatPair } from "@/components/marketing/FactRow";
+import { TextField } from "@/components/forms/TextField";
+import { UploadField } from "@/components/forms/UploadField";
+import { kitchenCapabilities, vendorFacts } from "@/data/landingContent";
+import { cn } from "@/lib/utils";
 
-const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+const cuisineOptions = [
+  { value: "african", label: "African kitchen" },
+  { value: "continental", label: "Continental" },
+  { value: "fastfood", label: "Fast food and snacks" },
+  { value: "drinks", label: "Drinks and smoothies" },
+  { value: "groceries", label: "Groceries and essentials" },
+];
+
+const tabTriggerClass =
+  "group h-9 rounded-md text-[13px] font-semibold text-ink-muted transition-colors data-[state=active]:bg-background data-[state=active]:text-ink data-[state=active]:shadow-soft";
+
+const stepNumberClass =
+  "grid size-5 shrink-0 place-items-center rounded-full bg-surface-strong text-[11px] font-semibold text-ink-muted transition-colors group-data-[state=active]:bg-primary group-data-[state=active]:text-primary-foreground";
 
 export default function VendorFormPage() {
-    const [selectedDays, setSelectedDays] = useState<string[]>(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
+  const [selectedDays, setSelectedDays] = useState<string[]>([
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+  ]);
 
-    const toggleDay = (day: string) => {
-        setSelectedDays(prev =>
-            prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
-        );
-    };
-    return (
-        <div className="min-h-screen bg-neutral-50/50 py-10">
-            <div className="container mx-auto px-4 md:px-8 max-w-7xl">
-                {/* Header Section */}
-                <div className="mb-12 text-center space-y-4">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FDF3EA] text-[#EE8C2B] font-black text-xs uppercase tracking-widest shadow-sm">
-                        <Store className="h-4 w-4" />
-                        Partner with us
-                    </div>
-                    <h1 className="text-4xl md:text-5xl font-black text-neutral-900 tracking-tight">Expand Your <span className="text-[#EE8C2B]">Business</span></h1>
-                    <p className="text-lg text-neutral-500 font-medium max-w-2xl mx-auto ">
-                        Reach thousands of students instantly. Manage orders, track performance, and grow your brand with Feasto's merchant tools.
-                    </p>
-                </div>
-
-                <div className="flex flex-col lg:flex-row gap-12">
-                    {/* Main Form Content */}
-                    <div className="flex-1 space-y-10 animate-in fade-in slide-in-from-left-6 duration-700">
-                        <Card className="rounded-[2.5rem] border-neutral-100 shadow-sm overflow-hidden">
-                            <CardContent className="p-0">
-                                <Tabs defaultValue="store" className="w-full">
-                                    <div className="bg-white p-6 border-b border-neutral-100">
-                                        <TabsList className="grid w-full grid-cols-3 h-auto bg-neutral-50/50 p-2 rounded-3xl gap-2 !h-20">
-                                            <TabsTrigger
-                                                value="store"
-                                                className="data-[state=active]:bg-white data-[state=active]:shadow-lg md:text-[10px] !text-[8px] data-[state=active]:text-[#EE8C2B] rounded-2xl py-4 font-black text-xs uppercase tracking-widest transition-all"
-                                            >
-                                                Restaurant
-                                            </TabsTrigger>
-                                            <TabsTrigger
-                                                value="details"
-                                                className="data-[state=active]:bg-white data-[state=active]:shadow-lg md:text-[10px] !text-[8px] data-[state=active]:text-[#EE8C2B] rounded-2xl py-4 font-black text-xs uppercase tracking-widest transition-all"
-                                            >
-                                                Business
-                                            </TabsTrigger>
-                                            <TabsTrigger
-                                                value="menu"
-                                                className="data-[state=active]:bg-white data-[state=active]:shadow-lg md:text-[10px] !text-[8px] data-[state=active]:text-[#EE8C2B] rounded-2xl py-4 font-black text-xs uppercase tracking-widest transition-all"
-                                            >
-                                               Profile Upload
-                                            </TabsTrigger>
-                                        </TabsList>
-                                    </div>
-
-                                    <div className="p-10 space-y-8">
-                                        <TabsContent value="store" className="mt-0 space-y-8 animate-in fade-in duration-500">
-                                            <div className="flex items-center gap-4">
-                                                <div className="h-12 w-12 rounded-2xl bg-[#FDF3EA] text-[#EE8C2B] flex items-center justify-center shadow-inner">
-                                                    <Store className="h-6 w-6" />
-                                                </div>
-                                                <div>
-                                                    <h2 className="text-2xl font-black text-neutral-900 tracking-tight">Restaurant Profile</h2>
-                                                    <p className="text-neutral-400 font-medium ">Basic details about your kitchen</p>
-                                                </div>
-                                            </div>
-
-                                            <div className="grid md:grid-cols-2 gap-8">
-                                                <div className="space-y-3">
-                                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] ml-4 text-neutral-500 font-black">Restaurant Name</label>
-                                                    <div className="relative">
-                                                        <UtensilsCrossed className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-400" />
-                                                        <input
-                                                            type="text"
-                                                            placeholder="e.g. Spicy Cravings"
-                                                            className="w-full h-16 pl-16 pr-8 rounded-3xl border-2 border-neutral-100 bg-neutral-50/50 focus:bg-white focus:border-[#EE8C2B]/30 outline-none transition-all font-bold placeholder:text-neutral-300 "
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="space-y-3">
-                                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] ml-4 text-neutral-500 font-black">Cuisine Type</label>
-                                                    <select className="w-full h-16 px-8 rounded-3xl border-1 border-neutral-100 bg-neutral-50/50 focus:bg-white focus:border-[#EE8C2B]/30 outline-none font-bold appearance-none cursor-pointer ">
-                                                        <option value="african">African Kitchen</option>
-                                                        <option value="continental">Continental</option>
-                                                        <option value="fastfood">Fast Food & Snacks</option>
-                                                        <option value="drinks">Drinks & Smoothies</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div className="grid md:grid-cols-2 gap-8">
-                                                <div className="space-y-3">
-                                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] ml-4 text-neutral-500 font-black">Business Email</label>
-                                                    <div className="relative">
-                                                        <Mail className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-400" />
-                                                        <input
-                                                            type="email"
-                                                            placeholder="kitchen@spicy.com"
-                                                            className="w-full h-16 pl-16 pr-8 rounded-3xl border-1 border-neutral-100 bg-neutral-50/50 focus:bg-white focus:border-[#EE8C2B]/30 outline-none transition-all font-bold placeholder:text-neutral-300 "
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="space-y-3">
-                                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] ml-4 text-neutral-500 font-black">Kitchen Address</label>
-                                                    <div className="relative">
-                                                        <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-400" />
-                                                        <input
-                                                            type="text"
-                                                            placeholder="e.g. Cafeteria 2, CU"
-                                                            className="w-full h-16 pl-16 pr-8 rounded-3xl border-2 border-neutral-100 bg-neutral-50/50 focus:bg-white focus:border-[#EE8C2B]/30 outline-none transition-all font-bold placeholder:text-neutral-300"
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </TabsContent>
-
-                                        <TabsContent value="details" className="mt-0 space-y-8 animate-in fade-in duration-500">
-                                            <div className="flex items-center gap-4">
-                                                <div className="h-12 w-12 rounded-2xl bg-[#FDF3EA] text-[#EE8C2B] flex items-center justify-center shadow-inner">
-                                                    <CheckCircle2 className="h-6 w-6" />
-                                                </div>
-                                                <div>
-                                                    <h2 className="text-2xl font-black text-neutral-900 tracking-tight">Business Verification</h2>
-                                                    <p className="text-neutral-400 font-medium ">Help us verify your authenticity</p>
-                                                </div>
-                                            </div>
-
-                                            <div className="grid md:grid-cols-1 gap-8">
-                                                <div className="space-y-3">
-                                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] ml-4 text-neutral-500 font-black">CAC / Registration No.</label>
-                                                    <input
-                                                        type="text"
-                                                        placeholder="BN 1234567"
-                                                        className="w-full h-16 px-8 rounded-3xl border-1 border-neutral-100 bg-neutral-50/50 focus:bg-white focus:border-[#EE8C2B]/30 outline-none transition-all font-bold placeholder:text-neutral-300 "
-                                                    />
-                                                </div>
-                                                <div className="space-y-4">
-                                                    <div className="flex items-center justify-between">
-                                                        <label className="text-[10px] font-black uppercase tracking-[0.2em] ml-4 text-neutral-500 font-black">
-                                                            Operating Days & Hours
-                                                        </label>
-                                                        <span className="text-[11px] font-bold text-neutral-400">
-                                                            {selectedDays.length} day{selectedDays.length !== 1 ? 's' : ''} active
-                                                        </span>
-                                                    </div>
-
-                                                    {/* Days of Week Selector */}
-                                                    <div className="flex flex-wrap gap-2">
-                                                        {DAYS.map((day) => {
-                                                            const isSelected = selectedDays.includes(day);
-                                                            return (
-                                                                <button
-                                                                    key={day}
-                                                                    type="button"
-                                                                    onClick={() => toggleDay(day)}
-                                                                    className={`flex-1 min-w-[48px] py-3 rounded-2xl text-xs font-black transition-all cursor-pointer ${
-                                                                        isSelected
-                                                                            ? 'bg-[#EE8C2B] text-white shadow-md shadow-[#EE8C2B]/20 scale-105'
-                                                                            : 'bg-neutral-100 text-neutral-400 hover:bg-neutral-200'
-                                                                    }`}
-                                                                >
-                                                                    {day}
-                                                                </button>
-                                                            );
-                                                        })}
-                                                    </div>
-
-                                                    {/* Time Range Pickers */}
-                                                    <div className="grid grid-cols-2 gap-3 pt-2">
-                                                        <div className="space-y-1.5">
-                                                            <span className="text-[10px] font-bold text-neutral-400 ml-3 uppercase tracking-wider">Opening Time</span>
-                                                            <div className="relative">
-                                                                <Clock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400 pointer-events-none" />
-                                                                <input
-                                                                    type="time"
-                                                                    defaultValue="08:00"
-                                                                    aria-label="Opening Time"
-                                                                    className="w-full h-14 pl-11 pr-4 rounded-3xl border border-neutral-100 bg-neutral-50/50 focus:bg-white focus:border-[#EE8C2B]/30 outline-none transition-all font-bold text-sm text-neutral-800 cursor-pointer"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="space-y-1.5">
-                                                            <span className="text-[10px] font-bold text-neutral-400 ml-3 uppercase tracking-wider">Closing Time</span>
-                                                            <div className="relative">
-                                                                <Clock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400 pointer-events-none" />
-                                                                <input
-                                                                    type="time"
-                                                                    defaultValue="22:00"
-                                                                    aria-label="Closing Time"
-                                                                    className="w-full h-14 pl-11 pr-4 rounded-3xl border border-neutral-100 bg-neutral-50/50 focus:bg-white focus:border-[#EE8C2B]/30 outline-none transition-all font-bold text-sm text-neutral-800 cursor-pointer"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </TabsContent>
-
-                                        <TabsContent value="menu" className="mt-0 space-y-8 animate-in fade-in duration-500">
-                                            <div className="flex items-center gap-4">
-                                                <div className="h-12 w-12 rounded-2xl bg-[#FDF3EA] text-[#EE8C2B] flex items-center justify-center shadow-inner">
-                                                    <UtensilsCrossed className="h-6 w-6" />
-                                                </div>
-                                                <div>
-                                                    <h2 className="text-2xl font-black text-neutral-900 tracking-tight">Profile Upload</h2>
-                                                    <p className="text-neutral-400 font-medium ">Upload your store profile</p>
-                                                </div>
-                                            </div>
-
-                                            <div className="group relative border-2 border-dashed border-neutral-200 rounded-[2.5rem] p-12 text-center hover:border-[#EE8C2B]/50 hover:bg-[#FDF3EA]/20 transition-all cursor-pointer">
-                                                <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" />
-                                                <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-neutral-100 text-neutral-500 group-hover:bg-[#EE8C2B] group-hover:text-white transition-all shadow-sm">
-                                                    <FileText className="h-10 w-10" />
-                                                </div>
-                                                <h3 className="text-xl font-black text-neutral-900 mb-2">Upload Menu Document</h3>
-                                                <p className="text-sm text-neutral-400 italic font-medium">PDF, Excel or Image (Max 10MB)</p>
-                                                <div className="mt-8 inline-flex items-center gap-2 text-[#EE8C2B] font-black text-xs uppercase tracking-[0.2em]">
-                                                    <ShieldCheck className="h-4 w-4" />
-                                                    Verified Processing
-                                                </div>
-                                            </div>
-                                        </TabsContent>
-                                    </div>
-
-                                    <div className=" p-10 border-neutral-100 flex flex-col md:flex-row items-center justify-between gap-6">
-                              
-                                        <button className="w-full md:w-auto h-16 px-12 rounded-3xl bg-neutral-900 text-white font-black text-lg hover:bg-[#EE8C2B] hover:-translate-y-2 transition-all flex items-center justify-center gap-3 shadow-2xl shadow-black/10 group overflow-hidden relative">
-                                            <span className="relative z-10 flex items-center gap-2">
-                                                Start Selling
-                                                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                                            </span>
-                                        </button>
-                                    </div>
-                                </Tabs>
-                            </CardContent>
-                        </Card>
-                    </div>
-
-                    {/* Sidebar: Merchant Perks */}
-                    <aside className="md:block hidden lg:w-[400px] shrink-0 space-y-8 animate-in fade-in slide-in-from-right-8 duration-1000">
-                        <div className="p-10 bg-[#0a0f1d] rounded-[3rem] text-white space-y-10 relative overflow-hidden shadow-2xl shadow-black/20 transform hover:-translate-y-2 transition-all duration-500">
-                            <div className="absolute top-0 right-0 h-64 w-64 bg-[#EE8C2B]/10 rounded-full blur-[100px]"></div>
-
-                            <div className="space-y-2">
-                                <h3 className="text-3xl font-black tracking-tight">Merchant <span className="text-[#EE8C2B]">Perks</span></h3>
-                                <p className="text-neutral-400 font-medium italic">Why thousands of vendors choose Feasto</p>
-                            </div>
-
-                            <div className="space-y-8">
-                                {[
-                                    {
-                                        icon: <UtensilsCrossed className="h-6 w-6" />,
-                                        title: "Vast Reach",
-                                        desc: "Access 20,000+ active students on Covenant Campus daily."
-                                    },
-                                    {
-                                        icon: <Clock className="h-6 w-6" />,
-                                        title: "Fast Logistics",
-                                        desc: "Our rider fleet handles all delivery. You focus on cooking."
-                                    },
-                                    {
-                                        icon: <DollarSign className="h-6 w-6" />,
-                                        title: "Growth Tools",
-                                        desc: "Advanced analytics and marketing tools to boost sales."
-                                    }
-                                ].map((item, idx) => (
-                                    <div key={idx} className="flex gap-5 group">
-                                        <div className="h-12 w-12 shrink-0 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#EE8C2B] group-hover:scale-110 transition-transform">
-                                            {item.icon}
-                                        </div>
-                                        <div>
-                                            <p className="font-black text-white uppercase tracking-tight text-sm">{item.title}</p>
-                                            <p className="text-xs text-neutral-400 mt-1 font-medium leading-relaxed italic">{item.desc}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="pt-6 border-t border-white/10">
-                                <div className="p-4 rounded-2xl bg-[#EE8C2B]/10 border border-[#EE8C2B]/20">
-                                    <p className="text-xs font-bold italic leading-tight text-center">Top vendors see <span className="text-[#EE8C2B] font-black">150% growth</span> in their first 3 months!</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </aside>
-                </div>
-            </div>
-        </div>
+  function toggleDay(day: string) {
+    setSelectedDays((current) =>
+      current.includes(day) ? current.filter((value) => value !== day) : [...current, day],
     );
+  }
+
+  return (
+    <div className="min-h-screen bg-background pb-20">
+      <div className="container-page max-w-[1180px] pt-8 sm:pt-10">
+        <header className="max-w-[54ch]">
+          <h1 className="font-display text-3xl font-bold text-balance text-ink sm:text-4xl">
+            Register your business
+          </h1>
+          <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
+            Three steps: your kitchen, your trading details and your menu file. Registration is free
+            and there is no monthly fee.
+          </p>
+        </header>
+
+        <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_340px] lg:items-start">
+          <Tabs defaultValue="restaurant" className="min-w-0">
+            <div className="rounded-xl border border-hairline bg-background">
+              <div className="border-b border-hairline p-2 sm:p-3">
+                <TabsList className="grid h-auto w-full grid-cols-3 gap-1 rounded-lg bg-surface p-[3px]">
+                  <TabsTrigger value="restaurant" className={tabTriggerClass}>
+                    <span className={stepNumberClass}>1</span>
+                    Restaurant
+                  </TabsTrigger>
+                  <TabsTrigger value="business" className={tabTriggerClass}>
+                    <span className={stepNumberClass}>2</span>
+                    Business
+                  </TabsTrigger>
+                  <TabsTrigger value="menu" className={tabTriggerClass}>
+                    <span className={stepNumberClass}>3</span>
+                    Menu file
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+
+              <div className="p-5 sm:p-7">
+                <TabsContent value="restaurant" className="mt-0 flex flex-col gap-6">
+                  <FormIntro
+                    icon={Store}
+                    title="Your kitchen"
+                    description="This is what customers see at the top of your listing, so use the name they know you by."
+                  />
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <TextField
+                      id="restaurant-name"
+                      label="Restaurant name"
+                      icon={UtensilsCrossed}
+                      placeholder="e.g. Ade's Kitchen"
+                    />
+                    <SelectField
+                      id="cuisine"
+                      label="Cuisine type"
+                      icon={UtensilsCrossed}
+                      options={cuisineOptions}
+                      defaultValue="african"
+                    />
+                    <TextField
+                      id="business-email"
+                      label="Business email"
+                      icon={Mail}
+                      type="email"
+                      autoComplete="email"
+                      placeholder="kitchen@example.com"
+                    />
+                    <TextField
+                      id="kitchen-address"
+                      label="Kitchen address"
+                      icon={MapPin}
+                      placeholder="e.g. 12 Adeola Street, Yaba"
+                    />
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="business" className="mt-0 flex flex-col gap-6">
+                  <FormIntro
+                    icon={FileText}
+                    title="Trading details"
+                    description="Used to verify the business and to work out when you are open for orders."
+                  />
+                  <TextField
+                    id="cac"
+                    label="CAC or registration number"
+                    icon={FileText}
+                    placeholder="BN 1234567"
+                  />
+
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center justify-between gap-4">
+                      <p className="text-[13px] font-semibold text-ink">Open days</p>
+                      <span className="text-[13px] text-ink-muted">
+                        {selectedDays.length} of 7 days
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {DAYS.map((day) => {
+                        const isSelected = selectedDays.includes(day);
+                        return (
+                          <button
+                            key={day}
+                            type="button"
+                            onClick={() => toggleDay(day)}
+                            aria-pressed={isSelected}
+                            className={cn(
+                              "h-9 min-w-11 rounded-md border px-3 text-[13px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+                              isSelected
+                                ? "border-primary bg-primary text-primary-foreground"
+                                : "border-hairline bg-background text-ink-muted hover:text-ink",
+                            )}
+                          >
+                            {day}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <TextField
+                      id="opening-time"
+                      label="Opening time"
+                      icon={Clock}
+                      type="time"
+                      defaultValue="08:00"
+                    />
+                    <TextField
+                      id="closing-time"
+                      label="Closing time"
+                      icon={Clock}
+                      type="time"
+                      defaultValue="22:00"
+                    />
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="menu" className="mt-0 flex flex-col gap-6">
+                  <FormIntro
+                    icon={FileText}
+                    title="Menu file"
+                    description="Upload your current menu with prices. Our team adds it to your listing before you go live."
+                  />
+                  <UploadField
+                    id="menu-file"
+                    title="Upload menu document"
+                    hint="PDF, spreadsheet or photos of the menu. Up to 10MB."
+                    icon={FileText}
+                    accept="image/*,.pdf,.xlsx,.csv"
+                  />
+                </TabsContent>
+              </div>
+
+              <div className="flex flex-col gap-3 border-t border-hairline p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+                <p className="max-w-[38ch] text-[13px] leading-relaxed text-ink-muted">
+                  We review applications within one working day and call before your first order.
+                </p>
+                <Button type="button" className="h-11 w-full rounded-lg font-semibold sm:w-auto">
+                  Submit application
+                  <MoveRight aria-hidden="true" className="size-4" />
+                </Button>
+              </div>
+            </div>
+          </Tabs>
+
+          <aside className="flex flex-col gap-4">
+            <div className="rounded-xl bg-secondary p-6 text-white">
+              <h2 className="font-display text-xl font-semibold">What the dashboard gives you</h2>
+              <ul className="mt-4 flex flex-col border-t border-white/12">
+                {kitchenCapabilities.slice(0, 3).map((capability) => (
+                  <li key={capability.id} className="flex gap-3 border-b border-white/12 py-3.5">
+                    <capability.icon
+                      aria-hidden="true"
+                      className="mt-0.5 size-[18px] shrink-0 text-primary"
+                    />
+                    <div>
+                      <p className="text-sm font-semibold">{capability.title}</p>
+                      <p className="mt-0.5 text-[13px] leading-relaxed text-white/65">
+                        {capability.description}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <StatPair tone="dark" items={vendorFacts} className="mt-4 border-t-0 pt-0" />
+            </div>
+
+            <p className="text-[13px] text-ink-muted">
+              Already a partner?{" "}
+              <Link to="/dashboard" className="font-semibold text-primary hover:underline">
+                Open the vendor dashboard
+              </Link>
+            </p>
+          </aside>
+        </div>
+      </div>
+    </div>
+  );
 }

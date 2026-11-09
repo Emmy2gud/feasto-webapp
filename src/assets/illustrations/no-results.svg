@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240">
+  <!-- Ground Shadow -->
+  <ellipse cx="178" cy="188" rx="102" ry="14" fill="#F2EDE4"/>
+
+  <!-- Cutlery: Fork on left -->
+  <!-- Fork handle & base -->
+  <path d="M78 184 C76 184 74.5 182 74.5 178 L76 138 C76 134 78 131 82 131 C86 131 88 134 88 138 L89.5 178 C89.5 182 88 184 86 184 Z" fill="#FFFFFF" stroke="#0A0F1D" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Fork tines -->
+  <path d="M76 131 L76 96 C76 94 78 94 78 96 L78 123 M82 131 L82 96 C82 94 84 94 84 96 L84 123 M88 131 L88 96 C88 94 90 94 90 96 L90 131" fill="none" stroke="#0A0F1D" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Cutlery: Knife on right -->
+  <!-- Knife handle -->
+  <path d="M262 184 C260 184 258.5 182 258.5 178 L260 132 L266 132 L267.5 178 C267.5 182 266 184 264 184 Z" fill="#FFFFFF" stroke="#0A0F1D" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Knife blade -->
+  <path d="M260 132 L260 98 C260 94 266 94 267 101 C268 108 268 120 266 132 Z" fill="#FFFFFF" stroke="#0A0F1D" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Dinner Plate (slightly to the right) -->
+  <!-- Outer rim shadow/offset base -->
+  <circle cx="172" cy="138" r="62" fill="#FFFFFF" stroke="#0A0F1D" stroke-width="2"/>
+  <!-- Inner rim/well -->
+  <circle cx="172" cy="138" r="42" fill="#FFFFFF" stroke="#0A0F1D" stroke-width="2"/>
+  <!-- Subtle inner plate depth accent -->
+  <path d="M140 120 A42 42 0 0 0 140 156" fill="none" stroke="#F2EDE4" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Magnifying Glass (hovering top-left of plate) -->
+  <!-- Cast shadow of magnifying glass on plate -->
+  <ellipse cx="132" cy="116" rx="34" ry="12" fill="#F2EDE4" opacity="0.6"/>
+
+  <!-- Magnifying glass group tilted at 45 degrees -->
+  <g transform="rotate(-40 124 102)">
+    <!-- Lens Rim & Glass -->
+    <circle cx="124" cy="74" r="34" fill="#FFFFFF" stroke="#0A0F1D" stroke-width="2"/>
+    <!-- Inner lens border / glass bevel -->
+    <circle cx="124" cy="74" r="28" fill="#FFFFFF" stroke="#0A0F1D" stroke-width="2" stroke-dasharray="180"/>
+    
+    <!-- Glare / Reflection arc on lens -->
+    <path d="M104 62 A24 24 0 0 1 128 50" fill="none" stroke="#F2EDE4" stroke-width="3.5" stroke-linecap="round"/>
+
+    <!-- Handle connector / collar -->
+    <rect x="120" y="108" width="8" height="6" rx="1.5" fill="#FFFFFF" stroke="#0A0F1D" stroke-width="2"/>
+
+    <!-- Handle -->
+    <path d="M119 114 L129 114 L131 154 C131 157.5 128 160 124 160 C120 160 117 157.5 117 154 Z" fill="#EE8C2B" stroke="#0A0F1D" stroke-width="2" stroke-linejoin="round"/>
+
+    <!-- Handle sand highlight -->
+    <path d="M121 118 L121 152" fill="none" stroke="#F2EDE4" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>

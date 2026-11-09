@@ -32,15 +32,46 @@
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
 
+  /* Feasto marketing surfaces */
+  --color-surface: hsl(var(--surface));
+  --color-surface-strong: hsl(var(--surface-strong));
+  --color-ink: hsl(var(--ink));
+  --color-ink-muted: hsl(var(--ink-muted));
+  --color-hairline: hsl(var(--hairline));
+
+  /* Radii stay restrained: controls 8px, media 10px, panels 12px */
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
+  --radius-xl: calc(var(--radius) + 2px);
+  --radius-2xl: calc(var(--radius) + 6px);
 
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, sans-serif;
+
+  --text-display-xs: 1.75rem;
+  --text-display-xs--line-height: 1.15;
+  --text-display-xs--letter-spacing: -0.015em;
+  --text-display-sm: 2.25rem;
+  --text-display-sm--line-height: 1.08;
+  --text-display-sm--letter-spacing: -0.02em;
+  --text-display-md: 3rem;
+  --text-display-md--line-height: 1.04;
+  --text-display-md--letter-spacing: -0.022em;
+  --text-display-lg: 3.75rem;
+  --text-display-lg--line-height: 1;
+  --text-display-lg--letter-spacing: -0.028em;
+
+  --shadow-soft: 0 1px 2px rgba(10, 15, 29, 0.04), 0 10px 28px -14px rgba(10, 15, 29, 0.16);
+  --shadow-panel: 0 1px 2px rgba(10, 15, 29, 0.05), 0 18px 40px -18px rgba(10, 15, 29, 0.2);
+  --shadow-lift: 0 2px 4px rgba(10, 15, 29, 0.05), 0 22px 44px -20px rgba(10, 15, 29, 0.24);
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-shimmer: shimmer 3s infinite;
+  --animate-float-bag: float-bag 7s ease-in-out infinite;
+  --animate-fade-in: fade-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-slide-in: slide-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 
   @keyframes shimmer {
     0% {
@@ -52,23 +83,58 @@
     }
   }
 
-  @keyframes accordion-down {
+  @keyframes float-bag {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes fade-in {
     from {
-      height: 0
+      opacity: 0;
+      transform: translateY(8px);
     }
 
     to {
-      height: var(--radix-accordion-content-height)
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateX(-12px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+
+    to {
+      height: var(--radix-accordion-content-height);
     }
   }
 
   @keyframes accordion-up {
     from {
-      height: var(--radix-accordion-content-height)
+      height: var(--radix-accordion-content-height);
     }
 
     to {
-      height: 0
+      height: 0;
     }
   }
 }
@@ -87,7 +153,7 @@
     --popover-foreground: 224 49% 8%;
 
     --primary: 29 86% 55%;
-    /* #ee8c2b (Orange) converted to HSL approx 29 86% 55% */
+    /* #ee8c2b (Orange) */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 224 49% 8%;
@@ -106,7 +172,7 @@
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 29 86% 55%;
-    --radius: 0.5rem;
+    --radius: 0.625rem;
 
     /* Custom Feasto Colors */
     --slate-500: 215 16% 47%;
@@ -119,6 +185,15 @@
     --yellow-accent: 48 100% 50%;
     --orange-accent: 28 100% 50%;
     --coral-accent: 9 100% 66%;
+
+    /* Marketing surfaces */
+    --surface: 36 44% 97%;
+    /* warm paper */
+    --surface-strong: 33 41% 93%;
+    /* sand */
+    --ink: 224 49% 8%;
+    --ink-muted: 220 12% 40%;
+    --hairline: 224 18% 90%;
   }
 
   .dark {
@@ -149,6 +224,12 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 29 86% 55%;
+
+    --surface: 224 34% 11%;
+    --surface-strong: 224 28% 16%;
+    --ink: 210 40% 98%;
+    --ink-muted: 215 20% 65%;
+    --hairline: 217 24% 24%;
   }
 
   * {
@@ -156,6 +237,55 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  ::selection {
+    background-color: hsl(var(--primary) / 0.22);
+  }
+}
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .container-page {
+      padding-inline: 2rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-page {
+      padding-inline: 3rem;
+    }
+  }
+}
+
+@utility no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  scrollbar-width: none;
+}
+
+/* Respect the user's motion preference everywhere, including third-party animations. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

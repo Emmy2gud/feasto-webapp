@@ -13,6 +13,7 @@ import OrderTrackingPage from "./pages/checkout/OrderTrackingPage";
 import UserProfile from "./pages/UserProfile";
 import AccountSettings from "./pages/AccountSettings";
 import SecondLayout from "./components/layout/SecondLayout";
+import AuthLayout from "./components/layout/AuthLayout";
 import LoginPage from "./pages/auth/LoginPage";
 import RiderFormPage from "./pages/auth/RiderFormPage";
 import VendorFormPage from "./pages/auth/VendorFormPage";
@@ -45,11 +46,13 @@ import EarningsAnalytics from "./pages/dashboard/riders/EarningsAnalytics";
 import WalletTransactions from "./pages/dashboard/riders/WalletTransactions";
 import ActiveDelivery from "./pages/dashboard/riders/ActiveDelivery";
 import StoreProfile from "./pages/dashboard/vendor/StoreProfle";
+import { CartProvider } from "./context/CartProvider";
 
 
 function App() {
   return (
     <div>
+      <CartProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<AppLayout />}>
@@ -61,11 +64,14 @@ function App() {
           </Route>
 
 
-          <Route path="" element={<SecondLayout />}>
+          <Route element={<AuthLayout />}>
+            <Route path="login" element={<LoginPage />} />
             <Route path="signup" element={<SignupPage />} />
+          </Route>
+
+          <Route path="" element={<SecondLayout />}>
             <Route path="vendors" element={<VendorsPage />} />
             <Route path="vendor/:id" element={<VendorPage />} />
-            <Route path="login" element={<LoginPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
             <Route path="tracking" element={<OrderTrackingPage />} />
             <Route path="profile" element={<UserProfile />} />
@@ -75,19 +81,51 @@ function App() {
           </Route>
 
           <Route path="/dashboard" element={<DashBoardLayout />}>
-
-            <Route path="orders" element={<VendorOrdersPage/>} />
-  
-            <Route path="reviews" element={<div className="p-8"><h1 className="text-2xl font-bold">Reviews</h1></div>} />
-            <Route path="profile" element={<StoreProfile/>} />
-            <Route path="settings" element={<div className="p-8"><h1 className="text-2xl font-bold">Settings</h1></div>} />
-            <Route path="" element={<VendorDashboard />} />
+            <Route index element={<VendorDashboard />} />
+            <Route path="orders" element={<VendorOrdersPage />} />
+            <Route
+              path="reviews"
+              element={
+                <div className="space-y-4 max-w-4xl">
+                  <h1 className="text-2xl font-bold tracking-tight text-slate-900">Customer Reviews</h1>
+                  <p className="text-sm text-slate-500 font-normal">Customer feedback and ratings for Campus Grill.</p>
+                  <div className="bg-white rounded-xl border border-slate-200/80 p-8 text-center text-slate-500 shadow-xs">
+                    <p className="text-sm font-semibold text-slate-800">No new reviews pending moderation</p>
+                    <p className="text-xs text-slate-400 mt-1">Overall Store Rating: 4.8 / 5.0 (24 reviews this week)</p>
+                  </div>
+                </div>
+              }
+            />
+            <Route path="profile" element={<StoreProfile />} />
+            <Route
+              path="settings"
+              element={
+                <div className="space-y-4 max-w-4xl">
+                  <h1 className="text-2xl font-bold tracking-tight text-slate-900">Store Settings</h1>
+                  <p className="text-sm text-slate-500 font-normal">Operational preferences, notification rules, and order dispatch times.</p>
+                  <div className="bg-white rounded-xl border border-slate-200/80 p-6 shadow-xs space-y-4">
+                    <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                      <div>
+                        <p className="text-sm font-semibold text-slate-900">Kitchen Preparation Window</p>
+                        <p className="text-xs text-slate-500">Estimated order prep time shown to campus customers.</p>
+                      </div>
+                      <span className="text-xs font-bold px-3 py-1 bg-slate-100 rounded-md text-slate-800">15-20 Mins</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-semibold text-slate-900">Audible Kitchen Ticket Bell</p>
+                        <p className="text-xs text-slate-500">Play alert sound whenever a new order arrives.</p>
+                      </div>
+                      <span className="text-xs font-bold px-3 py-1 bg-emerald-50 text-emerald-700 rounded-md border border-emerald-200">Enabled</span>
+                    </div>
+                  </div>
+                </div>
+              }
+            />
             <Route path="earnings" element={<EarningsPage />} />
             <Route path="payouts" element={<WalletPayoutsPage />} />
             <Route path="categories" element={<CreateCategoryPage />} />
-
             <Route path="menu" element={<AddFoodItemPage />} />
-
           </Route>
 
           <Route path="/admin" element={<AdminLayout />}>
@@ -105,15 +143,39 @@ function App() {
           </Route>    
 
           <Route path="/rider" element={<RiderLayout />}>
+            <Route index element={<RiderDashboard />} />
             <Route path="dashboard" element={<RiderDashboard />} />
-            <Route path="orders" element={<AvailableOrders/>} />
+            <Route path="orders" element={<AvailableOrders />} />
             <Route path="active-delivery" element={<ActiveDelivery />} /> 
             <Route path="delivery-history" element={<DeliveryHistory />} />
             <Route path="earnings" element={<EarningsAnalytics />} />
-            <Route path="wallet" element={<WalletTransactions  />} />
+            <Route path="wallet" element={<WalletTransactions />} />
             <Route path="profile" element={<RiderProfile />} />
-             
-            {/* <Route path="settings" element={< />} /> */}
+            <Route
+              path="settings"
+              element={
+                <div className="space-y-4 max-w-4xl">
+                  <h1 className="text-2xl font-bold tracking-tight text-slate-900">Rider Preferences</h1>
+                  <p className="text-sm text-slate-500 font-normal">Delivery notifications and navigation settings.</p>
+                  <div className="bg-white rounded-xl border border-slate-200/80 p-6 shadow-xs space-y-4">
+                    <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                      <div>
+                        <p className="text-sm font-semibold text-slate-900">Auto-Navigation</p>
+                        <p className="text-xs text-slate-500">Open navigation automatically when order is accepted.</p>
+                      </div>
+                      <span className="text-xs font-bold px-3 py-1 bg-emerald-50 text-emerald-700 rounded-md border border-emerald-200">Enabled</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-semibold text-slate-900">High-Demand Surge Alerts</p>
+                        <p className="text-xs text-slate-500">Receive push alerts when lunch rush multiplier activates.</p>
+                      </div>
+                      <span className="text-xs font-bold px-3 py-1 bg-emerald-50 text-emerald-700 rounded-md border border-emerald-200">Enabled</span>
+                    </div>
+                  </div>
+                </div>
+              }
+            />
           </Route>
 
         </Routes>
@@ -123,6 +185,7 @@ function App() {
 
 
       </BrowserRouter>
+      </CartProvider>
     </div>
   );
 }

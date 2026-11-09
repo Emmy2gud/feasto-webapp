@@ -1,30 +1,47 @@
-// Types for vendor listing page
+// Types for the vendor listing page.
+
+export type VendorKind = "restaurant" | "grocery" | "pharmacy";
+
+/** Naira symbol count, the way Lagos menus price themselves. */
+export type PriceBand = "₦" | "₦₦" | "₦₦₦";
+
+/** Minimum rating a vendor must reach, in half stars. */
+export type RatingFilter = 4.5 | 4.0 | 3.5;
 
 export interface Vendor {
   id: string;
   name: string;
   image: string;
+  imageAlt: string;
+  kind: VendorKind;
+  cuisines: string[];
   rating: number;
   reviewCount: number;
-  categories: string[];
-  vendorType: 'Student Venture' | 'Official Cafeteria' | 'Campus Shop';
-  minOrder: number;
+  priceBand: PriceBand;
+  /** Delivery window in minutes, inclusive. */
+  etaMin: number;
+  etaMax: number;
+  distanceKm: number;
+  neighborhood: string;
+  /** Naira. */
   deliveryFee: number;
-  hasMapView?: boolean;
+  /** Naira. */
+  minOrder: number;
+  isOpen: boolean;
+  /** Shown on closed vendors only, e.g. "Opens 09:00". */
+  openingNote?: string;
 }
 
-export interface FilterState {
-  vendorType: 'all' | 'student-ventures' | 'campus-cafeterias' | 'pharmacy-mart';
-  priceRange: '$' | '$$' | '$$$' | null;
-  minRating: 3.5 | 4.0 | 4.5 | null;
+export type VendorSort = "reviewed" | "rating" | "eta" | "min-order";
+
+export interface VendorFilters {
+  kind: VendorKind | "all";
+  priceBand: PriceBand | null;
+  minRating: RatingFilter | null;
+  openNow: boolean;
 }
 
 export interface SortOption {
-  value: string;
+  value: VendorSort;
   label: string;
 }
-
-export type VendorTypeFilter = 'all' | 'student-ventures' | 'campus-cafeterias' | 'pharmacy-mart';
-export type PriceRangeFilter = '$' | '$$' | '$$$';
-export type RatingFilter = 3.5 | 4.0 | 4.5;
-export type SortBy = 'popularity' | 'rating' | 'delivery-time' | 'min-order';

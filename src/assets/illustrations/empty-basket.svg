@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" width="320" height="240">
+  <!-- Ground shadow -->
+  <ellipse cx="160" cy="208" rx="84" ry="9" fill="#F2EDE4"/>
+  <ellipse cx="152" cy="208" rx="60" ry="5.5" fill="#0A0F1D" opacity="0.08"/>
+
+  <!-- Crumbs on the ground beside the bag -->
+  <polygon points="234,204 238,202 236,206" fill="#0A0F1D"/>
+  <circle cx="248" cy="207" r="1.75" fill="#0A0F1D"/>
+
+  <!-- Back rim / Interior cavity of open bag (navy interior showing it's completely empty) -->
+  <path d="M112 110 L126 94 L196 94 L212 110 Z" fill="#0A0F1D"/>
+
+  <!-- Folded receipt poking out over the rim -->
+  <!-- Receipt body (white paper) -->
+  <path d="M128 116 L124 64 L158 60 L162 114 Z" fill="#FFFFFF" stroke="#0A0F1D" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Folded top corner of receipt -->
+  <path d="M146 61.5 L158 60 L154 74 Z" fill="#EE8C2B" stroke="#0A0F1D" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Minimal receipt divider / dash rows (no text or lettering, purely graphic bars) -->
+  <line x1="130" y1="78" x2="148" y2="76" stroke="#0A0F1D" stroke-width="2" stroke-linecap="round"/>
+  <line x1="131" y1="86" x2="155" y2="83.5" stroke="#0A0F1D" stroke-width="2" stroke-linecap="round"/>
+  <line x1="132" y1="94" x2="144" y2="92.5" stroke="#0A0F1D" stroke-width="2" stroke-linecap="round"/>
+  <!-- Zigzag torn bottom edge of receipt emerging over rim -->
+  <path d="M127 116 L133 113 L139 116 L145 113 L151 116 L157 113 L162 114" fill="none" stroke="#0A0F1D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Main takeaway paper bag -->
+  <!-- Side gusset facet (folded side) -->
+  <path d="M112 110 L98 122 L108 202 L128 204 L112 110 Z" fill="#F2EDE4" stroke="#0A0F1D" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Side gusset inner crease line -->
+  <polyline points="112,110 104,162 108,202" fill="none" stroke="#0A0F1D" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Front face of paper bag -->
+  <path d="M112 110 L198 102 L216 196 L128 204 Z" fill="#F2EDE4" stroke="#0A0F1D" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Serrated / scalloped top front rim of craft bag -->
+  <path d="M112 110 
+           L120 107 L124 111 L132 108 L136 112 
+           L144 109 L148 113 L156 110 L160 114 
+           L168 111 L172 115 L180 112 L184 116 
+           L192 113 L198 102" 
+        fill="#F2EDE4" stroke="#0A0F1D" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Bag structure creases -->
+  <!-- Bottom fold triangle crease characteristic of paper grocery bags -->
+  <polygon points="128,204 152,192 216,196" fill="none" stroke="#0A0F1D" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Feasto orange accent on one structural bag crease -->
+  <line x1="152" y1="192" x2="162" y2="132" stroke="#EE8C2B" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Additional subtle structural crease in navy -->
+  <line x1="128" y1="204" x2="112" y2="110" stroke="#0A0F1D" stroke-width="2" stroke-linejoin="round"/>
+  <line x1="198" y1="102" x2="212" y2="110" stroke="#0A0F1D" stroke-width="2" stroke-linejoin="round"/>
+  <line x1="212" y1="110" x2="216" y2="196" stroke="#0A0F1D" stroke-width="2" stroke-linejoin="round"/>
+</svg>

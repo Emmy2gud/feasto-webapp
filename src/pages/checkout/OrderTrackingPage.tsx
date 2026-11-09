@@ -1,324 +1,290 @@
-import { useState, useCallback, useMemo } from "react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import profile from "@/assets/images/profile.png"
+import { useMemo } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion, useReducedMotion } from "motion/react";
 import {
-    PhoneCall,
-    MessageSquare,
-    Utensils,
-    Bike,
-    PackageCheck,
-    Package,
-    Search,
-    Locate,
-    ZoomIn,
-    ZoomOut,
-    Maximize2,
-    Star,
-    CheckCircle2,
-    Clock,
-    Info,
-    ScrollText
+  Bike,
+  Check,
+  MessageSquare,
+  Package,
+  PackageCheck,
+  PhoneCall,
+  Star,
+  Utensils,
 } from "lucide-react";
-import { Link } from "react-router-dom";
-import { GoogleMap, useJsApiLoader, DirectionsRenderer } from '@react-google-maps/api';
 
-// Order summary items
-const orderItems = [
-    { name: "Classic Cheeseburger", price: 18.00, qty: 2, note: "No onions on one of them" },
-    { name: "Large Curly Fries", price: 4.50, qty: 1 },
+import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/cart-store";
+import { vendors } from "@/data/vendorData";
+import { formatNaira } from "@/utils/vendorUtils";
+import riderPhoto from "@/assets/riders/dispatch2.jpg";
+import riderIllustration from "@/assets/illustrations/rider-en-route.svg";
+import { cn } from "@/lib/utils";
 
-];
+const rider = { name: "Kelechi Okoro", rating: 4.9, deliveries: 812, phone: "+2348030000000" };
 
-const mapContainerStyle = {
-    width: '100%',
-    height: '100%'
-};
-
-const center = {
-    lat: 37.4275,
-    lng: -122.1697
-};
+/** Captured once per session so the timeline stays stable across re-renders. */
+const ORDER_STARTED_AT = Date.now();
 
 export default function OrderTrackingPage() {
-    const [directions, setDirections] = useState<google.maps.DirectionsResult | null>(null);
-    const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+  const reduceMotion = useReducedMotion();
+  const { lines, count, subtotal, clear } = useCart();
 
-    // Load Google Maps
-    const { isLoaded } = useJsApiLoader({
-        id: 'google-map-script',
-        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "YOUR_GOOGLE_MAPS_API_KEY"
+  const vendor = vendors.find((entry) => entry.id === lines[0]?.vendorId);
+  const deliveryFee = vendor?.deliveryFee ?? 0;
+  const total = subtotal + (count > 0 ? deliveryFee : 0);
+
+  const timeline = useMemo(() => {
+    const formatter = new Intl.DateTimeFormat("en-NG", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
     });
+    const at = (minutesFromNow: number) =>
+      formatter.format(new Date(ORDER_STARTED_AT + minutesFromNow * 60000));
 
-    const [map, setMap] = useState<google.maps.Map | null>(null);
-
-    const onLoad = useCallback((map: google.maps.Map) => {
-        setMap(map);
-
-        // Request directions
-        const directionsService = new google.maps.DirectionsService();
-        const origin = { lat: 37.4275, lng: -122.1697 }; // The Grill location
-        const destination = { lat: 37.4315, lng: -122.1650 }; // Your Dorm location
-
-        directionsService.route(
-            {
-                origin: origin,
-                destination: destination,
-                travelMode: google.maps.TravelMode.DRIVING,
-            },
-            (result, status) => {
-                if (status === google.maps.DirectionsStatus.OK && result) {
-                    setDirections(result);
-                }
-            }
-        );
-    }, []);
-
-    const onUnmount = useCallback(() => {
-        setMap(null);
-    }, []);
-
-    const directionsOptions = useMemo(() => ({
-        suppressMarkers: false,
-        polylineOptions: {
-            strokeColor: '#EE8C2B',
-            strokeWeight: 5,
-            strokeOpacity: 0.8
-        }
-    }), []);
-
-    const steps = [
-        { title: "Order Placed", time: "12:25 PM", status: "completed", icon: <Package className="h-5 w-5" /> },
-        { title: "Kitchen is Preparing", time: "12:30 PM", status: "completed", icon: <Utensils className="h-5 w-5" /> },
-        { title: "Rider is On Route", time: "12:43 PM", status: "current", icon: <Bike className="h-5 w-5" /> },
-        { title: "Order Delivered", time: "Est. 12:55 PM", status: "upcoming", icon: <PackageCheck className="h-5 w-5" /> },
+    return [
+      { title: "Order placed", time: at(-18), state: "done" as const, icon: Package },
+      { title: "Kitchen cooking", time: at(-12), state: "done" as const, icon: Utensils },
+      { title: "Rider on the way", time: at(-4), state: "current" as const, icon: Bike },
+      { title: "Arriving", time: `Est. ${at(9)}`, state: "next" as const, icon: PackageCheck },
     ];
+  }, []);
 
+  if (count === 0) {
     return (
-        <div className="min-h-screen bg-neutral-50/50 py-10">
-            <div className="container mx-auto px-4 max-w-7xl space-y-8">
-
-                <div className="grid lg:grid-cols-[1fr_420px] gap-8">
-
-                    {/* Left Column: Map & Progress */}
-                    <div className="space-y-8 animate-in fade-in slide-in-from-left-4 duration-700 delay-100">
-                        {/* Status Bar */}
-                        <div className="bg-white p-8 rounded-[2.5rem] border border-neutral-100 shadow-sm">
-                            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-                                <div className="space-y-2 text-center md:text-left mb-10">
-                                    <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
-                                        <Badge className="bg-[#EE8C2B]/10 text-[#EE8C2B] border-none font-black text-[10px] tracking-widest uppercase px-4 py-2 rounded-full">
-                                            In Transit
-                                        </Badge>
-                                        <span className="text-xs font-bold text-neutral-400">Order #CE-0E207A</span>
-                                    </div>
-                                    <h1 className="text-5xl font-black text-neutral-900 tracking-tighter">Track Your Order</h1>
-                                    <p className="text-lg text-neutral-500 font-medium ">Order #CE-88291 • From The Student Union Grill.</p>
-                                </div>
-                                <div className="text-center bg-[#EE8C2B]/10 text-[#EE8C2B] md:text-right flex justify-center items-center gap-2 border border-primary px-4 py-2 rounded-2xl  mb-5">
-                                    <div>
-                                        <Clock className="text-[#EE8C2B]" />
-                                    </div>
-                                    <div>
-                                        <p className="text-[10px] font-black uppercase tracking-[0.2em]  ">Estimated Arrival</p>
-                                        <p className="text-xl font-black text-left  tracking-tighter">12:43<span className="text-xl ml-1 uppercase">PM</span></p>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div className="relative flex items-center justify-between">
-                                {/* Connecting Lines */}
-                                <div className="absolute top-[26px] left-[5%] right-[5%] h-1 bg-neutral-100 -z-0 ">
-                                    <div className="h-full bg-emerald-500 transition-all duration-1000" style={{ width: '66%' }}></div>
-                                </div>
-
-                                {steps.map((step, idx) => (
-                                    <div key={idx} className="relative z-10 flex flex-col items-center gap-4 ">
-                                        <div className={`
-                                            h-14 w-14 rounded-2xl flex items-center justify-center transition-all duration-500  shadow-lg
-                                            ${step.status === 'completed' ? 'bg-emerald-500 text-white shadow-emerald-500/20' : ''}
-                                            ${step.status === 'current' ? 'bg-[#EE8C2B] text-white shadow-orange-500/30 scale-110' : ''}
-                                            ${step.status === 'upcoming' ? 'bg-neutral-100 text-neutral-300 shadow-none' : ''}
-                                        `}>
-                                            {step.icon}
-                                        </div>
-                                        <div className="text-center hidden md:block">
-                                            <p className={`text-[10px] font-black uppercase tracking-widest ${step.status === 'upcoming' ? 'text-neutral-300' : 'text-neutral-900'}`}>{step.title}</p>
-                                            <p className="text-[10px] font-bold text-neutral-400 mt-1">{step.time}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Map Container */}
-                        <div className="bg-white rounded-[3rem] border border-neutral-100 shadow-xl overflow-hidden relative group">
-                            <div className="h-[520px] relative">
-                                {/* Search Overlay */}
-                                <div className="absolute top-8 left-8 right-8 z-10">
-                                    <div className="relative flex items-center gap-4">
-                                        <div className="relative flex-1">
-                                            <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-neutral-400" />
-                                            <Input
-                                                value={searchQuery}
-                                                onChange={(e) => setSearchQuery(e.target.value)}
-                                                placeholder="Track rider location..."
-                                                className="h-16 pl-16 pr-8 bg-white/90 placeholder:text-neutral-400 placeholder:font-medium placeholder:tracking-widest backdrop-blur-md rounded-3xl border-neutral-200 shadow-2xl font-bold italic transition-all focus:bg-white"
-                                            />
-                                        </div>
-                                        <Button className="h-16 w-16 bg-[#EE8C2B] text-white rounded-3xl shadow-xl hover:bg-[#D67B22]">
-                                            <Locate className="h-6 w-6" />
-                                        </Button>
-                                    </div>
-                                </div>
-
-                                {/* Map Controls */}
-                                <div className="absolute bottom-8 right-8 z-10 flex flex-col gap-3">
-                                    <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl bg-white border-neutral-200 shadow-xl" onClick={() => map?.setZoom((map?.getZoom() || 14) + 1)}>
-                                        <ZoomIn className="h-5 w-5" />
-                                    </Button>
-                                    <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl bg-white border-neutral-200 shadow-xl" onClick={() => map?.setZoom((map?.getZoom() || 14) - 1)}>
-                                        <ZoomOut className="h-5 w-5" />
-                                    </Button>
-                                    <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl bg-white border-neutral-200 shadow-xl" onClick={() => map?.setCenter(center)}>
-                                        <Maximize2 className="h-5 w-5" />
-                                    </Button>
-                                </div>
-
-                                {/* Google Map */}
-                                {isLoaded ? (
-                                    <GoogleMap
-                                        mapContainerStyle={mapContainerStyle}
-                                        center={center}
-                                        zoom={14}
-                                        onLoad={onLoad}
-                                        onUnmount={onUnmount}
-                                        options={{
-                                            streetViewControl: false,
-                                            mapTypeControl: false,
-                                            fullscreenControl: false,
-                                            zoomControl: false,
-                                        }}
-                                    >
-                                        {directions && (
-                                            <DirectionsRenderer
-                                                directions={directions}
-                                                options={directionsOptions}
-                                            />
-                                        )}
-                                    </GoogleMap>
-                                ) : (
-                                    <div className="w-full h-full flex flex-col items-center justify-center bg-neutral-100 gap-4">
-                                        <div className="h-12 w-12 border-4 border-[#EE8C2B] border-t-transparent rounded-full animate-spin"></div>
-                                        <p className="text-neutral-400 font-black uppercase tracking-widest text-xs italic">Syncing with satellite...</p>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Right Column: Rider & Order */}
-                    <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-700 delay-200">
-                        {/* Rider Card */}
-                        <div className="bg-white rounded-[2.5rem] p-8 border border-neutral-100 shadow-xl space-y-8 relative overflow-hidden">
-                            <div className="absolute top-0 right-0 p-8">
-                                <CheckCircle2 className="h-6 w-6 text-emerald-500" />
-                            </div>
-
-                            <div className="flex items-center gap-6">
-                                <div >
-                                    <img src={profile} alt="" />
-                                </div>
-                                <div className="space-y-1">
-                                    <h3 className="text-2xl font-black text-neutral-900 tracking-tight">Alex Rodriguez</h3>
-                                    <div className="flex items-center gap-2">
-                                        <div className="flex gap-0.5">
-                                            {[1, 2, 3, 4, 5].map((i) => <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />)}
-                                        </div>
-                                        <span className="text-[10px] font-bold text-neutral-400">4.9 (2,100+ deliveries)</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 gap-4">
-                                <Button className="h-15 rounded-2xl bg-[#EE8C2B] text-white font-black uppercase tracking-widest text-xs gap-3 hover:bg-black transition-all">
-                                    <MessageSquare className="h-4 w-4" />
-                                    Contact Rider
-                                </Button>
-                                <Button variant="outline" className="h-15 bg-[#EE8C2B]/10 rounded-2xl border-0 text-[#EE8C2B] font-black uppercase tracking-widest text-xs gap-3 hover:bg-neutral-100 transition-all">
-                                    <PhoneCall className="h-4 w-4 text-[#EE8C2B]" />
-                                    Voice Call
-                                </Button>
-                            </div>
-                        </div>
-
-                        {/* Order Details Card */}
-                        <div className="bg-white rounded-[2.5rem] p-8 border border-neutral-100 shadow-sm space-y-8">
-                            <div className="flex items-center justify-between">
-                                <h3 className="text-xl font-black text-neutral-900 tracking-tight flex items-center gap-2"><ScrollText className="text-[#EE8C2B]" /> Order Details</h3>
-                                <Link to="/vendors" className="text-[10px] font-black uppercase tracking-widest text-[#EE8C2B] hover:underline">View Menu</Link>
-                            </div>
-
-                            <div className="space-y-6">
-                                {orderItems.map((item, idx) => (
-                                    <div key={idx} className="flex items-start justify-between group">
-                                        <div className="flex gap-4">
-                                            <div className="h-10 w-10 rounded-xl bg-neutral-50 border border-neutral-100 flex items-center justify-center font-black text-xs text-neutral-400 group-hover:bg-orange-50 group-hover:text-[#EE8C2B] transition-colors">{item.qty}x</div>
-                                            <div>
-                                                <p className="font-bold text-neutral-900 tracking-tight">{item.name}</p>
-                                                {item.note && <p className="text-[10px] text-neutral-400 italic mt-0.5">{item.note}</p>}
-                                            </div>
-                                        </div>
-                                        <p className="font-black text-neutral-900 tracking-tighter">${item.price.toFixed(2)}</p>
-                                    </div>
-                                ))}
-                            </div>
-                            <div className="h-px bg-neutral-900/10 shadow-sm"></div>
-                            {/* Charges */}
-                            <div className="space-y-4">
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-neutral-400 font-bold uppercase tracking-widest text-[10px]">Subtotal</span>
-                                    <span className="text-neutral-900 font-black tracking-tight">$24.49</span>
-                                </div>
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-neutral-400 font-bold uppercase tracking-widest text-[10px]">Delivery fee</span>
-                                    <span className="text-emerald-500 font-black tracking-tight">-$2.45</span>
-                                </div>
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-neutral-400 font-bold uppercase tracking-widest text-[10px] italic">Taxes</span>
-                                    <span className="text-emerald-500 font-black tracking-tight uppercase">Free</span>
-                                </div>
-                            </div>
-
-                            <div className="h-px bg-neutral-900/10 shadow-sm"></div>
-
-                            {/* Total */}
-                            <div className="  bg-neutral-50 p-6 rounded-[2rem] border border-neutral-100">
-                                <div className="flex justify-between items-center">
-                                    <p className="text-2xl font-black uppercase tracking-[0.3em]  mb-1">Total</p>
-                                    <p className="text-2xl text-[#EE8C2B] font-black tracking-tighter">$22.04</p>
-                                </div>
-                            </div>
-
-                            {/* Help Section */}
-                            <div className="bg-[#F8FAFC] rounded-2xl p-8 text-white relative overflow-hidden group">
-                                <div className="absolute -bottom-10 -right-10 h-32 w-32 bg-[#EE8C2B]/20 rounded-full  group-hover:scale-150 transition-transform duration-1000"></div>
-                                <div className="relative z-10 space-y-4 flex items-center gap-3">
-                                    <div ><Info className="h-4 w-4 text-gray-400" /></div>
-                                    <p className="text-sm text-slate-400 font-medium ">Need to make a change? Please contact the
-                                        restaurant directly for order modifications.
-                                        <span className="text-[#EE8C2B] font-black">View
-                                            Restaurant Details.</span></p>
-
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div className="mx-auto flex w-full max-w-[520px] flex-col items-center px-4 py-14 text-center">
+        <img
+          src={riderIllustration}
+          alt=""
+          aria-hidden="true"
+          width={360}
+          height={260}
+          className="h-40 w-auto"
+        />
+        <h1 className="mt-4 font-display text-2xl font-bold text-ink">No order to track yet</h1>
+        <p className="mt-2 max-w-[34ch] text-[14px] leading-relaxed text-ink-muted">
+          Once you place an order, the rider's progress and arrival time appear here.
+        </p>
+        <Button asChild className="mt-5 h-11 rounded-md px-5 text-[14px] font-semibold">
+          <Link to="/vendors">Browse vendors</Link>
+        </Button>
+      </div>
     );
+  }
+
+  return (
+    <div className="mx-auto w-full max-w-[1100px] px-4 pt-4 pb-12 sm:px-8 lg:pt-6">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="text-[12px] text-ink-muted">Order FT-4821</p>
+          <h1 className="mt-0.5 font-display text-2xl font-bold text-ink sm:text-3xl">
+            {timeline[2].title}
+          </h1>
+          <p className="mt-1 text-[13px] text-ink-muted">
+            {vendor ? `From ${vendor.name}, ${vendor.neighborhood}` : "From your vendor"}
+          </p>
+        </div>
+
+        <div className="rounded-lg bg-surface px-3 py-2 text-right">
+          <p className="text-[11px] text-ink-muted">Arriving</p>
+          <p className="text-[15px] font-semibold text-ink">{timeline[3].time.replace("Est. ", "")}</p>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_340px] lg:items-start lg:gap-8">
+        <div className="flex flex-col gap-4">
+          {/* Progress */}
+          <section
+            aria-labelledby="progress-heading"
+            className="rounded-xl border border-hairline bg-background p-4 sm:p-5"
+          >
+            <h2 id="progress-heading" className="text-[15px] font-semibold text-ink">
+              Delivery progress
+            </h2>
+
+            <div className="mt-4">
+              <div className="relative h-1.5 rounded-full bg-surface-strong">
+                <motion.div
+                  initial={reduceMotion ? { width: "66%" } : { width: "0%" }}
+                  animate={{ width: "66%" }}
+                  transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+                  className="h-full rounded-full bg-primary"
+                />
+              </div>
+
+              <ol className="mt-3 grid grid-cols-4 gap-1.5">
+                {timeline.map((step) => (
+                  <li key={step.title} className="flex flex-col gap-1.5">
+                    <span
+                      className={cn(
+                        "flex items-center gap-1.5 text-[11px] font-semibold sm:text-[12px]",
+                        step.state === "next" ? "text-ink-muted" : "text-ink",
+                      )}
+                    >
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          "grid size-4 shrink-0 place-items-center rounded-full",
+                          step.state === "done" && "bg-secondary text-white",
+                          step.state === "current" && "bg-primary text-primary-foreground",
+                          step.state === "next" && "border border-hairline text-ink-muted",
+                        )}
+                      >
+                        {step.state === "done" ? (
+                          <Check className="size-2.5" strokeWidth={3} />
+                        ) : step.state === "current" ? (
+                          <step.icon className="size-2.5" />
+                        ) : null}
+                      </span>
+                      <span className="hidden truncate sm:inline">{step.title}</span>
+                    </span>
+                    <span className="text-[11px] text-ink-muted">{step.time}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div className="mt-4 flex flex-col items-center rounded-lg bg-surface/70 px-4 py-4 sm:flex-row sm:gap-5 sm:py-3">
+              <img
+                src={riderIllustration}
+                alt=""
+                aria-hidden="true"
+                width={360}
+                height={260}
+                className="h-28 w-auto shrink-0 sm:h-24"
+              />
+              <p className="mt-2 max-w-[34ch] text-center text-[13px] leading-relaxed text-ink-muted sm:mt-0 sm:text-left">
+                {rider.name.split(" ")[0]} has your food and is heading to{" "}
+                <span className="font-medium text-ink">
+                  {vendor ? vendor.neighborhood : "your address"}
+                </span>
+                .
+              </p>
+            </div>
+          </section>
+
+          {/* Rider */}
+          <section
+            aria-labelledby="rider-heading"
+            className="rounded-xl border border-hairline bg-background p-4 sm:p-5"
+          >
+            <h2 id="rider-heading" className="text-[15px] font-semibold text-ink">
+              Your rider
+            </h2>
+
+            <div className="mt-3 flex items-center gap-3">
+              <img
+                src={riderPhoto}
+                alt={`${rider.name}, your delivery rider`}
+                width={112}
+                height={112}
+                className="size-14 rounded-md object-cover"
+              />
+              <div className="min-w-0 flex-1">
+                <p className="text-[14px] font-semibold text-ink">{rider.name}</p>
+                <p className="mt-0.5 flex items-center gap-1.5 text-[12px] text-ink-muted">
+                  <Star aria-hidden="true" className="size-3.5 fill-primary text-primary" />
+                  {rider.rating} · {rider.deliveries} deliveries
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <Button
+                asChild
+                className="h-11 rounded-md text-[13px] font-semibold"
+              >
+                <a href={`tel:${rider.phone}`}>
+                  <PhoneCall aria-hidden="true" className="size-4" />
+                  Call rider
+                </a>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="h-11 rounded-md border-hairline text-[13px] font-semibold"
+              >
+                <a href={`sms:${rider.phone}`}>
+                  <MessageSquare aria-hidden="true" className="size-4" />
+                  Message
+                </a>
+              </Button>
+            </div>
+          </section>
+        </div>
+
+        {/* Order */}
+        <aside className="lg:sticky lg:top-[88px]">
+          <section
+            aria-labelledby="order-heading"
+            className="rounded-xl border border-hairline bg-background"
+          >
+            <div className="border-b border-hairline px-4 py-3">
+              <h2 id="order-heading" className="text-[15px] font-semibold text-ink">
+                What's coming
+              </h2>
+            </div>
+
+            <ul className="px-4">
+              {lines.map((line) => (
+                <li key={line.key} className="flex gap-3 border-b border-hairline py-3 last:border-b-0">
+                  <div className="relative size-12 shrink-0 overflow-hidden rounded-md bg-surface-strong">
+                    {line.image ? (
+                      <img
+                        src={line.image}
+                        alt=""
+                        width={96}
+                        height={96}
+                        loading="lazy"
+                        className="absolute inset-0 size-full object-cover"
+                      />
+                    ) : null}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="line-clamp-2 text-[13px] leading-snug font-semibold text-ink">
+                      {line.name}
+                    </p>
+                    <p className="mt-0.5 text-[12px] text-ink-muted">× {line.qty}</p>
+                  </div>
+                  <p className="text-[13px] font-semibold text-ink">
+                    {formatNaira(line.unitPrice * line.qty)}
+                  </p>
+                </li>
+              ))}
+            </ul>
+
+            <dl className="flex flex-col gap-1.5 border-t border-hairline px-4 py-3 text-[13px]">
+              <div className="flex items-center justify-between">
+                <dt className="text-ink-muted">Subtotal</dt>
+                <dd className="font-medium text-ink">{formatNaira(subtotal)}</dd>
+              </div>
+              <div className="flex items-center justify-between">
+                <dt className="text-ink-muted">Delivery</dt>
+                <dd className="font-medium text-ink">{formatNaira(deliveryFee)}</dd>
+              </div>
+              <div className="flex items-center justify-between border-t border-hairline pt-2 text-[15px]">
+                <dt className="font-semibold text-ink">Total</dt>
+                <dd className="font-semibold text-ink">{formatNaira(total)}</dd>
+              </div>
+            </dl>
+
+            <div className="px-4 pb-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  clear();
+                  navigate("/vendors");
+                }}
+                className="h-11 w-full rounded-md border-hairline text-[13px] font-semibold"
+              >
+                Order received
+              </Button>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </div>
+  );
 }

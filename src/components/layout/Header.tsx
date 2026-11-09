@@ -1,82 +1,153 @@
-import { Menu, MapPin } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { ChevronRight, Menu, X } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import logo from "@/assets/logo/logo.png";
+import { Logo } from "@/components/marketing/Logo";
+import { primaryNav } from "@/data/navigation";
+import { useScrolled } from "@/hooks/useScrolled";
+import { cn } from "@/lib/utils";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const scrolled = useScrolled();
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setIsMenuOpen(false);
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [isMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between px-4 md:px-6">
-        {/* Logo */}
+    <header
+      className={
+        scrolled
+          ? "sticky top-0 z-50 w-full border-b border-hairline bg-background/90 shadow-soft backdrop-blur-md"
+          : "sticky top-0 z-50 w-full border-b border-transparent bg-background"
+      }
+    >
+      <div className="container-page flex h-16 items-center justify-between gap-4 lg:h-[72px]">
+        <Link
+          to="/"
+          aria-label="Feasto home"
+          className="rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+        >
+          <Logo />
+        </Link>
 
-        <div className="flex items-center gap-2">
-          <div>
-            <img src={logo} alt="logo" />
-          </div>
-
-          <Link
-            to=""
-            className="flex items-center gap-2 font-bold text-xl text-black"
-          >
-            FEASTO
-          </Link>
-          {/* shift the menubar to the end */}
-                    <div className="md:hidden ml-40">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+        <nav aria-label="Primary" className="hidden items-center gap-1 md:flex">
+          {primaryNav.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              className={({ isActive }) =>
+                [
+                  "relative rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  isActive ? "text-ink" : "text-ink-muted hover:text-ink",
+                ].join(" ")
+              }
             >
-              <Menu className="h-6 w-6" />
-            </Button>
-          </div>
-        </div>
+              {({ isActive }) => (
+                <>
+                  {link.label}
+                  {isActive ? (
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-primary"
+                    />
+                  ) : null}
+                </>
+              )}
+            </NavLink>
+          ))}
+        </nav>
 
-        {/* Desktop Navigation / Search */}
-        <div className="hidden md:flex items-center flex-1 max-w-xl mx-8 gap-4">
-          <div className="relative flex-1">
-            <MapPin className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Enter delivery address..."
-              className="w-80 bg-background pl-8 rounded-full"
-            />
-          </div>
-        </div>
-
-        {/* User Actions */}
-        <div className="flex items-center gap-4 md:flex hidden">
-          <div className="flex justify-between gap-10">
-            <Link to="/about-vendors">Vendors</Link>
-            <Link to="/about-rider">Riders</Link>
-            <Link to="/admin">Admin</Link>
-          </div>
-          <Link to="/vendors">
-          <Button variant="default" className="hidden md:inline-flex bg-black rounded-full">
-            Join Campus
+        <div className="hidden items-center gap-2 md:flex">
+          <Button
+            asChild
+            variant="ghost"
+            className="h-10 rounded-lg px-3 font-semibold text-ink hover:bg-surface"
+          >
+            <Link to="/login">Sign in</Link>
           </Button>
-          </Link>
+          <Button asChild className="h-10 rounded-lg px-4 font-semibold">
+            <Link to="/vendors">Order food</Link>
+          </Button>
         </div>
+
+        <Button
+          type="button"
+          variant="outline"
+          size="icon"
+          onClick={() => setIsMenuOpen((value) => !value)}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-nav"
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          className="size-11 rounded-lg border-hairline md:hidden"
+        >
+          {isMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+        </Button>
       </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden border-t p-4 space-y-4 bg-background h-screen">
-          <Input placeholder="Search..." />
-          <nav className="flex flex-col gap-2 text-center space-y-5">
-            <Link to="/about-vendors" className="md:inline-flex p-3  rounded-full hover:bg-[#EE8C2B] hover:text-white transition-all duration-300">Vendors</Link>
-            <Link to="/about-rider" className="md:inline-flex p-3  rounded-full hover:bg-[#EE8C2B] hover:text-white transition-all duration-300">Riders</Link>
-    
-            <Link to="/vendors" className="md:inline-flex p-3  rounded-full hover:bg-[#EE8C2B] hover:text-white transition-all duration-300">
-            Join Campus
-          </Link>
-          </nav>
-        </div>
-      )}
+      <AnimatePresence initial={false}>
+        {isMenuOpen ? (
+          <motion.div
+            id="mobile-nav"
+            key="mobile-nav"
+            initial={reduceMotion ? false : { opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduceMotion ? undefined : { opacity: 0, y: -8 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="border-t border-hairline bg-background md:hidden"
+          >
+            <nav aria-label="Mobile" className="container-page flex flex-col py-3">
+              {primaryNav.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex min-h-14 items-center justify-between border-b border-hairline text-[15px] font-semibold text-ink"
+                >
+                  {link.label}
+                  <ChevronRight aria-hidden="true" className="size-4 text-ink-muted" />
+                </Link>
+              ))}
+
+              <div className="mt-4 mb-2 flex flex-col gap-2">
+                <Button asChild className="h-12 rounded-lg font-semibold">
+                  <Link to="/vendors" onClick={() => setIsMenuOpen(false)}>
+                    Order food
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className={cn("h-12 rounded-lg border-hairline font-semibold")}
+                >
+                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                    Sign in
+                  </Link>
+                </Button>
+              </div>
+            </nav>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </header>
   );
 }

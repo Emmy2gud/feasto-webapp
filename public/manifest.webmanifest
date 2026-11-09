@@ -1,0 +1,24 @@
+{
+  "name": "Feasto — Food delivery",
+  "short_name": "Feasto",
+  "description": "Order food, groceries and medicine from vendors across the city, and track the rider to your door.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FAF7F1",
+  "theme_color": "#FAFAF9",
+  "icons": [
+    {
+      "src": "/feasto-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    { "name": "Browse vendors", "short_name": "Vendors", "url": "/vendors" },
+    { "name": "Track an order", "short_name": "Orders", "url": "/tracking" },
+    { "name": "Your account", "short_name": "Account", "url": "/profile" }
+  ]
+}
