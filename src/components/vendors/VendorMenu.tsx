@@ -6,7 +6,6 @@ import { useCart } from "@/context/cart-store";
 import { getMenuCategories } from "@/data/menuData";
 import type { MenuItem } from "@/types/menu";
 import type { Vendor } from "@/types/vendor";
-import { formatNaira } from "@/utils/vendorUtils";
 import { cn } from "@/lib/utils";
 
 type VendorMenuProps = {
