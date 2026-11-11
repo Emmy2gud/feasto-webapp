@@ -24,8 +24,10 @@ import WalletPayoutsPage from "./pages/dashboard/vendor/WalletPayoutsPage";
 import CreateCategoryPage from "./pages/dashboard/vendor/CreateCategoryPage";
 import AddFoodItemPage from "./pages/dashboard/vendor/AddFoodItemPage";
 import VendorOrdersPage from "./pages/dashboard/vendor/VendorOrdersPage";
+import MenuListingPage from "./pages/dashboard/vendor/MenuListingPage";
+import CategoriesListingPage from "./pages/dashboard/vendor/CategoriesListingPage";
+import AddonsListingPage from "./pages/dashboard/vendor/AddonsListingPage";
 
-import AdminLayout from "./components/layout/dashboard/admin/AdminLayout";
 import SystemOverview from "./pages/dashboard/admin/SystemOverview";
 import UsersManagement from "./pages/dashboard/admin/UsersManagement";
 import VendorsManagement from "./pages/dashboard/admin/VendorsManagement";
@@ -37,7 +39,7 @@ import ReportsAnalytics from "./pages/dashboard/admin/ReportsAnalytics";
 import PromotionsHub from "./pages/dashboard/admin/PromotionsHub";
 import DisputesCenter from "./pages/dashboard/admin/DisputesCenter";
 import SystemSettings from "./pages/dashboard/admin/SystemSettings";
-import RiderLayout from "./components/layout/dashboard/riders/RiderLayout";
+
 import RiderDashboard from "./pages/dashboard/riders/RiderDashboard";
 import DeliveryHistory from "./pages/dashboard/riders/DeliveryHistory";
 import RiderProfile from "./pages/dashboard/riders/RiderProfile";
@@ -47,6 +49,7 @@ import WalletTransactions from "./pages/dashboard/riders/WalletTransactions";
 import ActiveDelivery from "./pages/dashboard/riders/ActiveDelivery";
 import StoreProfile from "./pages/dashboard/vendor/StoreProfle";
 import { CartProvider } from "./context/CartProvider";
+import AddAddonsPage from "./pages/dashboard/vendor/AddAddonsPage";
 
 
 function App() {
@@ -80,7 +83,7 @@ function App() {
             <Route path="vendor-form" element={<VendorFormPage />} />
           </Route>
 
-          <Route path="/dashboard" element={<DashBoardLayout />}>
+          <Route path="/dashboard" element={<DashBoardLayout role="vendor" />}>
             <Route index element={<VendorDashboard />} />
             <Route path="orders" element={<VendorOrdersPage />} />
             <Route
@@ -124,11 +127,17 @@ function App() {
             />
             <Route path="earnings" element={<EarningsPage />} />
             <Route path="payouts" element={<WalletPayoutsPage />} />
-            <Route path="categories" element={<CreateCategoryPage />} />
-            <Route path="menu" element={<AddFoodItemPage />} />
+           
+            <Route path="categories" element={<CategoriesListingPage />} />
+            <Route path="categories/new" element={<CreateCategoryPage />} />
+
+            <Route path="menu" element={<MenuListingPage />} />
+            <Route path="menu/add" element={<AddFoodItemPage />} />
+            <Route path="addons/create/:id" element={<AddAddonsPage />} /> 
+            <Route path="addons" element={<AddonsListingPage />} />
           </Route>
 
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route path="/admin" element={<DashBoardLayout  role="admin"  />}>
             <Route index element={<SystemOverview />} />
             <Route path="users" element={<UsersManagement />} />
             <Route path="vendors" element={<VendorsManagement />} />
@@ -142,7 +151,7 @@ function App() {
             <Route path="settings" element={<SystemSettings />} />
           </Route>    
 
-          <Route path="/rider" element={<RiderLayout />}>
+          <Route path="/rider"  element={<DashBoardLayout  role="rider" />}>
             <Route index element={<RiderDashboard />} />
             <Route path="dashboard" element={<RiderDashboard />} />
             <Route path="orders" element={<AvailableOrders />} />

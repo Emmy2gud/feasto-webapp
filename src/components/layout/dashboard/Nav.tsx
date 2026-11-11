@@ -16,8 +16,11 @@ export function Nav({ onOpenMobileMenu }: NavProps) {
     const path = location.pathname;
     if (path === "/dashboard") return "Overview";
     if (path.includes("/orders")) return "Orders Hub";
-    if (path.includes("/menu")) return "Menu Management";
-    if (path.includes("/categories")) return "Categories";
+    if (path === "/dashboard/menu") return "Menu Items";
+    if (path.includes("/menu/add")) return "Add Menu Item";
+    if (path === "/dashboard/categories") return "Categories";
+    if (path.includes("/categories/new")) return "Add Category";
+    if (path.includes("/addons")) return "Add-ons & Options";
     if (path.includes("/earnings")) return "Earnings";
     if (path.includes("/payouts")) return "Payouts & Wallet";
     if (path.includes("/profile")) return "Store Profile";

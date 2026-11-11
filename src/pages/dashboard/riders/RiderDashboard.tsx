@@ -55,8 +55,7 @@ export default function RiderDashboard() {
   const [isOnline, setIsOnline] = useState(true);
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-8">
-      {/* Page Header */}
+    <div className="space-y-6  mx-auto pb-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Rider Dashboard</h1>

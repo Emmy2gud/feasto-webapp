@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Camera, Plus, Trash2, ArrowLeft } from "lucide-react";
+import { Camera,ArrowLeft } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,11 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface Addon {
-  id: number;
-  name: string;
-  price: string;
-}
+
 
 const CATEGORIES = ["Main Course", "Starters", "Desserts", "Beverages", "Sides", "Specials"];
 
@@ -31,10 +27,7 @@ const AddFoodItemPage: React.FC = () => {
   const [featured, setFeatured] = useState(true);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
-  const [addons, setAddons] = useState<Addon[]>([
-    { id: 1, name: "Extra Cheddar Cheese", price: "1.50" },
-    { id: 2, name: "Gluten-Free Bun", price: "2.00" },
-  ]);
+
 
   const margin = price ? (parseFloat(price) * 0.3).toFixed(2) : "0.00";
 
@@ -50,21 +43,9 @@ const AddFoodItemPage: React.FC = () => {
     if (file) setImagePreview(URL.createObjectURL(file));
   };
 
-  const updateAddon = (id: number, field: "name" | "price", value: string) => {
-    setAddons((prev) => prev.map((a) => (a.id === id ? { ...a, [field]: value } : a)));
-  };
-
-  const removeAddon = (id: number) => {
-    setAddons((prev) => prev.filter((a) => a.id !== id));
-  };
-
-  const addAddon = () => {
-    setAddons((prev) => [...prev, { id: Date.now(), name: "", price: "" }]);
-  };
-
   return (
     <div className="space-y-6 pb-8 max-w-5xl">
-      {/* Header with back button */}
+    
       <div className="flex items-center gap-3">
         <button
           onClick={() => navigate(-1)}
@@ -81,9 +62,9 @@ const AddFoodItemPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column: Form Details */}
+       
         <div className="lg:col-span-2 space-y-6">
-          {/* Basic Item Info */}
+       
           <div className="bg-white rounded-xl p-6 border border-slate-200/80 shadow-xs space-y-4">
             <h2 className="text-base font-semibold text-slate-900 border-b border-slate-100 pb-3">
               Item Details
@@ -143,55 +124,7 @@ const AddFoodItemPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Customization & Add-ons */}
-          <div className="bg-white rounded-xl p-6 border border-slate-200/80 shadow-xs space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <div>
-                <h2 className="text-base font-semibold text-slate-900">Customization & Add-ons</h2>
-                <p className="text-xs text-slate-500">Allow customers to choose extras, sides, or dressing.</p>
-              </div>
-              <button
-                type="button"
-                onClick={addAddon}
-                className="flex items-center gap-1 text-xs font-semibold text-[#ee8c2b] hover:text-[#d6761f] cursor-pointer"
-              >
-                <Plus size={14} /> Add Option
-              </button>
-            </div>
 
-            <div className="space-y-3">
-              {addons.map((addon) => (
-                <div key={addon.id} className="flex items-center gap-2">
-                  <Input
-                    value={addon.name}
-                    onChange={(e) => updateAddon(addon.id, "name", e.target.value)}
-                    placeholder="Option name (e.g. Extra Cheese)"
-                    className="flex-1 border-slate-200 bg-slate-50/50 rounded-lg text-sm"
-                  />
-                  <div className="w-28 relative">
-                    <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-slate-400">$</span>
-                    <Input
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={addon.price}
-                      onChange={(e) => updateAddon(addon.id, "price", e.target.value)}
-                      placeholder="0.00"
-                      className="pl-6 border-slate-200 bg-slate-50/50 rounded-lg text-sm"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeAddon(addon.id)}
-                    className="p-2 text-slate-400 hover:text-rose-600 rounded-lg transition-colors cursor-pointer"
-                    aria-label="Remove option"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
 
           {/* Action Buttons */}
           <div className="flex items-center gap-3">

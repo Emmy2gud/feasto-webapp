@@ -64,13 +64,12 @@ export default function AdminLayout() {
         />
       )}
 
-      {/* SideNavBar */}
       <aside
         className={`fixed inset-y-0 left-0 z-50 w-64 h-screen bg-white border-r border-slate-200/80 flex flex-col transition-transform duration-200 ease-in-out lg:static lg:translate-x-0 ${
           mobileMenuOpen ? "translate-x-0 shadow-xl" : "-translate-x-full"
         }`}
       >
-        {/* Logo Header */}
+   
         <div className="flex items-center justify-between h-16 px-5 border-b border-slate-100 shrink-0">
           <div className="flex items-center gap-2 overflow-hidden">
             <FeastoLogo className="h-7 w-auto max-w-[130px]" />
@@ -89,7 +88,6 @@ export default function AdminLayout() {
           </div>
         </div>
 
-        {/* Navigation list */}
         <div className="flex-1 overflow-y-auto px-3 py-4 flex flex-col gap-1 min-h-0">
           <nav className="flex flex-col gap-1" aria-label="Core operations">
             <SidebarLink to="/admin" icon={LayoutDashboard} label="Overview" onClick={closeMenu} />
@@ -137,12 +135,11 @@ export default function AdminLayout() {
         </div>
       </aside>
 
-      {/* Main Content Area */}
       <div className="flex-1 ml-0 lg:ml-64 flex flex-col min-h-screen min-w-0">
-        {/* TopNavBar */}
+       
         <header className="h-16 sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
           <div className="flex items-center gap-2 min-w-0">
-            {/* Mobile hamburger */}
+          
             <button
               onClick={() => setMobileMenuOpen(true)}
               className="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer shrink-0"
@@ -151,7 +148,6 @@ export default function AdminLayout() {
               <Menu className="w-5 h-5" />
             </button>
 
-            {/* Search — hidden on mobile */}
             <div className="relative hidden md:block w-56 lg:w-80">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
@@ -190,7 +186,7 @@ export default function AdminLayout() {
           </div>
         </header>
 
-        {/* Content Outlet */}
+
         <main className="flex-1 p-5 sm:p-6 lg:p-8 max-w-7xl w-full">
           <Outlet />
         </main>
